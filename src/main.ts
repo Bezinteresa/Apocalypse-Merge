@@ -67,6 +67,7 @@ async function boot(): Promise<void> {
       if (critical) void store.flush();
     },
     toast: showToast,
+    debug: isLocalDev(),
   });
   screen.setPaused(isPaused());
   onLifecycleChange(({ paused }) => {

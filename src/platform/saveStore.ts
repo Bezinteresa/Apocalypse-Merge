@@ -1,6 +1,7 @@
 import { PROJECTS, STORAGE_CAPACITY } from '../content/orders';
 import { validateState } from '../game/rules';
 import { triggeredDialogIds } from '../game/tutorial';
+import { ENERGY_START } from '../game/energy';
 import { SCHEMA_VERSION, createInitialState, type GameState } from '../game/state';
 
 // Сервис сохранений. Основной ключ и предыдущая корректная копия читаются и пишутся одним вызовом.
@@ -66,6 +67,11 @@ export function migrate(raw: unknown): GameState | null {
       .map((id) => PROJECTS.find((pr) => pr.id === id)?.generatorReward)
       .filter((g): g is string => !!g && !onBoard.has(g));
     data = { ...data, schemaVersion: 4, incoming };
+  }
+  if (data.schemaVersion === 4) {
+    // v5: энергия. Игроку с прогрессом начисляются стартовый запас и уже заработанные награды проектов.
+    const earned = ((data.completedProjects as string[]) ?? []).reduce((sum, id) => sum + (PROJECTS.find((pr) => pr.id === id)?.energyReward ?? 0), 0);
+    data = { ...data, schemaVersion: 5, energy: ENERGY_START + earned, energyUpdatedAt: 0, energyUnlimited: false };
   }
   return data.schemaVersion === SCHEMA_VERSION && validateState(data) ? data : null;
 }

@@ -27,6 +27,7 @@ export class FieldView {
   private selected: Loc | null = null;
   private wanted = new Set<string>();
   private tutorialIds = new Set<string>();
+  private hintCells = new Set<number>();
   private enabled = true;
   private drag: {
     pointerId: number;
@@ -84,6 +85,12 @@ export class FieldView {
     this.tutorialIds = ids;
   }
 
+  /** Временная подсветка «Где получить?»: генератор и предметы, из которых собирается нужный. */
+  setHintCells(cells: number[]): void {
+    this.hintCells = new Set(cells);
+    if (this.state) this.render(this.state);
+  }
+
   render(state: GameState): void {
     this.state = state;
     while (this.slotEls.length < state.storage.length) this.slotEls.push(this.createCell(this.storageRoot, 'storage', this.slotEls.length));
@@ -97,6 +104,7 @@ export class FieldView {
       el.classList.toggle('wanted', content?.kind === 'item' && this.wanted.has(content.itemId));
       const contentId = content ? (content.kind === 'item' ? content.itemId : content.generatorId) : null;
       el.classList.toggle('tut', contentId !== null && this.tutorialIds.has(contentId));
+      el.classList.toggle('hint', loc.area === 'board' && this.hintCells.has(loc.index));
       el.replaceChildren();
       if (content) el.appendChild(renderContent(content));
       else if (locked) el.appendChild(lockLabel(LOCK_LABEL.get(loc.index) ?? ''));

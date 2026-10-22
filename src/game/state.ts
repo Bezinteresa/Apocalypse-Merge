@@ -1,7 +1,8 @@
 import { BOARD_SIZE, LOCKED_GROUPS, START_GENERATORS } from '../content/board';
 import { STORAGE_CAPACITY } from '../content/orders';
+import { ENERGY_START } from './energy';
 
-export const SCHEMA_VERSION = 4;
+export const SCHEMA_VERSION = 5;
 
 export interface ItemInstance {
   uid: number;
@@ -39,6 +40,12 @@ export interface GameState {
   seenDialogs: string[];
   /** Входящее хранилище: полученные генераторы, ожидающие места на поле. */
   incoming: string[];
+  /** Текущий запас энергии; может быть выше лимита после наград. */
+  energy: number;
+  /** Момент, до которого восстановление уже учтено (мс, время устройства). */
+  energyUpdatedAt: number;
+  /** Режим проверки без лимита: выдача не тратит энергию. Доступен только в отладке. */
+  energyUnlimited: boolean;
 }
 
 export function createInitialState(): GameState {
@@ -58,5 +65,8 @@ export function createInitialState(): GameState {
     lastSale: null,
     seenDialogs: [],
     incoming: [],
+    energy: ENERGY_START,
+    energyUpdatedAt: 0,
+    energyUnlimited: false,
   };
 }

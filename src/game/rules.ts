@@ -2,6 +2,7 @@ import { BOARD_COLS, BOARD_SIZE, LOCKED_GROUPS, cellIndex } from '../content/boa
 import { GENERATORS, ITEMS, getItem, type ChainId } from '../content/items';
 import { ORDERS, PROJECTS, getOrder, getProject, type OrderDef, type ProjectDef, type Requirement } from '../content/orders';
 import type { CellContent, GameState, ItemInstance, Loc } from './state';
+import { addEnergy, hasEnergyForSpawn, regenerate, spendSpawnEnergy } from './energy';
 
 // Правила игры. Функции не меняют входное состояние и возвращают новое вместе с результатом,
 // чтобы отображение и сохранение работали с уже принятым состоянием.
@@ -9,7 +10,7 @@ import type { CellContent, GameState, ItemInstance, Loc } from './state';
 
 export type SpawnResult =
   | { ok: true; state: GameState; cell: number; itemId: string }
-  | { ok: false; reason: 'not_generator' | 'board_full' };
+  | { ok: false; reason: 'not_generator' | 'board_full' | 'no_energy' };
 
 export type MoveResult =
   | { ok: true; state: GameState; action: 'move' | 'swap' | 'merge'; to: Loc; itemId?: string }
@@ -100,13 +101,16 @@ export function findFreeCellNear(state: GameState, origin: number): number | nul
 }
 
 /** Нажатие на генератор: выдача первого уровня в свободную клетку. Без места ничего не расходуется. */
-export function spawnFromGenerator(state: GameState, generatorCell: number): SpawnResult {
+export function spawnFromGenerator(state: GameState, generatorCell: number, now: number = Date.now()): SpawnResult {
   const content = inBounds(generatorCell) ? state.cells[generatorCell] : null;
   if (!content || content.kind !== 'generator') return { ok: false, reason: 'not_generator' };
+  // место проверяется до энергии: на заполненном поле выдача ничего не тратит
   const target = findFreeCellNear(state, generatorCell);
   if (target === null) return { ok: false, reason: 'board_full' };
+  const charged = regenerate(state, now);
+  if (!hasEnergyForSpawn(charged)) return { ok: false, reason: 'no_energy' };
   const itemId = GENERATORS[content.generatorId].output;
-  const next = clone(state);
+  const next = clone(spendSpawnEnergy(charged));
   next.cells[target] = { kind: 'item', uid: next.nextUid, itemId };
   next.nextUid += 1;
   return { ok: true, state: next, cell: target, itemId };
@@ -314,9 +318,8 @@ export function completeProject(state: GameState, projectId: string): ProjectRes
   if (project.storageCapacity && project.storageCapacity > next.storage.length) {
     next.storage = next.storage.concat(new Array(project.storageCapacity - next.storage.length).fill(null));
   }
-  // energyReward применяется, когда включена энергия (этап 5).
   let placedCell: number | null = null;
-  let result = next;
+  let result = addEnergy(next, project.energyReward);
   if (project.generatorReward) {
     result.incoming.push(project.generatorReward);
     const placed = placeIncoming(result);
@@ -326,6 +329,35 @@ export function completeProject(state: GameState, projectId: string): ProjectRes
     }
   }
   return { ok: true, state: result, project, unlockedCells, placedCell };
+}
+
+// ---------- Где получить ----------
+
+export type ItemSource =
+  | { status: 'on_board'; generatorId: string; cell: number }
+  | { status: 'incoming'; generatorId: string }
+  | { status: 'locked'; generatorId: string; unlockProject: string | null };
+
+/** Откуда берётся предмет: генератор его цепочки и состояние этого генератора. */
+export function whereToGet(state: GameState, itemId: string): ItemSource {
+  const chain = getItem(itemId).chain;
+  const generatorId = Object.values(GENERATORS).find((g) => getItem(g.output).chain === chain)!.id;
+  const cell = state.cells.findIndex((c) => c?.kind === 'generator' && c.generatorId === generatorId);
+  if (cell >= 0) return { status: 'on_board', generatorId, cell };
+  if (state.incoming.includes(generatorId)) return { status: 'incoming', generatorId };
+  return { status: 'locked', generatorId, unlockProject: PROJECTS.find((p) => p.generatorReward === generatorId)?.id ?? null };
+}
+
+/** Предметы на поле той же цепочки ниже нужного уровня: из них собирается требуемый. */
+export function ingredientCells(state: GameState, itemId: string): number[] {
+  const def = getItem(itemId);
+  const out: number[] = [];
+  state.cells.forEach((c, i) => {
+    if (c?.kind !== 'item') return;
+    const d = getItem(c.itemId);
+    if (d.chain === def.chain && d.level <= def.level) out.push(i);
+  });
+  return out;
 }
 
 // ---------- Проверка сохранения ----------
@@ -359,6 +391,9 @@ export function validateState(raw: unknown): raw is GameState {
   if (!Array.isArray(s.completedProjects) || !s.completedProjects.every((id) => PROJECTS.some((p) => p.id === id))) return false;
   if (!Array.isArray(s.seenDialogs) || !s.seenDialogs.every((id) => typeof id === 'string')) return false;
   if (!Array.isArray(s.incoming) || !s.incoming.every((id) => !!GENERATORS[id])) return false;
+  if (typeof s.energy !== 'number' || !Number.isFinite(s.energy) || s.energy < 0) return false;
+  if (typeof s.energyUpdatedAt !== 'number' || !Number.isFinite(s.energyUpdatedAt)) return false;
+  if (typeof s.energyUnlimited !== 'boolean') return false;
   const uids = new Set<number>();
   for (const c of s.cells) {
     if (c === null) continue;

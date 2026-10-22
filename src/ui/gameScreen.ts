@@ -1,4 +1,4 @@
-import { GENERATORS, getItem } from '../content/items';
+import { CHAINS, GENERATORS, ITEMS, getItem } from '../content/items';
 import { PROJECTS, VISITORS, type ProjectDef, type Requirement } from '../content/orders';
 import { t, tx, type StringKey } from '../i18n';
 import {
@@ -10,6 +10,8 @@ import {
   currentProject,
   deliverOrder,
   getAt,
+  findSources,
+  ingredientCells,
   isChapterComplete,
   areAllOrdersDone,
   moveItem,
@@ -17,7 +19,9 @@ import {
   sellItem,
   spawnFromGenerator,
   undoSale,
+  whereToGet,
 } from '../game/rules';
+import { ENERGY_CAP, addEnergy, msToNextEnergy, regenerate, setUnlimited } from '../game/energy';
 import type { GameState, Loc } from '../game/state';
 import { currentTutorialStep, markDialogSeen, pendingDialog } from '../game/tutorial';
 import type { DialogDef } from '../content/dialogs';
@@ -30,6 +34,8 @@ export interface GameScreenDeps {
   /** critical — записать сразу, без объединения по времени (сдача заказа, ремонт). */
   save(state: GameState, critical?: boolean): void;
   toast(key: StringKey, extra?: string): void;
+  /** Отладочная панель (энергия без лимита, пополнение). Только локальная разработка. */
+  debug: boolean;
 }
 
 export interface GameScreen {
@@ -48,6 +54,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     <header class="top">
       <div class="title"></div>
       <div class="money"><span class="money-label"></span> <b class="money-value"></b></div>
+      <div class="energy"><span>⚡</span> <b class="energy-value"></b> <small class="energy-timer"></small></div>
+      <button class="btn small ghost debug-btn" hidden>DBG</button>
       <button class="btn small shop-btn"></button>
     </header>
     <section class="orders"></section>
@@ -56,7 +64,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     <section class="storage-wrap"><span class="storage-label"></span><div id="storage"></div><button class="btn small incoming-btn" hidden></button></section>
     <footer class="info">
       <div class="info-text"><div class="info-title"></div><div class="info-detail"></div></div>
-      <div class="info-actions"><button class="btn small undo-btn"></button><button class="btn small sell-btn"></button></div>
+      <div class="info-actions"><button class="btn small ghost where-btn" hidden></button><button class="btn small undo-btn"></button><button class="btn small sell-btn"></button></div>
     </footer>
     <section class="shop" hidden>
       <header class="shop-head"><h2></h2><button class="btn small back-btn"></button></header>
@@ -66,6 +74,16 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     <div class="dialog" hidden><div class="dialog-box"><div class="dialog-speaker"></div><p class="dialog-text"></p>
       <div class="dialog-actions"><button class="btn small ghost dialog-skip"></button><button class="btn small dialog-next"></button></div></div></div>
     <div class="modal" hidden><div class="modal-box"><h3></h3><p></p><button class="btn modal-close"></button></div></div>
+    <div class="modal chain-modal" hidden><div class="modal-box chain-box">
+      <header class="chain-head"><h3></h3><button class="btn small ghost chain-close">✕</button></header>
+      <div class="chain-levels"></div><p class="chain-source"></p><button class="btn chain-show" hidden></button>
+    </div></div>
+    <div class="modal debug-modal" hidden><div class="modal-box">
+      <h3>Debug</h3>
+      <label class="debug-row"><input type="checkbox" class="debug-unlimited"> <span></span></label>
+      <button class="btn small debug-refill">+100 ⚡</button>
+      <button class="btn small ghost debug-close">✕</button>
+    </div></div>
     <div class="pause-overlay" hidden><span></span></div>
   `;
   const $ = <T extends HTMLElement = HTMLElement>(sel: string) => app.querySelector<T>(sel)!;
@@ -87,6 +105,12 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   $('.dialog-next').textContent = t('next');
   let dialog: { def: DialogDef; line: number } | null = null;
   const undoBtn = $<HTMLButtonElement>('.undo-btn');
+  const whereBtn = $<HTMLButtonElement>('.where-btn');
+  whereBtn.textContent = t('whereToGet');
+  const chainModal = $('.chain-modal');
+  $('.chain-show').textContent = t('showOnBoard');
+  $('.energy').title = t('energy');
+  let hintTimer: ReturnType<typeof setTimeout> | undefined;
 
   const view = new FieldView($('#board'), $('#storage'), {
     onTap(loc) {
@@ -100,7 +124,12 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         const r = spawnFromGenerator(state, loc.index);
         if (!r.ok) {
           view.flash(loc, 'shake');
-          deps.toast('boardFull');
+          if (r.reason === 'no_energy') {
+            const ms = msToNextEnergy(state, Date.now());
+            deps.toast('noEnergy', ms !== null ? `+1 ⚡ ${formatMs(ms)}` : '');
+          } else {
+            deps.toast('boardFull');
+          }
         } else {
           commit(r.state);
           view.flash({ area: 'board', index: r.cell }, 'pop');
@@ -116,9 +145,13 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         if (r.reason === 'generator_to_storage') deps.toast('generatorToStorage');
         return;
       }
+      const source = getAt(state, from);
+      const target = getAt(state, to);
       commit(r.state);
       select(r.to);
       if (r.action === 'merge') view.flash(r.to, 'pop');
+      // одинаковые предметы максимального уровня меняются местами — объясняем, почему без объединения
+      if (r.action === 'swap' && source?.kind === 'item' && target?.kind === 'item' && source.itemId === target.itemId) deps.toast('maxLevelNoMerge');
     },
   });
 
@@ -140,6 +173,27 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     commit(r.state);
     view.flash({ area: 'board', index: r.cell }, 'pop');
   };
+  whereBtn.onclick = () => {
+    const content = selected ? getAt(state, selected) : null;
+    if (content?.kind === 'item') openChain(content.itemId);
+  };
+  $('.chain-close').onclick = () => (chainModal.hidden = true);
+  chainModal.onclick = (e) => {
+    if (e.target === chainModal) chainModal.hidden = true;
+  };
+  if (deps.debug) {
+    const dbgModal = $('.debug-modal');
+    const dbgBtn = $('.debug-btn');
+    dbgBtn.hidden = false;
+    $('.debug-row span').textContent = t('energyUnlimited');
+    dbgBtn.onclick = () => {
+      $<HTMLInputElement>('.debug-unlimited').checked = state.energyUnlimited;
+      dbgModal.hidden = false;
+    };
+    $('.debug-close').onclick = () => (dbgModal.hidden = true);
+    $<HTMLInputElement>('.debug-unlimited').onchange = (e) => commit(setUnlimited(state, (e.target as HTMLInputElement).checked));
+    $('.debug-refill').onclick = () => commit(addEnergy(regenerate(state, Date.now()), 100));
+  }
   $('.dialog-next').onclick = () => advanceDialog();
   $('.dialog-text').onclick = () => advanceDialog();
   $('.dialog-skip').onclick = () => closeDialog();
@@ -211,6 +265,52 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     maybeShowDialog();
   }
 
+  function formatMs(ms: number): string {
+    const sec = Math.ceil(ms / 1000);
+    return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
+  }
+
+  function renderEnergy(): void {
+    const now = Date.now();
+    const shown = regenerate(state, now);
+    $('.energy-value').textContent = state.energyUnlimited ? '∞' : `${shown.energy}/${ENERGY_CAP}`;
+    const ms = msToNextEnergy(state, now);
+    $('.energy-timer').textContent = ms !== null ? formatMs(ms) : '';
+    $('.energy').classList.toggle('empty', !state.energyUnlimited && shown.energy <= 0);
+  }
+
+  /** Окно цепочки: все уровни, нужный выделен, откуда получить и кнопка показать на поле. */
+  function openChain(itemId: string): void {
+    const def = getItem(itemId);
+    $('.chain-head h3').textContent = `${tx(CHAINS[def.chain].name)}: ${tx(def.name)}`;
+    const levels = $('.chain-levels');
+    levels.replaceChildren();
+    for (const item of Object.values(ITEMS).filter((i) => i.chain === def.chain)) {
+      const chip = renderItemChip(item.id);
+      chip.classList.toggle('target', item.id === itemId);
+      chip.classList.toggle('have', countItem(state, item.id) > 0);
+      levels.appendChild(chip);
+    }
+    const src = whereToGet(state, itemId);
+    const genName = tx(GENERATORS[src.generatorId].name);
+    const showBtn = $<HTMLButtonElement>('.chain-show');
+    let text = `${t('whereFrom')}: ${genName}`;
+    if (src.status === 'incoming') text += ` — ${t('generatorWaiting').toLowerCase()}`;
+    if (src.status === 'locked') text += ` — ${t('opensAfter')} ${src.unlockProject ?? ''}`;
+    const prev = Object.values(ITEMS).find((i) => i.nextId === itemId);
+    if (prev) text += `. ${t('mergeFrom')}: 2 × ${tx(prev.name)}`;
+    $('.chain-source').textContent = text;
+    showBtn.hidden = src.status !== 'on_board';
+    showBtn.onclick = () => {
+      chainModal.hidden = true;
+      if (src.status !== 'on_board') return;
+      view.setHintCells([src.cell, ...ingredientCells(state, itemId)]);
+      clearTimeout(hintTimer);
+      hintTimer = setTimeout(() => view.setHintCells([]), 4000);
+    };
+    chainModal.hidden = false;
+  }
+
   function select(loc: Loc | null): void {
     selected = loc;
     sellArmed = false;
@@ -232,6 +332,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     $('.info-detail').textContent = detail;
     const sellable = content?.kind === 'item';
     sellBtn.hidden = !sellable;
+    whereBtn.hidden = !sellable;
     if (sellable) sellBtn.textContent = sellArmed ? t('sellConfirm') : `${t('sell')} +${getItem(content.itemId).sellPrice}`;
     sellBtn.classList.toggle('danger', sellArmed);
     undoBtn.hidden = !state.lastSale;
@@ -242,12 +343,22 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     box.className = 'reqs';
     for (const req of reqs) {
       const chip = renderItemChip(req.itemId);
+      chip.classList.add('clickable');
+      chip.onclick = () => openChain(req.itemId);
       const have = countItem(state, req.itemId);
       chip.classList.toggle('have', have >= req.count);
       if (req.count > 1) chip.append(` ×${req.count}`);
       box.appendChild(chip);
     }
     return box;
+  }
+
+  /** Названия недостающих предметов для сообщения об отказе. */
+  function missingList(reqs: Requirement[]): string {
+    return reqs
+      .filter((req) => !findSources(state, [req]))
+      .map((req) => tx(getItem(req.itemId).name))
+      .join(', ');
   }
 
   function renderOrders(): void {
@@ -274,12 +385,13 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       const btn = document.createElement('button');
       btn.className = 'btn small';
       btn.textContent = `${t('deliver')} +${order.reward}`;
-      btn.disabled = !ready;
+      // кнопка не блокируется: нажатие на неготовый заказ объясняет, чего не хватает
+      btn.classList.toggle('dim', !ready);
       btn.classList.toggle('tut', currentTutorialStep(state)?.targets.some((x) => x.kind === 'order' && x.orderId === order.id) ?? false);
       btn.onclick = () => {
         const r = deliverOrder(state, order.id);
         if (!r.ok) {
-          deps.toast('missingItems');
+          deps.toast('missingItems', missingList(order.requires));
           return;
         }
         commit(r.state, true);
@@ -345,7 +457,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     const btn = document.createElement('button');
     btn.className = 'btn';
     btn.textContent = t('restore');
-    btn.disabled = !canCompleteProject(state, current);
+    btn.classList.toggle('dim', !canCompleteProject(state, current));
     btn.classList.toggle('tut', currentTutorialStep(state)?.targets.some((x) => x.kind === 'project') ?? false);
     btn.onclick = () => finishProject(current);
     card.append(title, requirementChips(current.requires), cost);
@@ -361,7 +473,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   function finishProject(project: ProjectDef): void {
     const r = completeProject(state, project.id);
     if (!r.ok) {
-      deps.toast(r.reason === 'no_money' ? 'noMoney' : r.reason === 'generator_missing' ? 'placeFirst' : 'missingItems');
+      if (r.reason === 'no_money') deps.toast('noMoney', `${state.money}/${project.cost}`);
+      else if (r.reason === 'generator_missing') deps.toast('placeFirst', project.requiresGenerator ? tx(GENERATORS[project.requiresGenerator].name) : '');
+      else deps.toast('missingItems', missingList(project.requires));
       return;
     }
     // окно итога открывается до принятия состояния, чтобы сцена после ремонта шла следом за ним
@@ -383,6 +497,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
 
   function render(): void {
     $('.money-value').textContent = String(state.money);
+    renderEnergy();
     const wanted = new Set<string>();
     for (const o of availableOrders(state)) for (const r of o.requires) wanted.add(r.itemId);
     for (const r of currentProject(state)?.requires ?? []) wanted.add(r.itemId);
@@ -405,6 +520,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
 
   render();
   maybeShowDialog();
+  setInterval(renderEnergy, 1000);
 
   return {
     setPaused(paused) {

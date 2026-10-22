@@ -17,6 +17,8 @@ import {
   isChapterComplete,
   areAllOrdersDone,
   placeIncoming,
+  whereToGet,
+  ingredientCells,
 } from './rules';
 import { createInitialState, type GameState } from './state';
 
@@ -203,6 +205,8 @@ describe('projects', () => {
       project(proj);
       expect(s.money, proj).toBe(money);
     }
+    // каталог 6.2: 100 стартовой + 3 × 50 = 250 энергии покрывают 216 обязательных выдач с запасом 34
+    expect(s.energy).toBe(34);
     expect(isChapterComplete(s)).toBe(true);
     expect(areAllOrdersDone(s)).toBe(true);
     expect(currentProject(s)).toBeNull();
@@ -243,5 +247,20 @@ describe('projects', () => {
     if (!placed.ok) throw new Error();
     const r = completeProject(placed.state, 'R04');
     expect(r.ok && r.state.storage).toHaveLength(10);
+  });
+});
+
+describe('where to get', () => {
+  it('points to the generator on board, in incoming, or the project that unlocks it', () => {
+    const s = createInitialState();
+    expect(whereToGet(s, 'T03')).toEqual({ status: 'on_board', generatorId: 'G_TOOL', cell: GEN_CELL.T });
+    expect(whereToGet(s, 'P02')).toEqual({ status: 'locked', generatorId: 'G_PROVISION', unlockProject: 'R03' });
+    expect(whereToGet({ ...s, incoming: ['G_ELECTRIC'] }, 'E04')).toEqual({ status: 'incoming', generatorId: 'G_ELECTRIC' });
+  });
+
+  it('lists lower items of the same chain as ingredients', () => {
+    const s = put(put(put(createInitialState(), 0, 'T01'), 1, 'T03'), 2, 'M01');
+    expect(ingredientCells(s, 'T02')).toEqual([0]);
+    expect(ingredientCells(s, 'T04')).toEqual([0, 1]);
   });
 });
