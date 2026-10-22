@@ -1,6 +1,6 @@
 # Что сгенерировать сейчас
 
-Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:37:03). Генерируй **только** картинки из этого списка — остальные уже готовы.
+Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:48:22). Генерируй **только** картинки из этого списка — остальные уже готовы.
 
 **Порядок работы — в [art/README.md](README.md):** как собрать запрос, куда сохранить, как записать в `art/generation-log.json` и что закоммитить. Готовое исчезает из этого списка само, когда файл нужного размера лежит в `public/sprites/`.
 
@@ -14,27 +14,7 @@
 Проверь всё разом: `python art/verify_generated_assets.py` (превью в art/generated-previews).
 После этого снова запусти `node art/art_todo.mjs` — сделанное пропадёт из списка.
 
-Осталось: **38**
-
-## shop/building.webp — 1600×1000
-
-- Почему: новая картинка
-- Что: Cross-section front view of a small two-level post-apocalyptic corner shop building at a city crossroads, like a dollhouse with the front wall removed. Top: grey sky and the facade roof line with an empty sign bracket above the entrance. Ground floor, left to right: a closed garage with a rolled-down dented shutter (locked, dim); a storeroom with bare concrete walls; the main shop floor with patched wallpaper, an entrance doorway on its left side; a workshop corner with pegboard wall; an outdoor yard with cracked asphalt and a fence. Below ground: a dark underground shelter level, barely visible, closed off by a heavy hatch, mysterious. Rooms are EMPTY: no furniture, no counter, no shelves, no racks, no workbench, no lamps, no water tank, no sign — those are separate sprites. No people.
-- Кадр: Wide 16:10 scene, NOT transparent. Follow the attached layout guide exactly: walls, floors and room borders where the guide boxes are; hatched red areas must stay empty background; do not draw the guide lines, labels or colors. Also attach art/reference/shop_mood.webp as the mood reference: same materials, palette and light, but as a cross-section of the whole building.
-- Приложи как основу для правки: art/guides/building_layout.png
-
-## zones/R01_broken.png — 256×560
-
-- Почему: новая картинка
-- Что: Doorway blocked by a pile of rubble and broken boards. Worn, dusty, clearly broken or missing, but not scary.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 256:560.
-
-## zones/R01_fixed.png — 256×560
-
-- Почему: новая картинка
-- Что: Cleared doorway framed with fresh wooden beams and a simple door mat. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 256:560.
-- Приложи как основу для правки: public/sprites/zones/R01_broken.png
+Осталось: **32**
 
 ## zones/R02_broken.png — 384×304
 
@@ -126,27 +106,6 @@
 - Что: Repaired sign board lit with warm string lights, still no text. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
 - Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 832:200.
 - Приложи как основу для правки: public/sprites/zones/R08_broken.png
-
-## characters/LEV.png — 320×640
-
-- Почему: новая картинка
-- Что: Lev, a friendly young courier in his mid-20s, messy dark hair, light stubble, long patched scarf, canvas messenger bag across his chest, fingerless gloves, worn boots, warm confident grin.
-- Кадр: Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.
-- Приложи как основу для правки: public/sprites/portraits/LEV.png
-
-## characters/NIKA.png — 320×640
-
-- Почему: новая картинка
-- Что: Nika, a kind young assistant of the local medic, about 20, short ginger hair with a green bandana, freckles, light jacket with a hand-sewn armband with a simple plus sign, cargo trousers, holding a clipboard.
-- Кадр: Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.
-- Приложи как основу для правки: public/sprites/portraits/NIKA.png
-
-## characters/MARTA.png — 320×640
-
-- Почему: новая картинка
-- Что: Marta, an experienced mechanic in her mid-40s, grey-streaked hair in a bun, welding goggles on her forehead, oil-stained overalls with rolled sleeves, heavy boots, a wrench in her hand.
-- Кадр: Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.
-- Приложи как основу для правки: public/sprites/portraits/MARTA.png
 
 ## chests/CH_WORN.png — 256×256
 
