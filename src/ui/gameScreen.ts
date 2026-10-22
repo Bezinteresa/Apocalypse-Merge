@@ -27,6 +27,8 @@ import { currentTutorialStep, markDialogSeen, pendingDialog } from '../game/tuto
 import type { DialogDef } from '../content/dialogs';
 import { FieldView, describeContent, renderItemChip } from './fieldView';
 import type { Telemetry } from '../platform/telemetry';
+import type { AdService } from '../platform/ads';
+import { AD_REWARD_ENERGY, AD_REWARD_LIMIT, adCooldownLeft, adRewardsAt, canShowInterstitial, canWatchRewardAd, grantAdReward } from '../game/ads';
 import { createAlbum } from './albumView';
 import { hasSprite, portraitSprite, shopSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
 import { CHESTS } from '../content/collections';
@@ -41,10 +43,13 @@ export interface GameScreenDeps {
   /** Отладочная панель (энергия без лимита, пополнение). Только локальная разработка. */
   debug: boolean;
   telemetry: Telemetry;
+  ads: AdService;
 }
 
 export interface GameScreen {
   setPaused(paused: boolean): void;
+  /** Площадка подтвердила просмотр rewarded: выдать награду и сохранить сразу. */
+  grantAdReward(): void;
   getState(): GameState;
   tap(loc: Loc): void;
   drop(from: Loc, to: Loc): void;
@@ -88,6 +93,12 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     <div class="modal chain-modal" hidden><div class="modal-box chain-box">
       <header class="chain-head"><h3></h3><button class="btn small ghost chain-close">✕</button></header>
       <div class="chain-levels"></div><p class="chain-source"></p><button class="btn chain-show" hidden></button>
+    </div></div>
+    <div class="modal energy-modal" hidden><div class="modal-box">
+      <h3></h3><p class="energy-info"></p>
+      <button class="btn energy-ad"></button>
+      <p class="energy-ad-note"></p>
+      <button class="btn small ghost energy-close"></button>
     </div></div>
     <div class="modal debug-modal" hidden><div class="modal-box">
       <h3>Debug</h3>
@@ -138,6 +149,23 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   }
   let hintTimer: ReturnType<typeof setTimeout> | undefined;
   const tel = deps.telemetry;
+  const ads = deps.ads;
+  const sessionStart = Date.now();
+  let lastInterstitialAt: number | null = null;
+  let interstitialAfterModal = false;
+  const energyModal = $('.energy-modal');
+  $('.energy-modal h3').textContent = t('energyTitle');
+  $('.energy-close').textContent = t('close');
+  $('.energy-close').onclick = () => (energyModal.hidden = true);
+  $('.energy').onclick = () => openEnergy();
+  $('.energy-ad').onclick = () => {
+    if (ads.busy || !canWatchRewardAd(state, Date.now())) return;
+    energyModal.hidden = true;
+    void ads.showRewarded('energy_bonus').then((outcome) => {
+      if (outcome === 'not_rewarded') deps.toast('adNoReward');
+      if (outcome === 'unavailable') deps.toast('adUnavailable');
+    });
+  };
   const albumEl = $('.album');
   const albumBtn = $<HTMLButtonElement>('.album-btn');
   $('.album .shop-head h2').textContent = t('album');
@@ -176,6 +204,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
           if (r.reason === 'no_energy') {
             const ms = msToNextEnergy(state, Date.now());
             deps.toast('noEnergy', ms !== null ? `+1 ⚡ ${formatMs(ms)}` : '');
+            if (ads.isRewardedSupported && canWatchRewardAd(state, Date.now())) openEnergy();
           } else {
             deps.toast('boardFull');
           }
@@ -215,6 +244,15 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   $('.back-btn').onclick = () => openShop(false);
   $('.modal-close').onclick = () => {
     modal.hidden = true;
+    // межстраничная — только на естественной паузе после ремонта; итог уже сохранён до запроса
+    const now = Date.now();
+    if (interstitialAfterModal && canShowInterstitial(state, sessionStart, lastInterstitialAt, now)) {
+      interstitialAfterModal = false;
+      lastInterstitialAt = now;
+      void ads.showInterstitial('project_completed').then(() => maybeShowDialog());
+      return;
+    }
+    interstitialAfterModal = false;
     maybeShowDialog();
   };
   $('.incoming-btn').onclick = () => {
@@ -309,7 +347,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   }
 
   function maybeShowDialog(): void {
-    if (dialog || !modal.hidden) return;
+    if (dialog || !modal.hidden || ads.busy) return;
     const def = pendingDialog(state);
     if (!def) return;
     dialog = { def, line: 0 };
@@ -348,9 +386,31 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     maybeShowDialog();
   }
 
+  /** Окно энергии: запас, таймер и опциональный просмотр рекламы с понятной наградой. */
+  function openEnergy(): void {
+    const now = Date.now();
+    const shown = regenerate(state, now);
+    const ms = msToNextEnergy(state, now);
+    $('.energy-info').textContent = `${shown.energy}/${ENERGY_CAP}${ms !== null ? ` · +1 ⚡ ${formatMs(ms)}` : ''}. ${t('energy')}`;
+    const btn = $<HTMLButtonElement>('.energy-ad');
+    const note = $('.energy-ad-note');
+    btn.hidden = !ads.isRewardedSupported;
+    note.hidden = !ads.isRewardedSupported;
+    if (ads.isRewardedSupported) {
+      const left = AD_REWARD_LIMIT - adRewardsAt(state, now).used;
+      const cooldown = adCooldownLeft(state, now);
+      btn.textContent = `${t('watchAd')}: +${AD_REWARD_ENERGY} ⚡`;
+      btn.classList.toggle('dim', left <= 0 || ads.busy);
+      note.textContent = cooldown !== null ? `${t('adCooldown')} ${formatMs(cooldown)}` : `${t('adLeft')}: ${left}/${AD_REWARD_LIMIT}`;
+    }
+    energyModal.hidden = false;
+  }
+
   function formatMs(ms: number): string {
     const sec = Math.ceil(ms / 1000);
-    return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
+    const h = Math.floor(sec / 3600);
+    const mm = String(Math.floor((sec % 3600) / 60)).padStart(h ? 2 : 1, '0');
+    return `${h ? `${h}:` : ''}${mm}:${String(sec % 60).padStart(2, '0')}`;
   }
 
   function renderEnergy(): void {
@@ -576,6 +636,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     if (isChapterComplete(r.state)) parts.push(t('chapterDone'));
     $('.modal p').textContent = parts.join('. ');
     modal.hidden = false;
+    interstitialAfterModal = true;
     tel.goal('project_completed', project.id);
     if (isChapterComplete(r.state)) tel.track('chapter_completed', { spawns_total: tel.data.spawnsTotal, active_sec: Math.round(tel.data.activeMs / 1000) });
     commit(r.state, true);
@@ -622,6 +683,13 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     setPaused(paused) {
       view.setEnabled(!paused);
       $('.pause-overlay').hidden = !paused;
+    },
+    grantAdReward() {
+      const next = grantAdReward(regenerate(state, Date.now()), Date.now());
+      if (!next) return;
+      tel.track('ad_reward', { reward: 'energy', amount: AD_REWARD_ENERGY });
+      commit(next, true);
+      deps.toast('adRewarded', `+${AD_REWARD_ENERGY} ⚡`);
     },
     getState: () => state,
     tap: (loc) => view['handlers'].onTap(loc),

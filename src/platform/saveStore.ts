@@ -3,6 +3,7 @@ import { validateState } from '../game/rules';
 import { triggeredDialogIds } from '../game/tutorial';
 import { ENERGY_START } from '../game/energy';
 import { initialCollections } from '../game/collections';
+import { emptyAdRewards } from '../game/ads';
 import { CHEST_SOURCES } from '../content/collections';
 import { SCHEMA_VERSION, createInitialState, type GameState } from '../game/state';
 
@@ -82,6 +83,10 @@ export function migrate(raw: unknown): GameState | null {
     const done = [...((data.completedOrders as string[]) ?? []), ...((data.completedProjects as string[]) ?? [])];
     const chests = done.flatMap((id) => (CHEST_SOURCES[id] ? [CHEST_SOURCES[id]] : []));
     data = { ...data, schemaVersion: 6, collections: initialCollections(), tokens: 0, chests, rng: (Math.random() * 2 ** 32) >>> 0, lastChest: null };
+  }
+  if (data.schemaVersion === 6) {
+    // v7: лимит наград за рекламу
+    data = { ...data, schemaVersion: 7, adRewards: emptyAdRewards() };
   }
   return data.schemaVersion === SCHEMA_VERSION && validateState(data) ? data : null;
 }

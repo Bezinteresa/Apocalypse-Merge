@@ -5,6 +5,8 @@ import { isPaused, onLifecycleChange, startLifecycle } from './platform/lifecycl
 import { SaveStore, type StorageBackend } from './platform/saveStore';
 import { createGameScreen } from './ui/gameScreen';
 import { Telemetry, parseLog } from './platform/telemetry';
+import { AdService, createFakeAdAdapter, type AdAdapter, type AdState } from './platform/ads';
+import { setPauseReason } from './platform/lifecycle';
 
 const app = document.getElementById('app')!;
 const loader = document.getElementById('loader')!;
@@ -71,6 +73,22 @@ async function boot(): Promise<void> {
   telemetry.setActive(!isPaused());
   telemetry.track('session_start', { returning: loaded.source !== 'new', platform: platformId() });
 
+  const adapter: AdAdapter = {
+    get isRewardedSupported() {
+      return bridge.advertisement.isRewardedSupported;
+    },
+    get isInterstitialSupported() {
+      return bridge.advertisement.isInterstitialSupported;
+    },
+    showRewarded: (p) => bridge.advertisement.showRewarded(p),
+    showInterstitial: (p) => bridge.advertisement.showInterstitial(p),
+    onRewardedState: (cb) => bridge.advertisement.on(bridge.EVENT_NAME.REWARDED_STATE_CHANGED, (s: unknown) => cb(s as AdState)),
+    onInterstitialState: (cb) => bridge.advertisement.on(bridge.EVENT_NAME.INTERSTITIAL_STATE_CHANGED, (s: unknown) => cb(s as AdState)),
+  };
+  // экран создаётся ниже; награда приходит только после действия игрока на уже созданном экране
+  const fakeAds = isLocalDev() ? new URLSearchParams(location.search).get('fakeads') : null;
+  const ads = new AdService(fakeAds ? createFakeAdAdapter(fakeAds === 'cancel' ? 'cancel' : 'ok') : adapter, (active) => setPauseReason('ad', active), () => screen.grantAdReward());
+
   const screen = createGameScreen(app, loaded.state, {
     save: (s, critical) => {
       store.save(s);
@@ -79,6 +97,7 @@ async function boot(): Promise<void> {
     toast: showToast,
     debug: isLocalDev(),
     telemetry,
+    ads,
   });
   screen.setPaused(isPaused());
   onLifecycleChange(({ paused }) => {

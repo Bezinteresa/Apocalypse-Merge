@@ -2,8 +2,9 @@ import { BOARD_SIZE, LOCKED_GROUPS, START_GENERATORS } from '../content/board';
 import { STORAGE_CAPACITY } from '../content/orders';
 import { ENERGY_START } from './energy';
 import { initialCollections, type ChestResult, type SetProgress } from './collections';
+import { emptyAdRewards, type AdRewardState } from './ads';
 
-export const SCHEMA_VERSION = 6;
+export const SCHEMA_VERSION = 7;
 
 export interface ItemInstance {
   uid: number;
@@ -57,6 +58,8 @@ export interface GameState {
   rng: number;
   /** Последний результат открытия: показывается после перезапуска так же. */
   lastChest: ChestResult | null;
+  /** Лимит наград за рекламу; сохраняется в облаке вместе с прогрессом. */
+  adRewards: AdRewardState;
 }
 
 export function createInitialState(seed: number = (Math.random() * 2 ** 32) >>> 0): GameState {
@@ -84,5 +87,6 @@ export function createInitialState(seed: number = (Math.random() * 2 ** 32) >>> 
     chests: [],
     rng: seed >>> 0,
     lastChest: null,
+    adRewards: emptyAdRewards(),
   };
 }

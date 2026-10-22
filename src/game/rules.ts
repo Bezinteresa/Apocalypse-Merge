@@ -411,6 +411,8 @@ export function validateState(raw: unknown): raw is GameState {
   if (typeof s.energyUpdatedAt !== 'number' || !Number.isFinite(s.energyUpdatedAt)) return false;
   if (typeof s.energyUnlimited !== 'boolean') return false;
   if (!validCollections(s)) return false;
+  const ad = s.adRewards;
+  if (!ad || typeof ad.used !== 'number' || ad.used < 0 || typeof ad.cooldownUntil !== 'number' || !Number.isFinite(ad.cooldownUntil)) return false;
   const uids = new Set<number>();
   for (const c of s.cells) {
     if (c === null) continue;

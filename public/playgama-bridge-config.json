@@ -1,5 +1,16 @@
 {
     "advertisement": {
-        "minimumDelayBetweenInterstitial": 120
+        "minimumDelayBetweenInterstitial": 120,
+        "initialInterstitialDelay": 180,
+        "interstitial": {
+            "placements": [
+                { "id": "project_completed" }
+            ]
+        },
+        "rewarded": {
+            "placements": [
+                { "id": "energy_bonus" }
+            ]
+        }
     }
 }

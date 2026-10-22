@@ -74,11 +74,11 @@ describe('SaveStore', () => {
   it('migrates a v1 save without losing the board', async () => {
     const b = new MemoryBackend();
     const v2 = progressed();
-    const { storage: _s, completedOrders: _o, completedProjects: _p, lastSale: _l, seenDialogs: _d, incoming: _i, energy: _e, energyUpdatedAt: _eu, energyUnlimited: _el, collections: _c, tokens: _t, chests: _ch, rng: _r, lastChest: _lc, ...v1 } = { ...v2, schemaVersion: 1 };
+    const { storage: _s, completedOrders: _o, completedProjects: _p, lastSale: _l, seenDialogs: _d, incoming: _i, energy: _e, energyUpdatedAt: _eu, energyUnlimited: _el, collections: _c, tokens: _t, chests: _ch, rng: _r, lastChest: _lc, adRewards: _ad, ...v1 } = { ...v2, schemaVersion: 1 };
     b.data[SAVE_KEY] = v1;
     const r = await new SaveStore(b).load();
     expect(r.source).toBe('main');
-    expect(r.state.schemaVersion).toBe(6);
+    expect(r.state.schemaVersion).toBe(7);
     expect(r.state.incoming).toEqual([]);
     expect(r.state.energy).toBe(100);
     expect(r.state.chests).toEqual([]);
@@ -90,10 +90,10 @@ describe('SaveStore', () => {
 
   it('v3 → v4 delivers the R03 generator that the stage 2 slice only announced', async () => {
     const b = new MemoryBackend();
-    const { incoming: _i, energy: _e, energyUpdatedAt: _eu, energyUnlimited: _el, collections: _c, tokens: _t, chests: _ch, rng: _r, lastChest: _lc, ...v3 } = { ...createInitialState(), schemaVersion: 3, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'] };
+    const { incoming: _i, energy: _e, energyUpdatedAt: _eu, energyUnlimited: _el, collections: _c, tokens: _t, chests: _ch, rng: _r, lastChest: _lc, adRewards: _ad, ...v3 } = { ...createInitialState(), schemaVersion: 3, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'] };
     b.data[SAVE_KEY] = v3;
     const r = await new SaveStore(b).load();
-    expect(r.state.schemaVersion).toBe(6);
+    expect(r.state.schemaVersion).toBe(7);
     expect(r.state.incoming).toEqual(['G_PROVISION']);
     // сундуки задним числом: R01, R02, R03
     expect(r.state.chests).toEqual(['CH_WORN', 'CH_WORN', 'CH_WORN']);

@@ -991,3 +991,25 @@ body {
 .card-tile.done .card-img {
   filter: none;
 }
+
+.energy {
+  cursor: pointer;
+}
+
+.energy-modal .modal-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.energy-ad-note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.energy-ad[hidden],
+.energy-ad-note[hidden] {
+  display: none;
+}
