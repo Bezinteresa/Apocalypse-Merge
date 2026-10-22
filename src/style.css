@@ -1013,3 +1013,283 @@ body {
 .energy-ad-note[hidden] {
   display: none;
 }
+
+/* ---------- сцена магазина: здание в разрезе ---------- */
+
+.scene-wrap {
+  width: 100%;
+}
+
+.scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(#5d7a86 0%, #8aa0a0 22%, #4a4038 22%, #4a4038 64%, #2b2420 64%, #2b2420 100%);
+  background-size: cover;
+  container-type: inline-size;
+  user-select: none;
+}
+
+.scene.has-bg .room:not(.locked) {
+  background: transparent;
+  border-color: transparent;
+}
+
+.room {
+  position: absolute;
+  background: #6b5d4f;
+  border: 2px solid #3a3029;
+  box-sizing: border-box;
+}
+
+.room.outdoor {
+  background: #7d8c6a;
+  border-style: dashed;
+}
+
+/* без электричества помещения тёмные; после R06 свет включается */
+.scene:not(.powered) .room:not(.outdoor):not(.locked)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #0006;
+  pointer-events: none;
+}
+
+.room.locked {
+  background: repeating-linear-gradient(45deg, #1f1b18 0 10px, #2a2420 10px 20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.room-name {
+  position: absolute;
+  left: 4px;
+  bottom: 2px;
+  font-size: clamp(8px, 2.2cqw, 13px);
+  color: #f3e6cf;
+  text-shadow: 0 1px 2px #000;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.room.locked .room-name {
+  position: static;
+  color: var(--muted);
+}
+
+.zone-spot {
+  position: absolute;
+  font: inherit;
+  font-size: clamp(8px, 2cqw, 12px);
+  font-weight: 700;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  text-shadow: 0 1px 2px #000;
+}
+
+.zone-spot.broken {
+  background: #3a3530cc;
+  border: 2px dashed #9a8f80;
+}
+
+.zone-spot.fixed {
+  background: color-mix(in srgb, var(--ok) 45%, #2a2622);
+  border: 2px solid var(--ok);
+}
+
+.zone-spot.has-art {
+  background: transparent;
+  border-color: transparent;
+}
+
+.zone-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.zone-spot.current {
+  border: 2px solid var(--accent);
+  animation: tut-pulse 1.1s ease-in-out infinite;
+}
+
+.zone-badge {
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  font-size: clamp(12px, 3cqw, 20px);
+}
+
+.visitor {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.visitor-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom;
+}
+
+.visitor-ph {
+  width: 100%;
+  height: 100%;
+  border-radius: 40% 40% 12% 12%;
+  background: linear-gradient(var(--visitor) 0 34%, color-mix(in srgb, var(--visitor) 45%, #222) 34%);
+  border: 2px solid #1d1b18;
+  display: flex;
+  justify-content: center;
+  padding-top: 8%;
+  font-weight: 800;
+  font-size: clamp(10px, 3cqw, 22px);
+  color: #1d1b18;
+}
+
+.visitor-name {
+  position: absolute;
+  bottom: -2px;
+  font-size: clamp(7px, 1.8cqw, 11px);
+  background: #000a;
+  color: #fff;
+  border-radius: 4px;
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+.bubble {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 24cqw;
+  font: inherit;
+  font-size: clamp(8px, 1.9cqw, 12px);
+  line-height: 1.2;
+  text-align: left;
+  color: #1d1b18;
+  background: #fffaf0;
+  border: 2px solid #1d1b18;
+  border-radius: 10px;
+  padding: 3px 6px;
+  cursor: pointer;
+  z-index: 4;
+}
+
+.bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #1d1b18;
+}
+
+.bubble.ready {
+  background: #e6ffd9;
+  border-color: #2f6b22;
+}
+
+.project-card.pop {
+  animation: pop 0.3s ease-out;
+}
+
+/* ---------- окно диалога: портрет и реплика ---------- */
+
+.dialog-box {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  border-color: var(--visitor, var(--accent));
+}
+
+.dialog-avatar {
+  flex: 0 0 auto;
+  width: 88px;
+  height: 104px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: -34px 0 0 -4px;
+}
+
+.dialog-portrait {
+  float: none;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom;
+  margin: 0;
+}
+
+.dialog-initial {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: var(--visitor, var(--accent));
+  border: 3px solid #1d1b18;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  font-weight: 800;
+  color: #1d1b18;
+}
+
+.dialog-initial:empty {
+  display: none;
+}
+
+.dialog-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.dialog-speaker {
+  display: inline-block;
+  background: var(--visitor, var(--accent));
+  color: #1d1b18;
+  border-radius: 6px;
+  padding: 1px 8px;
+}
+
+.dialog-text {
+  position: relative;
+  background: #fffaf0;
+  color: #1d1b18;
+  border: 2px solid #1d1b18;
+  border-radius: 12px;
+  padding: 8px 10px;
+}
+
+.dialog-text::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  bottom: 12px;
+  border: 6px solid transparent;
+  border-right-color: #1d1b18;
+}
+
+@media (min-width: 720px) {
+  .shop > .scene-wrap {
+    max-width: 960px;
+  }
+}

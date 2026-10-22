@@ -30,6 +30,10 @@ export const generatorSprite = (generatorId: string) => `generators/${generatorI
 export const portraitSprite = (visitorId: string) => `portraits/${visitorId}.png`;
 export const chestSprite = (chestId: string) => `chests/${chestId}.png`;
 export const cardSprite = (cardId: string) => `cards/${cardId}.webp`;
-/** Сцена магазина после последнего завершённого проекта; shop_00 — до первого. */
-export const shopSprite = (lastProjectId: string | null) => `shop/shop_${lastProjectId ?? '00'}.webp`;
+/** Фон здания в разрезе (пустые комнаты без предметов ремонта). */
+export const BUILDING_SPRITE = 'shop/building.webp';
+/** Место ремонта в сцене магазина: сломанное или починенное состояние. */
+export const zoneSprite = (projectId: string, fixed: boolean) => `zones/${projectId}_${fixed ? 'fixed' : 'broken'}.png`;
+/** Посетитель в полный рост для сцены магазина; портрет по пояс — для окна диалога. */
+export const characterSprite = (visitorId: string) => `characters/${visitorId}.png`;
 export const uiSprite = (name: string) => `ui/${name}.png`;

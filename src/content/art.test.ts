@@ -3,7 +3,8 @@ import spec from '../../art/generation-prompts.json';
 import { CARDS, CHESTS } from './collections';
 import { GENERATORS, ITEMS } from './items';
 import { PROJECTS, VISITORS } from './orders';
-import { cardSprite, chestSprite, generatorSprite, itemSprite, portraitSprite, shopSprite } from '../ui/sprites';
+import { BUILDING_SPRITE, cardSprite, characterSprite, chestSprite, generatorSprite, itemSprite, portraitSprite, zoneSprite } from '../ui/sprites';
+import { SPOTS, ZONES } from './shopLayout';
 
 // Спецификация графики — единственный источник правды: у каждой сущности игры есть слот.
 // Новая сущность в данных без строки в art/generation-prompts.json роняет этот тест.
@@ -16,12 +17,18 @@ describe('art specification', () => {
       ...Object.keys(ITEMS).map(itemSprite),
       ...Object.keys(GENERATORS).map(generatorSprite),
       ...Object.keys(VISITORS).filter((v) => v !== 'RADIO').map(portraitSprite),
-      shopSprite(null),
-      ...PROJECTS.map((p) => shopSprite(p.id)),
+      BUILDING_SPRITE,
+      ...ZONES.flatMap((z) => [zoneSprite(z.project, false), zoneSprite(z.project, true)]),
+      ...SPOTS.map((s) => characterSprite(s.visitor)),
       ...Object.keys(CHESTS).map(chestSprite),
       ...CARDS.map((c) => cardSprite(c.id)),
     ];
     expect(expected.filter((f) => !files.has(f))).toEqual([]);
+  });
+
+  it('every repair project has a place in the building and every visitor a spot', () => {
+    expect(PROJECTS.map((p) => p.id).filter((id) => !ZONES.some((z) => z.project === id))).toEqual([]);
+    expect(Object.keys(VISITORS).filter((v) => v !== 'RADIO' && !SPOTS.some((s) => s.visitor === v))).toEqual([]);
   });
 
   it('every slot has a size, a subject and a unique Latin file name', () => {

@@ -2,7 +2,7 @@
   "mode": "ChatGPT built-in image generation",
   "reference": "art/reference/style.png",
   "style": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls",
-  "constraints": "One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except shop scenes, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.",
+  "constraints": "One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.",
   "assets": [
     {
       "file": "items/T01.png",
@@ -208,75 +208,156 @@
       "extra": "Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text."
     },
     {
-      "file": "shop/shop_00.webp",
-      "w": 1200,
-      "h": 800,
-      "subject": "A small ruined corner shop at a city crossroads after the apocalypse, fixed slightly isometric front view. Left: the entrance blocked by a pile of rubble and broken boards. Center: a smashed shop counter lying on its side. Right wall: an empty broken shelf. Back: a doorway to a dark storeroom with fallen crates. Right back corner: a dusty workbench area covered with junk. Ceiling: dead lamps hanging on wires. Outside the right window: an empty dry water tank stand. Above the entrance: a blank broken sign board. Overcast cool light and dust, but cozy-looking and hopeful, not scary.",
-      "extra": "Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout; this is the first, base picture of the shop. No people unless stated, no text anywhere."
+      "file": "shop/building.webp",
+      "w": 1600,
+      "h": 1000,
+      "guide": "art/guides/building_layout.png",
+      "subject": "Cross-section front view of a small two-level post-apocalyptic corner shop building at a city crossroads, like a dollhouse with the front wall removed. Top: grey sky and the facade roof line with an empty sign bracket above the entrance. Ground floor, left to right: a closed garage with a rolled-down dented shutter (locked, dim); a storeroom with bare concrete walls; the main shop floor with patched wallpaper, an entrance doorway on its left side; a workshop corner with pegboard wall; an outdoor yard with cracked asphalt and a fence. Below ground: a dark underground shelter level, barely visible, closed off by a heavy hatch, mysterious. Rooms are EMPTY: no furniture, no counter, no shelves, no racks, no workbench, no lamps, no water tank, no sign — those are separate sprites. No people.",
+      "extra": "Wide 16:10 scene, NOT transparent. Follow the attached layout guide exactly: walls, floors and room borders where the guide boxes are; hatched red areas must stay empty background; do not draw the guide lines, labels or colors."
     },
     {
-      "file": "shop/shop_R01.webp",
-      "w": 1200,
-      "h": 800,
-      "guide": "public/sprites/shop/shop_00.webp",
-      "subject": "Edit the guide picture. Keep everything identical except: the rubble at the entrance is cleared and the doorway is secured with fresh wooden beams and a simple door mat. Nothing else changes.",
-      "extra": "Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere."
+      "file": "zones/R01_broken.png",
+      "w": 256,
+      "h": 560,
+      "subject": "Doorway blocked by a pile of rubble and broken boards. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 256:560."
     },
     {
-      "file": "shop/shop_R02.webp",
-      "w": 1200,
-      "h": 800,
-      "guide": "public/sprites/shop/shop_R01.webp",
-      "subject": "Edit the guide picture. Keep everything identical except: the shop counter in the center is restored — upright, patched with metal sheets, clean top with a small cash box. Nothing else changes.",
-      "extra": "Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere."
+      "file": "zones/R01_fixed.png",
+      "w": 256,
+      "h": 560,
+      "subject": "Cleared doorway framed with fresh wooden beams and a simple door mat. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 256:560.",
+      "guide": "public/sprites/zones/R01_broken.png"
     },
     {
-      "file": "shop/shop_R03.webp",
-      "w": 1200,
-      "h": 800,
-      "guide": "public/sprites/shop/shop_R02.webp",
-      "subject": "Edit the guide picture. Keep everything identical except: the right wall shelf is fixed and stocked with tin cans, jars and food packs in olive-green wraps. Nothing else changes.",
-      "extra": "Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere."
+      "file": "zones/R02_broken.png",
+      "w": 384,
+      "h": 304,
+      "subject": "Smashed shop counter lying on its side. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:304."
     },
     {
-      "file": "shop/shop_R04.webp",
-      "w": 1200,
-      "h": 800,
-      "guide": "public/sprites/shop/shop_R03.webp",
-      "subject": "Edit the guide picture. Keep everything identical except: the back storeroom is tidy — crates stacked neatly on new metal racks, visible through the doorway. Nothing else changes.",
-      "extra": "Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere."
+      "file": "zones/R02_fixed.png",
+      "w": 384,
+      "h": 304,
+      "subject": "Restored shop counter patched with metal sheets, clean top with a small cash box. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:304.",
+      "guide": "public/sprites/zones/R02_broken.png"
     },
     {
-      "file": "shop/shop_R05.webp",
-      "w": 1200,
-      "h": 800,
-      "guide": "public/sprites/shop/shop_R04.webp",
-      "subject": "Edit the guide picture. Keep everything identical except: the back right corner is a working mechanic's workbench with a vise, hanging tools and a small lamp (still off). Nothing else changes.",
-      "extra": "Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere."
+      "file": "zones/R03_broken.png",
+      "w": 192,
+      "h": 656,
+      "subject": "Tall empty broken wall shelf, planks hanging. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 192:656."
     },
     {
-      "file": "shop/shop_R06.webp",
-      "w": 1200,
-      "h": 800,
-      "guide": "public/sprites/shop/shop_R05.webp",
-      "subject": "Edit the guide picture. Keep everything identical except: electricity is back — ceiling lamps glow warm yellow, the workbench lamp is on, an old radio on the counter has a softly glowing dial; overall light becomes warmer. Nothing else changes.",
-      "extra": "Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere."
+      "file": "zones/R03_fixed.png",
+      "w": 192,
+      "h": 656,
+      "subject": "Fixed tall wall shelf stocked with tin cans, jars and olive-green food packs. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 192:656.",
+      "guide": "public/sprites/zones/R03_broken.png"
     },
     {
-      "file": "shop/shop_R07.webp",
-      "w": 1200,
-      "h": 800,
-      "guide": "public/sprites/shop/shop_R06.webp",
-      "subject": "Edit the guide picture. Keep everything identical except: outside the right window the stand now holds a clean blue water tank with a small pump and a tap with a bucket under it. Nothing else changes.",
-      "extra": "Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere."
+      "file": "zones/R04_broken.png",
+      "w": 448,
+      "h": 624,
+      "subject": "Fallen crates and a toppled rusty rack. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:624."
     },
     {
-      "file": "shop/shop_R08.webp",
-      "w": 1200,
-      "h": 800,
-      "guide": "public/sprites/shop/shop_R07.webp",
-      "subject": "Edit the guide picture. Keep everything identical except: the sign board above the entrance is repaired and lit with warm string lights (still no text), potted plants by the door, a few friendly silhouettes of customers outside the window; the scene feels alive. Nothing else changes.",
-      "extra": "Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere."
+      "file": "zones/R04_fixed.png",
+      "w": 448,
+      "h": 624,
+      "subject": "Neat new metal racks with crates stacked in order. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:624.",
+      "guide": "public/sprites/zones/R04_broken.png"
+    },
+    {
+      "file": "zones/R05_broken.png",
+      "w": 448,
+      "h": 416,
+      "subject": "Dusty workbench buried under junk. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:416."
+    },
+    {
+      "file": "zones/R05_fixed.png",
+      "w": 448,
+      "h": 416,
+      "subject": "Working mechanic's workbench with a vise, hanging tools and a small lamp. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:416.",
+      "guide": "public/sprites/zones/R05_broken.png"
+    },
+    {
+      "file": "zones/R06_broken.png",
+      "w": 1472,
+      "h": 120,
+      "subject": "A row of dead ceiling lamps hanging on loose wires. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 1472:120."
+    },
+    {
+      "file": "zones/R06_fixed.png",
+      "w": 1472,
+      "h": 120,
+      "subject": "A row of ceiling lamps glowing warm yellow on tidy wires. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 1472:120.",
+      "guide": "public/sprites/zones/R06_broken.png"
+    },
+    {
+      "file": "zones/R07_broken.png",
+      "w": 384,
+      "h": 624,
+      "subject": "Empty dry rusty water tank stand. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:624."
+    },
+    {
+      "file": "zones/R07_fixed.png",
+      "w": 384,
+      "h": 624,
+      "subject": "Clean blue water tank on a stand with a small pump and a tap with a bucket. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:624.",
+      "guide": "public/sprites/zones/R07_broken.png"
+    },
+    {
+      "file": "zones/R08_broken.png",
+      "w": 832,
+      "h": 200,
+      "subject": "Blank broken sign board hanging crooked above the entrance, no text. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 832:200."
+    },
+    {
+      "file": "zones/R08_fixed.png",
+      "w": 832,
+      "h": 200,
+      "subject": "Repaired sign board lit with warm string lights, still no text. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 832:200.",
+      "guide": "public/sprites/zones/R08_broken.png"
+    },
+    {
+      "file": "characters/LEV.png",
+      "w": 320,
+      "h": 640,
+      "subject": "Lev, a friendly young courier in his mid-20s, messy dark hair, light stubble, long patched scarf, canvas messenger bag across his chest, fingerless gloves, worn boots, warm confident grin.",
+      "extra": "Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.",
+      "guide": "public/sprites/portraits/LEV.png"
+    },
+    {
+      "file": "characters/NIKA.png",
+      "w": 320,
+      "h": 640,
+      "subject": "Nika, a kind young assistant of the local medic, about 20, short ginger hair with a green bandana, freckles, light jacket with a hand-sewn armband with a simple plus sign, cargo trousers, holding a clipboard.",
+      "extra": "Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.",
+      "guide": "public/sprites/portraits/NIKA.png"
+    },
+    {
+      "file": "characters/MARTA.png",
+      "w": 320,
+      "h": 640,
+      "subject": "Marta, an experienced mechanic in her mid-40s, grey-streaked hair in a bun, welding goggles on her forehead, oil-stained overalls with rolled sleeves, heavy boots, a wrench in her hand.",
+      "extra": "Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.",
+      "guide": "public/sprites/portraits/MARTA.png"
     },
     {
       "file": "chests/CH_WORN.png",

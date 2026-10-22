@@ -1,0 +1,28 @@
+{
+  "comment": "План здания первой главы (GAME_DESIGN, раздел 19). Координаты — проценты сцены 16:10. Из этого файла art/make_layout_guide.py рисует картинку-разметку для генерации фона и размеры спрайтов мест ремонта.",
+  "width": 1600,
+  "height": 1000,
+  "rooms": [
+    { "id": "GARAGE", "x": 1, "y": 22, "w": 15, "h": 40, "name": { "ru": "Гараж", "en": "Garage" }, "locked": { "ru": "Следующая глава", "en": "Next chapter" } },
+    { "id": "STORAGE", "x": 16, "y": 22, "w": 18, "h": 40, "name": { "ru": "Склад", "en": "Storeroom" } },
+    { "id": "HALL", "x": 34, "y": 22, "w": 32, "h": 40, "name": { "ru": "Торговый зал", "en": "Shop floor" } },
+    { "id": "WORKSHOP", "x": 66, "y": 22, "w": 18, "h": 40, "name": { "ru": "Мастерская", "en": "Workshop" } },
+    { "id": "YARD", "x": 84, "y": 22, "w": 15, "h": 40, "name": { "ru": "Двор", "en": "Yard" }, "outdoor": true },
+    { "id": "SHELTER", "x": 1, "y": 66, "w": 98, "h": 32, "name": { "ru": "Убежище, этаж −1", "en": "Shelter, level −1" }, "locked": { "ru": "Откроется после гаража", "en": "Opens after the garage" } }
+  ],
+  "zones": [
+    { "project": "R01", "room": "HALL", "x": 35, "y": 33, "w": 8, "h": 28, "broken": "doorway blocked by a pile of rubble and broken boards", "fixed": "cleared doorway framed with fresh wooden beams and a simple door mat" },
+    { "project": "R02", "room": "HALL", "x": 47, "y": 46, "w": 12, "h": 15, "broken": "smashed shop counter lying on its side", "fixed": "restored shop counter patched with metal sheets, clean top with a small cash box" },
+    { "project": "R03", "room": "HALL", "x": 59, "y": 27, "w": 6, "h": 33, "broken": "tall empty broken wall shelf, planks hanging", "fixed": "fixed tall wall shelf stocked with tin cans, jars and olive-green food packs" },
+    { "project": "R04", "room": "STORAGE", "x": 18, "y": 30, "w": 14, "h": 31, "broken": "fallen crates and a toppled rusty rack", "fixed": "neat new metal racks with crates stacked in order" },
+    { "project": "R05", "room": "WORKSHOP", "x": 68, "y": 40, "w": 14, "h": 21, "broken": "dusty workbench buried under junk", "fixed": "working mechanic's workbench with a vise, hanging tools and a small lamp" },
+    { "project": "R06", "room": "HALL", "x": 36, "y": 22.5, "w": 46, "h": 6, "broken": "a row of dead ceiling lamps hanging on loose wires", "fixed": "a row of ceiling lamps glowing warm yellow on tidy wires" },
+    { "project": "R07", "room": "YARD", "x": 86, "y": 30, "w": 12, "h": 31, "broken": "empty dry rusty water tank stand", "fixed": "clean blue water tank on a stand with a small pump and a tap with a bucket" },
+    { "project": "R08", "room": "FACADE", "x": 38, "y": 9, "w": 26, "h": 10, "broken": "blank broken sign board hanging crooked above the entrance, no text", "fixed": "repaired sign board lit with warm string lights, still no text" }
+  ],
+  "spots": [
+    { "visitor": "LEV", "x": 43, "bottom": 61, "h": 22 },
+    { "visitor": "NIKA", "x": 25, "bottom": 61, "h": 21 },
+    { "visitor": "MARTA", "x": 74, "bottom": 61, "h": 21 }
+  ]
+}

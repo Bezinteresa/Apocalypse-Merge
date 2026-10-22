@@ -1,10 +1,10 @@
 # Что сгенерировать сейчас
 
-Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 15:40:47). Генерируй **только** картинки из этого списка — остальные уже готовы.
+Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 21:55:45). Генерируй **только** картинки из этого списка — остальные уже готовы.
 
 Стиль: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls
 Референс: art/reference/style.png (прикладывай к каждой генерации, когда он появится)
-Правила: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except shop scenes, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.
+Правила: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.
 
 Готовую картинку сохраняй в `public/sprites/<файл>` точно указанного размера:
 `python art/save_generated_asset.py <исходник> <файл> <ширина> <высота>` (для переделки добавь `--replace`).
@@ -12,7 +12,7 @@
 Проверь всё разом: `python art/verify_generated_assets.py` (превью в art/generated-previews).
 После этого снова запусти `node art/art_todo.mjs` — сделанное пропадёт из списка.
 
-Осталось: **48**
+Осталось: **60**
 
 ## items/T03.png — 256×256
 
@@ -152,61 +152,137 @@
 - Что: Marta, an experienced mechanic in her mid-40s, grey-streaked hair in a bun, welding goggles pushed up on her forehead, oil-stained overalls with rolled sleeves, a wrench in her hand, shrewd amused expression.
 - Кадр: Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text.
 
-## shop/shop_R01.webp — 1200×800
+## shop/building.webp — 1600×1000
 
 - Почему: новая картинка
-- Что: Edit the guide picture. Keep everything identical except: the rubble at the entrance is cleared and the doorway is secured with fresh wooden beams and a simple door mat. Nothing else changes.
-- Кадр: Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere.
-- Приложи как основу для правки: public/sprites/shop/shop_00.webp
+- Что: Cross-section front view of a small two-level post-apocalyptic corner shop building at a city crossroads, like a dollhouse with the front wall removed. Top: grey sky and the facade roof line with an empty sign bracket above the entrance. Ground floor, left to right: a closed garage with a rolled-down dented shutter (locked, dim); a storeroom with bare concrete walls; the main shop floor with patched wallpaper, an entrance doorway on its left side; a workshop corner with pegboard wall; an outdoor yard with cracked asphalt and a fence. Below ground: a dark underground shelter level, barely visible, closed off by a heavy hatch, mysterious. Rooms are EMPTY: no furniture, no counter, no shelves, no racks, no workbench, no lamps, no water tank, no sign — those are separate sprites. No people.
+- Кадр: Wide 16:10 scene, NOT transparent. Follow the attached layout guide exactly: walls, floors and room borders where the guide boxes are; hatched red areas must stay empty background; do not draw the guide lines, labels or colors.
+- Приложи как основу для правки: art/guides/building_layout.png
 
-## shop/shop_R02.webp — 1200×800
-
-- Почему: новая картинка
-- Что: Edit the guide picture. Keep everything identical except: the shop counter in the center is restored — upright, patched with metal sheets, clean top with a small cash box. Nothing else changes.
-- Кадр: Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere.
-- Приложи как основу для правки: public/sprites/shop/shop_R01.webp
-
-## shop/shop_R03.webp — 1200×800
+## zones/R01_broken.png — 256×560
 
 - Почему: новая картинка
-- Что: Edit the guide picture. Keep everything identical except: the right wall shelf is fixed and stocked with tin cans, jars and food packs in olive-green wraps. Nothing else changes.
-- Кадр: Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere.
-- Приложи как основу для правки: public/sprites/shop/shop_R02.webp
+- Что: Doorway blocked by a pile of rubble and broken boards. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 256:560.
 
-## shop/shop_R04.webp — 1200×800
-
-- Почему: новая картинка
-- Что: Edit the guide picture. Keep everything identical except: the back storeroom is tidy — crates stacked neatly on new metal racks, visible through the doorway. Nothing else changes.
-- Кадр: Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere.
-- Приложи как основу для правки: public/sprites/shop/shop_R03.webp
-
-## shop/shop_R05.webp — 1200×800
+## zones/R01_fixed.png — 256×560
 
 - Почему: новая картинка
-- Что: Edit the guide picture. Keep everything identical except: the back right corner is a working mechanic's workbench with a vise, hanging tools and a small lamp (still off). Nothing else changes.
-- Кадр: Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere.
-- Приложи как основу для правки: public/sprites/shop/shop_R04.webp
+- Что: Cleared doorway framed with fresh wooden beams and a simple door mat. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 256:560.
+- Приложи как основу для правки: public/sprites/zones/R01_broken.png
 
-## shop/shop_R06.webp — 1200×800
-
-- Почему: новая картинка
-- Что: Edit the guide picture. Keep everything identical except: electricity is back — ceiling lamps glow warm yellow, the workbench lamp is on, an old radio on the counter has a softly glowing dial; overall light becomes warmer. Nothing else changes.
-- Кадр: Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere.
-- Приложи как основу для правки: public/sprites/shop/shop_R05.webp
-
-## shop/shop_R07.webp — 1200×800
+## zones/R02_broken.png — 384×304
 
 - Почему: новая картинка
-- Что: Edit the guide picture. Keep everything identical except: outside the right window the stand now holds a clean blue water tank with a small pump and a tap with a bucket under it. Nothing else changes.
-- Кадр: Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere.
-- Приложи как основу для правки: public/sprites/shop/shop_R06.webp
+- Что: Smashed shop counter lying on its side. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:304.
 
-## shop/shop_R08.webp — 1200×800
+## zones/R02_fixed.png — 384×304
 
 - Почему: новая картинка
-- Что: Edit the guide picture. Keep everything identical except: the sign board above the entrance is repaired and lit with warm string lights (still no text), potted plants by the door, a few friendly silhouettes of customers outside the window; the scene feels alive. Nothing else changes.
-- Кадр: Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout as the previous shop picture (guide). No people unless stated, no text anywhere.
-- Приложи как основу для правки: public/sprites/shop/shop_R07.webp
+- Что: Restored shop counter patched with metal sheets, clean top with a small cash box. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:304.
+- Приложи как основу для правки: public/sprites/zones/R02_broken.png
+
+## zones/R03_broken.png — 192×656
+
+- Почему: новая картинка
+- Что: Tall empty broken wall shelf, planks hanging. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 192:656.
+
+## zones/R03_fixed.png — 192×656
+
+- Почему: новая картинка
+- Что: Fixed tall wall shelf stocked with tin cans, jars and olive-green food packs. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 192:656.
+- Приложи как основу для правки: public/sprites/zones/R03_broken.png
+
+## zones/R04_broken.png — 448×624
+
+- Почему: новая картинка
+- Что: Fallen crates and a toppled rusty rack. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:624.
+
+## zones/R04_fixed.png — 448×624
+
+- Почему: новая картинка
+- Что: Neat new metal racks with crates stacked in order. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:624.
+- Приложи как основу для правки: public/sprites/zones/R04_broken.png
+
+## zones/R05_broken.png — 448×416
+
+- Почему: новая картинка
+- Что: Dusty workbench buried under junk. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:416.
+
+## zones/R05_fixed.png — 448×416
+
+- Почему: новая картинка
+- Что: Working mechanic's workbench with a vise, hanging tools and a small lamp. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:416.
+- Приложи как основу для правки: public/sprites/zones/R05_broken.png
+
+## zones/R06_broken.png — 1472×120
+
+- Почему: новая картинка
+- Что: A row of dead ceiling lamps hanging on loose wires. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 1472:120.
+
+## zones/R06_fixed.png — 1472×120
+
+- Почему: новая картинка
+- Что: A row of ceiling lamps glowing warm yellow on tidy wires. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 1472:120.
+- Приложи как основу для правки: public/sprites/zones/R06_broken.png
+
+## zones/R07_broken.png — 384×624
+
+- Почему: новая картинка
+- Что: Empty dry rusty water tank stand. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:624.
+
+## zones/R07_fixed.png — 384×624
+
+- Почему: новая картинка
+- Что: Clean blue water tank on a stand with a small pump and a tap with a bucket. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:624.
+- Приложи как основу для правки: public/sprites/zones/R07_broken.png
+
+## zones/R08_broken.png — 832×200
+
+- Почему: новая картинка
+- Что: Blank broken sign board hanging crooked above the entrance, no text. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 832:200.
+
+## zones/R08_fixed.png — 832×200
+
+- Почему: новая картинка
+- Что: Repaired sign board lit with warm string lights, still no text. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 832:200.
+- Приложи как основу для правки: public/sprites/zones/R08_broken.png
+
+## characters/LEV.png — 320×640
+
+- Почему: новая картинка
+- Что: Lev, a friendly young courier in his mid-20s, messy dark hair, light stubble, long patched scarf, canvas messenger bag across his chest, fingerless gloves, worn boots, warm confident grin.
+- Кадр: Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.
+- Приложи как основу для правки: public/sprites/portraits/LEV.png
+
+## characters/NIKA.png — 320×640
+
+- Почему: новая картинка
+- Что: Nika, a kind young assistant of the local medic, about 20, short ginger hair with a green bandana, freckles, light jacket with a hand-sewn armband with a simple plus sign, cargo trousers, holding a clipboard.
+- Кадр: Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.
+- Приложи как основу для правки: public/sprites/portraits/NIKA.png
+
+## characters/MARTA.png — 320×640
+
+- Почему: новая картинка
+- Что: Marta, an experienced mechanic in her mid-40s, grey-streaked hair in a bun, welding goggles on her forehead, oil-stained overalls with rolled sleeves, heavy boots, a wrench in her hand.
+- Кадр: Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.
+- Приложи как основу для правки: public/sprites/portraits/MARTA.png
 
 ## chests/CH_WORN.png — 256×256
 

@@ -30,7 +30,9 @@ import type { Telemetry } from '../platform/telemetry';
 import type { AdService } from '../platform/ads';
 import { AD_REWARD_ENERGY, AD_REWARD_LIMIT, adCooldownLeft, adRewardsAt, canShowInterstitial, canWatchRewardAd, grantAdReward } from '../game/ads';
 import { createAlbum } from './albumView';
-import { hasSprite, portraitSprite, shopSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
+import { hasSprite, portraitSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
+import { renderShopScene } from './shopScene';
+import { VISITOR_COLOR } from '../content/shopLayout';
 import { CHESTS } from '../content/collections';
 
 // Экран игры: поле, склад, заказы, информация о предмете и сцена магазина.
@@ -79,16 +81,19 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     </footer>
     <section class="shop" hidden>
       <header class="shop-head"><h2></h2><button class="btn small back-btn"></button></header>
-      <img class="shop-scene" alt="" hidden>
-      <ol class="zones"></ol>
+      <div class="scene-wrap"><div class="scene"></div></div>
       <div class="project-card"></div>
+      <ol class="zones"></ol>
     </section>
     <section class="shop album" hidden>
       <header class="shop-head"><h2></h2><button class="btn small back-btn album-back"></button></header>
       <div class="album-body"></div>
     </section>
-    <div class="dialog" hidden><div class="dialog-box"><img class="dialog-portrait" alt="" hidden><div class="dialog-speaker"></div><p class="dialog-text"></p>
-      <div class="dialog-actions"><button class="btn small ghost dialog-skip"></button><button class="btn small dialog-next"></button></div></div></div>
+    <div class="dialog" hidden><div class="dialog-box">
+      <div class="dialog-avatar"><img class="dialog-portrait" alt="" hidden><span class="dialog-initial"></span></div>
+      <div class="dialog-main"><div class="dialog-speaker"></div><p class="dialog-text"></p>
+      <div class="dialog-actions"><button class="btn small ghost dialog-skip"></button><button class="btn small dialog-next"></button></div></div>
+    </div></div>
     <div class="modal" hidden><div class="modal-box"><h3></h3><p></p><button class="btn modal-close"></button></div></div>
     <div class="modal chain-modal" hidden><div class="modal-box chain-box">
       <header class="chain-head"><h3></h3><button class="btn small ghost chain-close">✕</button></header>
@@ -363,6 +368,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     const file = portraitSprite(line.speaker);
     portrait.hidden = !hasSprite(file);
     if (!portrait.hidden) portrait.src = spriteUrl(file);
+    $('.dialog-initial').textContent = portrait.hidden ? tx(VISITORS[line.speaker].name).slice(0, 1) : '';
+    $('.dialog-box').style.setProperty('--visitor', VISITOR_COLOR[line.speaker] ?? '#999');
     $('.dialog-text').textContent = tx(line.text);
     $('.dialog-next').textContent = dialog.line < dialog.def.lines.length - 1 ? t('next') : t('close');
   }
@@ -573,11 +580,25 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   }
 
   function renderShop(): void {
-    const scene = $<HTMLImageElement>('.shop-scene');
-    // пока сцены дорисовываются, показываем ближайшее готовое более раннее состояние
-    const sceneFile = [...state.completedProjects.map((id) => shopSprite(id)).reverse(), shopSprite(null)].find(hasSprite);
-    scene.hidden = !sceneFile;
-    if (sceneFile && !scene.src.endsWith(sceneFile)) scene.src = spriteUrl(sceneFile);
+    renderShopScene($('.scene'), state, {
+      onZone(projectId) {
+        const project = PROJECTS.find((p) => p.id === projectId)!;
+        if (state.completedProjects.includes(projectId)) {
+          deps.toast('restored', `— ${tx(project.name)}: ${tx(project.result)}`);
+        } else if (currentProject(state)?.id === projectId) {
+          $('.project-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          $('.project-card').classList.remove('pop');
+          void $('.project-card').offsetWidth;
+          $('.project-card').classList.add('pop');
+        } else {
+          deps.toast('repairLater', currentProject(state) ? `${t('repairFirst')} ${currentProject(state)!.id}` : '');
+        }
+      },
+      onVisitor() {
+        // заказы сдаются на поле: реплика ведёт туда
+        openShop(false);
+      },
+    });
     const zones = $('.zones');
     zones.replaceChildren();
     const current = currentProject(state);

@@ -1,10 +1,10 @@
 """Copy a ChatGPT image into its game slot at the requested pixel size.
 
 python art/save_generated_asset.py <source> <file> <width> <height> [--replace] [--trim]
-  <file>     path inside public/sprites, e.g. items/T01.png or shop/shop_00.webp
+  <file>     path inside public/sprites, e.g. items/T01.png or shop/building.webp
   --replace  redo an existing picture (listed in ART_TODO.md)
   --trim     cut transparent margins first, then fit the object centered (keeps aspect ratio)
-Hand-painted art: smooth Lanczos downscale. .webp slots (shop scenes, cards) are saved as opaque WebP.
+Hand-painted art: smooth Lanczos downscale. .webp slots (building background, cards) are saved as opaque WebP.
 """
 import json
 import sys
