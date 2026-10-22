@@ -1,6 +1,6 @@
 # Что сгенерировать сейчас
 
-Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 22:50:50). Генерируй **только** картинки из этого списка — остальные уже готовы.
+Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:07:32). Генерируй **только** картинки из этого списка — остальные уже готовы.
 
 **Порядок работы — в [art/README.md](README.md):** как собрать запрос, куда сохранить, как записать в `art/generation-log.json` и что закоммитить. Готовое исчезает из этого списка само, когда файл нужного размера лежит в `public/sprites/`.
 
@@ -14,37 +14,7 @@
 Проверь всё разом: `python art/verify_generated_assets.py` (превью в art/generated-previews).
 После этого снова запусти `node art/art_todo.mjs` — сделанное пропадёт из списка.
 
-Осталось: **61**
-
-## items/T03.png — 256×256
-
-- Почему: новая картинка
-- Что: An adjustable wrench with an orange grip, cleaned up and oiled, a small loop of wire tied to the handle. Sturdier and more valuable than pliers.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/T04.png — 256×256
-
-- Почему: новая картинка
-- Что: A solid claw hammer with an orange-wrapped wooden handle reinforced with metal bands, a couple of nails held in a leather strap around the handle.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/T05.png — 256×256
-
-- Почему: новая картинка
-- Что: An open dented metal toolbox with orange trim, filled with a screwdriver, pliers, wrench and hammer neatly arranged. Clearly a complete tool set.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/T06.png — 256×256
-
-- Почему: новая картинка
-- Что: A master repair kit: a large orange-and-steel rolling tool chest with drawers slightly open, tools neatly organized, a small blank brass plate and a warm glint — the best tool item.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/M02.png — 256×256
-
-- Почему: новая картинка
-- Что: Prepared metal parts: several cleaned brackets and plates tied together with wire, stacked neatly. Less rust, more order than scrap.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
+Осталось: **56**
 
 ## items/M03.png — 256×256
 

@@ -52,6 +52,61 @@
       "source": "exec-e2441ea8-c029-4038-9a4f-eb24c89e9ecb.png",
       "movedTo": "art/reference/shop_mood.webp",
       "note": "Сцена магазина теперь собирается слоями (shop/building.webp + zones/ + characters/); эта картинка оставлена как образец материалов и света для фона здания. Генерировать заново не нужно."
+    },
+    {
+      "file": "items/T03.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/T03.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An adjustable wrench with an orange grip, cleaned up and oiled, a small loop of wire tied to the handle. Sturdier and more valuable than pliers.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nInput image 1 is the style reference: match painted outlines and lighting. Image 2 is the previous tool level, pliers: retain family identity, but depict only one adjustable wrench. Entire object visible with padding. Genuine transparent alpha background. Readable at 48 pixels.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-f8edd601-1c41-40d5-8c73-d820245af6d8.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/T02.png"
+      ]
+    },
+    {
+      "file": "items/T04.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/T04.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A solid claw hammer with an orange-wrapped wooden handle reinforced with metal bands, a couple of nails held in a leather strap around the handle.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nInput image 1 is the style reference: match painted outlines and lighting. Image 2 is the previous tool level, adjustable wrench: retain family identity, but depict only one claw hammer. Entire object visible with padding. Genuine transparent alpha background. Readable at 48 pixels.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-26bce475-7c7f-43cf-b7a1-8d4402dc71d1.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/T03.png"
+      ]
+    },
+    {
+      "file": "items/T05.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/T05.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An open dented metal toolbox with orange trim, filled with a screwdriver, pliers, wrench and hammer neatly arranged. Clearly a complete tool set.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is the style reference: match its painted outlines, materials and warm lighting. Image 2 is the previous item in the tool family, for design continuity only. Depict the new subject only, an open toolbox with neatly arranged tools. Entire object fully visible with transparent padding; clean silhouette readable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-dc4155a9-13e9-46fb-9939-4978b17a6bfa.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/T04.png"
+      ]
+    },
+    {
+      "file": "items/T06.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/T06.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A master repair kit: a large orange-and-steel rolling tool chest with drawers slightly open, tools neatly organized, a small blank brass plate and a warm glint — the best tool item.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is the style reference: match its painted outlines, materials and warm lighting. Image 2 is the previous item in the tool family, for design continuity only. Depict only the new subject, a large rolling tool chest: its tall wheeled silhouette must differ clearly from the small open toolbox. Entire object including wheels fully visible with transparent padding; readable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-29eac985-29e3-403b-9b24-69ec06244f67.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/T05.png"
+      ]
+    },
+    {
+      "file": "items/M02.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/M02.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Prepared metal parts: several cleaned brackets and plates tied together with wire, stacked neatly. Less rust, more order than scrap.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is the style reference, match its painted outlines, materials and warm lighting. Image 2 is previous materials level M01 for family continuity only. Depict the new subject only: cleaned brackets and plates neatly bundled with wire, visibly more orderly and less rusty than the scrap. Entire bundle visible with transparent padding, distinct silhouette readable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-dbf450b3-4b03-4e73-a523-d8c4ce62675c.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/M01.png"
+      ]
     }
   ]
 }
