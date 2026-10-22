@@ -71,6 +71,19 @@ describe('SaveStore', () => {
     expect(r.state).toEqual(s);
   });
 
+  it('migrates a v1 save without losing the board', async () => {
+    const b = new MemoryBackend();
+    const v2 = progressed();
+    const { storage: _s, completedOrders: _o, completedProjects: _p, lastSale: _l, ...v1 } = { ...v2, schemaVersion: 1 };
+    b.data[SAVE_KEY] = v1;
+    const r = await new SaveStore(b).load();
+    expect(r.source).toBe('main');
+    expect(r.state.schemaVersion).toBe(2);
+    expect(r.state.cells).toEqual(v2.cells);
+    expect(r.state.storage).toHaveLength(6);
+    expect(r.state.completedOrders).toEqual([]);
+  });
+
   it('refuses saves from a newer schema', async () => {
     const b = new MemoryBackend();
     b.data[SAVE_KEY] = { ...createInitialState(), schemaVersion: 99 };

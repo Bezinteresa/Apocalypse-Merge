@@ -1,3 +1,4 @@
+import { STORAGE_CAPACITY } from '../content/orders';
 import { validateState } from '../game/rules';
 import { SCHEMA_VERSION, createInitialState, type GameState } from '../game/state';
 
@@ -30,14 +31,26 @@ function isEmpty(raw: unknown): boolean {
   return raw === null || raw === undefined || raw === '';
 }
 
-/** Миграции по версиям схемы. Сейчас версия одна; более новая версия — не наш формат, не затираем её. */
+/** Миграции по версиям схемы. Более новая версия — не наш формат, не затираем её. */
 export function migrate(raw: unknown): GameState | null {
   if (!raw || typeof raw !== 'object') return null;
-  const version = (raw as { schemaVersion?: unknown }).schemaVersion;
+  let data = raw as Record<string, unknown>;
+  const version = data.schemaVersion;
   if (typeof version === 'number' && version > SCHEMA_VERSION) {
     throw new SaveFormatError(`Save schema ${version} is newer than supported ${SCHEMA_VERSION}`);
   }
-  return validateState(raw) ? raw : null;
+  if (version === 1) {
+    // v2: склад, заказы, проекты и отмена продажи
+    data = {
+      ...data,
+      schemaVersion: 2,
+      storage: new Array(STORAGE_CAPACITY).fill(null),
+      completedOrders: [],
+      completedProjects: [],
+      lastSale: null,
+    };
+  }
+  return data.schemaVersion === SCHEMA_VERSION && validateState(data) ? data : null;
 }
 
 export class SaveStore {

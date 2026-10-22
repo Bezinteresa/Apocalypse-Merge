@@ -1,28 +1,79 @@
-import { BOARD_COLS, BOARD_SIZE } from '../content/board';
-import { GENERATORS, ITEMS, getItem } from '../content/items';
-import type { CellContent, GameState } from './state';
+import { BOARD_COLS, BOARD_SIZE, LOCKED_GROUPS } from '../content/board';
+import { GENERATORS, ITEMS, getItem, type ChainId } from '../content/items';
+import { ORDERS, PROJECTS, SLICE, getOrder, getProject, type OrderDef, type ProjectDef, type Requirement } from '../content/orders';
+import type { CellContent, GameState, ItemInstance, Loc } from './state';
 
-// Правила поля. Функции не меняют входное состояние и возвращают новое вместе с результатом,
+// Правила игры. Функции не меняют входное состояние и возвращают новое вместе с результатом,
 // чтобы отображение и сохранение работали с уже принятым состоянием.
+// Каждое действие игрока, кроме отмены продажи, сбрасывает возможность отменить продажу.
 
 export type SpawnResult =
   | { ok: true; state: GameState; cell: number; itemId: string }
   | { ok: false; reason: 'not_generator' | 'board_full' };
 
 export type MoveResult =
-  | { ok: true; state: GameState; action: 'move' | 'swap' | 'merge'; to: number; itemId?: string }
-  | { ok: false; reason: 'same_cell' | 'empty_source' | 'locked' | 'out_of_bounds' };
+  | { ok: true; state: GameState; action: 'move' | 'swap' | 'merge'; to: Loc; itemId?: string }
+  | { ok: false; reason: 'same_cell' | 'empty_source' | 'locked' | 'out_of_bounds' | 'generator_to_storage' };
+
+export type SellResult =
+  | { ok: true; state: GameState; price: number }
+  | { ok: false; reason: 'empty' | 'generator' | 'locked' | 'out_of_bounds' };
+
+export type UndoResult = { ok: true; state: GameState; loc: Loc } | { ok: false; reason: 'nothing_to_undo' | 'occupied' | 'no_money' };
+
+export type DeliverResult =
+  | { ok: true; state: GameState; reward: number }
+  | { ok: false; reason: 'unknown' | 'unavailable' | 'missing_items' };
+
+export type ProjectResult =
+  | { ok: true; state: GameState; project: ProjectDef; unlockedCells: number[] }
+  | { ok: false; reason: 'unknown' | 'not_current' | 'no_money' | 'missing_items' };
 
 function clone(state: GameState): GameState {
-  return { ...state, cells: state.cells.slice(), locked: state.locked.slice() };
+  return {
+    ...state,
+    cells: state.cells.slice(),
+    locked: state.locked.slice(),
+    storage: state.storage.slice(),
+    completedOrders: state.completedOrders.slice(),
+    completedProjects: state.completedProjects.slice(),
+    lastSale: null,
+  };
 }
 
 function inBounds(cell: number): boolean {
   return Number.isInteger(cell) && cell >= 0 && cell < BOARD_SIZE;
 }
 
+function locValid(state: GameState, loc: Loc): boolean {
+  if (loc.area === 'board') return inBounds(loc.index);
+  return Number.isInteger(loc.index) && loc.index >= 0 && loc.index < state.storage.length;
+}
+
+function sameLoc(a: Loc, b: Loc): boolean {
+  return a.area === b.area && a.index === b.index;
+}
+
+export const board = (index: number): Loc => ({ area: 'board', index });
+export const slot = (index: number): Loc => ({ area: 'storage', index });
+
 export function isLocked(state: GameState, cell: number): boolean {
   return state.locked.includes(cell);
+}
+
+export function getAt(state: GameState, loc: Loc): CellContent | null {
+  if (loc.area === 'board') return state.cells[loc.index] ?? null;
+  const item = state.storage[loc.index];
+  return item ? { kind: 'item', ...item } : null;
+}
+
+function setAt(state: GameState, loc: Loc, content: CellContent | null): void {
+  if (loc.area === 'board') {
+    state.cells[loc.index] = content;
+    return;
+  }
+  if (content && content.kind !== 'item') throw new Error('Generator cannot be stored');
+  state.storage[loc.index] = content ? { uid: content.uid, itemId: content.itemId } : null;
 }
 
 /** Ближайшая к источнику свободная открытая клетка; при равном расстоянии — меньший индекс. */
@@ -63,30 +114,187 @@ export function canMerge(a: CellContent | null, b: CellContent | null): boolean 
 }
 
 /**
- * Перенос содержимого клетки from в клетку to:
- * пустая — перемещение, такой же предмет не максимального уровня — объединение, иное — обмен.
+ * Перенос между клетками поля и ячейками склада:
+ * пусто — перемещение, такой же предмет не максимального уровня — объединение, иное — обмен.
+ * Генераторы на склад не попадают.
  */
-export function moveContent(state: GameState, from: number, to: number): MoveResult {
-  if (!inBounds(from) || !inBounds(to)) return { ok: false, reason: 'out_of_bounds' };
-  if (from === to) return { ok: false, reason: 'same_cell' };
-  const source = state.cells[from];
+export function moveItem(state: GameState, from: Loc, to: Loc): MoveResult {
+  if (!locValid(state, from) || !locValid(state, to)) return { ok: false, reason: 'out_of_bounds' };
+  if (sameLoc(from, to)) return { ok: false, reason: 'same_cell' };
+  const source = getAt(state, from);
   if (!source) return { ok: false, reason: 'empty_source' };
-  if (isLocked(state, to) || isLocked(state, from)) return { ok: false, reason: 'locked' };
-
-  const target = state.cells[to];
-  const next = clone(state);
+  if ((from.area === 'board' && isLocked(state, from.index)) || (to.area === 'board' && isLocked(state, to.index))) {
+    return { ok: false, reason: 'locked' };
+  }
+  const target = getAt(state, to);
 
   if (canMerge(source, target)) {
-    const nextId = getItem((source as { itemId: string }).itemId).nextId!;
-    next.cells[from] = null;
-    next.cells[to] = { kind: 'item', uid: next.nextUid, itemId: nextId };
+    const nextId = getItem((source as ItemInstance).itemId).nextId!;
+    const next = clone(state);
+    setAt(next, from, null);
+    setAt(next, to, { kind: 'item', uid: next.nextUid, itemId: nextId });
     next.nextUid += 1;
     return { ok: true, state: next, action: 'merge', to, itemId: nextId };
   }
 
-  next.cells[to] = source;
-  next.cells[from] = target;
+  const movesGeneratorToStorage = (to.area === 'storage' && source.kind === 'generator') || (from.area === 'storage' && target?.kind === 'generator');
+  if (movesGeneratorToStorage) return { ok: false, reason: 'generator_to_storage' };
+
+  const next = clone(state);
+  setAt(next, to, source);
+  setAt(next, from, target);
   return { ok: true, state: next, action: target ? 'swap' : 'move', to };
+}
+
+/** Перенос внутри поля. */
+export function moveContent(state: GameState, from: number, to: number): MoveResult {
+  return moveItem(state, board(from), board(to));
+}
+
+/** Продажа обычного предмета по цене уровня. Генераторы не продаются. */
+export function sellItem(state: GameState, loc: Loc): SellResult {
+  if (!locValid(state, loc)) return { ok: false, reason: 'out_of_bounds' };
+  if (loc.area === 'board' && isLocked(state, loc.index)) return { ok: false, reason: 'locked' };
+  const content = getAt(state, loc);
+  if (!content) return { ok: false, reason: 'empty' };
+  if (content.kind !== 'item') return { ok: false, reason: 'generator' };
+  const price = getItem(content.itemId).sellPrice;
+  const next = clone(state);
+  setAt(next, loc, null);
+  next.money += price;
+  next.lastSale = { item: { uid: content.uid, itemId: content.itemId }, from: loc, price };
+  return { ok: true, state: next, price };
+}
+
+/** Отмена последней продажи: вещь возвращается на исходное место, выручка списывается. */
+export function undoSale(state: GameState): UndoResult {
+  const sale = state.lastSale;
+  if (!sale) return { ok: false, reason: 'nothing_to_undo' };
+  if (getAt(state, sale.from)) return { ok: false, reason: 'occupied' };
+  if (state.money < sale.price) return { ok: false, reason: 'no_money' };
+  const next = clone(state);
+  setAt(next, sale.from, { kind: 'item', ...sale.item });
+  next.money -= sale.price;
+  return { ok: true, state: next, loc: sale.from };
+}
+
+// ---------- Заказы и проекты ----------
+
+function inSlice(id: string, last: string): boolean {
+  return id <= last;
+}
+
+export function isChainAvailable(state: GameState, chain: ChainId): boolean {
+  return state.cells.some((c) => c?.kind === 'generator' && getItem(GENERATORS[c.generatorId].output).chain === chain);
+}
+
+function isProjectDone(state: GameState, id: string | null): boolean {
+  return id === null || state.completedProjects.includes(id);
+}
+
+/** Доступные незавершённые заказы по возрастанию ID, не более трёх. */
+export function availableOrders(state: GameState): OrderDef[] {
+  return ORDERS.filter(
+    (o) =>
+      inSlice(o.id, SLICE.lastOrder) &&
+      !state.completedOrders.includes(o.id) &&
+      isProjectDone(state, o.after) &&
+      o.requires.every((req) => isChainAvailable(state, getItem(req.itemId).chain)),
+  ).slice(0, 3);
+}
+
+/** Ближайший незавершённый проект; null — доступный срез пройден. */
+export function currentProject(state: GameState): ProjectDef | null {
+  return PROJECTS.find((p) => inSlice(p.id, SLICE.lastProject) && !state.completedProjects.includes(p.id)) ?? null;
+}
+
+export function countItem(state: GameState, itemId: string): number {
+  const onBoard = state.cells.filter((c, i) => c?.kind === 'item' && c.itemId === itemId && !isLocked(state, i)).length;
+  return onBoard + state.storage.filter((s) => s?.itemId === itemId).length;
+}
+
+/** Экземпляры для требований: сначала поле (по индексу), затем склад. null — чего-то не хватает. */
+export function findSources(state: GameState, requires: Requirement[]): Loc[] | null {
+  const used: Loc[] = [];
+  for (const req of requires) {
+    let need = req.count;
+    for (let i = 0; i < state.cells.length && need > 0; i++) {
+      const c = state.cells[i];
+      if (c?.kind === 'item' && c.itemId === req.itemId && !isLocked(state, i)) {
+        used.push(board(i));
+        need -= 1;
+      }
+    }
+    for (let i = 0; i < state.storage.length && need > 0; i++) {
+      if (state.storage[i]?.itemId === req.itemId) {
+        used.push(slot(i));
+        need -= 1;
+      }
+    }
+    if (need > 0) return null;
+  }
+  return used;
+}
+
+export function canDeliver(state: GameState, order: OrderDef): boolean {
+  return findSources(state, order.requires) !== null;
+}
+
+/** Сдача заказа: предметы списываются и деньги начисляются одной операцией; повтор невозможен. */
+export function deliverOrder(state: GameState, orderId: string): DeliverResult {
+  if (!ORDERS.some((o) => o.id === orderId)) return { ok: false, reason: 'unknown' };
+  const order = getOrder(orderId);
+  if (!availableOrders(state).some((o) => o.id === orderId)) return { ok: false, reason: 'unavailable' };
+  const sources = findSources(state, order.requires);
+  if (!sources) return { ok: false, reason: 'missing_items' };
+  const next = clone(state);
+  for (const loc of sources) setAt(next, loc, null);
+  next.money += order.reward;
+  next.completedOrders.push(order.id);
+  return { ok: true, state: next, reward: order.reward };
+}
+
+export function canCompleteProject(state: GameState, project: ProjectDef): boolean {
+  return state.money >= project.cost && findSources(state, project.requires) !== null;
+}
+
+/** Завершение проекта: списание предметов и денег, открытия и награды — одна операция. */
+export function completeProject(state: GameState, projectId: string): ProjectResult {
+  if (!PROJECTS.some((p) => p.id === projectId)) return { ok: false, reason: 'unknown' };
+  const project = getProject(projectId);
+  if (currentProject(state)?.id !== projectId) return { ok: false, reason: 'not_current' };
+  if (state.money < project.cost) return { ok: false, reason: 'no_money' };
+  const sources = findSources(state, project.requires);
+  if (!sources) return { ok: false, reason: 'missing_items' };
+
+  const next = clone(state);
+  for (const loc of sources) setAt(next, loc, null);
+  next.money -= project.cost;
+  next.completedProjects.push(project.id);
+  const unlockedCells = LOCKED_GROUPS.filter((g) => g.unlockedBy === project.id).flatMap((g) => g.cells);
+  next.locked = next.locked.filter((c) => !unlockedCells.includes(c));
+  if (project.storageCapacity && project.storageCapacity > next.storage.length) {
+    next.storage = next.storage.concat(new Array(project.storageCapacity - next.storage.length).fill(null));
+  }
+  // energyReward и generatorReward применяются на этапах 4–5 (энергия и входящее хранилище).
+  return { ok: true, state: next, project, unlockedCells };
+}
+
+// ---------- Проверка сохранения ----------
+
+function validItem(raw: unknown, nextUid: number, uids: Set<number>): boolean {
+  if (!raw || typeof raw !== 'object') return false;
+  const it = raw as ItemInstance;
+  if (!ITEMS[it.itemId] || !Number.isInteger(it.uid) || it.uid < 1 || it.uid >= nextUid || uids.has(it.uid)) return false;
+  uids.add(it.uid);
+  return true;
+}
+
+function validLoc(raw: unknown, storageLength: number): boolean {
+  if (!raw || typeof raw !== 'object') return false;
+  const loc = raw as Loc;
+  if (loc.area === 'board') return inBounds(loc.index);
+  return loc.area === 'storage' && Number.isInteger(loc.index) && loc.index >= 0 && loc.index < storageLength;
 }
 
 /** Проверка загруженного состояния: структура, известные ID, уникальные uid. */
@@ -96,19 +304,29 @@ export function validateState(raw: unknown): raw is GameState {
   if (typeof s.schemaVersion !== 'number') return false;
   if (!Array.isArray(s.cells) || s.cells.length !== BOARD_SIZE) return false;
   if (!Array.isArray(s.locked) || !s.locked.every((c) => inBounds(c))) return false;
+  if (!Array.isArray(s.storage) || s.storage.length < 1 || s.storage.length > 50) return false;
   if (typeof s.money !== 'number' || !Number.isFinite(s.money) || s.money < 0) return false;
   if (typeof s.nextUid !== 'number' || !Number.isInteger(s.nextUid) || s.nextUid < 1) return false;
+  if (!Array.isArray(s.completedOrders) || !s.completedOrders.every((id) => ORDERS.some((o) => o.id === id))) return false;
+  if (!Array.isArray(s.completedProjects) || !s.completedProjects.every((id) => PROJECTS.some((p) => p.id === id))) return false;
   const uids = new Set<number>();
   for (const c of s.cells) {
     if (c === null) continue;
     if (c.kind === 'item') {
-      if (!ITEMS[c.itemId] || !Number.isInteger(c.uid) || c.uid >= s.nextUid || uids.has(c.uid)) return false;
-      uids.add(c.uid);
+      if (!validItem(c, s.nextUid, uids)) return false;
     } else if (c.kind === 'generator') {
       if (!GENERATORS[c.generatorId]) return false;
     } else {
       return false;
     }
+  }
+  for (const it of s.storage) {
+    if (it !== null && !validItem(it, s.nextUid, uids)) return false;
+  }
+  if (s.lastSale !== null) {
+    const sale = s.lastSale;
+    if (!sale || !validItem(sale.item, s.nextUid, new Set(uids)) || !validLoc(sale.from, s.storage.length)) return false;
+    if (typeof sale.price !== 'number' || sale.price < 0) return false;
   }
   return true;
 }

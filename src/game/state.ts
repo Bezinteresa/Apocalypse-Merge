@@ -1,10 +1,25 @@
 import { BOARD_SIZE, LOCKED_GROUPS, START_GENERATORS } from '../content/board';
+import { STORAGE_CAPACITY } from '../content/orders';
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
+
+export interface ItemInstance {
+  uid: number;
+  itemId: string;
+}
 
 export type CellContent =
-  | { kind: 'item'; uid: number; itemId: string }
+  | ({ kind: 'item' } & ItemInstance)
   | { kind: 'generator'; generatorId: string };
+
+/** Положение на поле или на складе. */
+export type Loc = { area: 'board'; index: number } | { area: 'storage'; index: number };
+
+export interface LastSale {
+  item: ItemInstance;
+  from: Loc;
+  price: number;
+}
 
 export interface GameState {
   schemaVersion: number;
@@ -12,8 +27,14 @@ export interface GameState {
   cells: (CellContent | null)[];
   /** Индексы закрытых клеток. */
   locked: number[];
+  /** Ячейки склада; длина массива — текущая вместимость. */
+  storage: (ItemInstance | null)[];
   money: number;
   nextUid: number;
+  completedOrders: string[];
+  completedProjects: string[];
+  /** Последняя продажа; отменяется до следующего игрового действия. */
+  lastSale: LastSale | null;
 }
 
 export function createInitialState(): GameState {
@@ -25,7 +46,11 @@ export function createInitialState(): GameState {
     schemaVersion: SCHEMA_VERSION,
     cells,
     locked: LOCKED_GROUPS.flatMap((g) => g.cells),
+    storage: new Array(STORAGE_CAPACITY).fill(null),
     money: 0,
     nextUid: 1,
+    completedOrders: [],
+    completedProjects: [],
+    lastSale: null,
   };
 }
