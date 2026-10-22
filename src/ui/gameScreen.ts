@@ -1,5 +1,5 @@
-import { getItem } from '../content/items';
-import { PROJECTS, SLICE, VISITORS, type ProjectDef, type Requirement } from '../content/orders';
+import { GENERATORS, getItem } from '../content/items';
+import { PROJECTS, VISITORS, type ProjectDef, type Requirement } from '../content/orders';
 import { t, tx, type StringKey } from '../i18n';
 import {
   availableOrders,
@@ -10,7 +10,10 @@ import {
   currentProject,
   deliverOrder,
   getAt,
+  isChapterComplete,
+  areAllOrdersDone,
   moveItem,
+  placeIncoming,
   sellItem,
   spawnFromGenerator,
   undoSale,
@@ -50,7 +53,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     <section class="orders"></section>
     <button class="project-strip"></button>
     <main class="board-wrap"><div id="board"></div></main>
-    <section class="storage-wrap"><span class="storage-label"></span><div id="storage"></div></section>
+    <section class="storage-wrap"><span class="storage-label"></span><div id="storage"></div><button class="btn small incoming-btn" hidden></button></section>
     <footer class="info">
       <div class="info-text"><div class="info-title"></div><div class="info-detail"></div></div>
       <div class="info-actions"><button class="btn small undo-btn"></button><button class="btn small sell-btn"></button></div>
@@ -127,6 +130,15 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   $('.modal-close').onclick = () => {
     modal.hidden = true;
     maybeShowDialog();
+  };
+  $('.incoming-btn').onclick = () => {
+    const r = placeIncoming(state);
+    if (!r.ok) {
+      deps.toast('boardFull');
+      return;
+    }
+    commit(r.state);
+    view.flash({ area: 'board', index: r.cell }, 'pop');
   };
   $('.dialog-next').onclick = () => advanceDialog();
   $('.dialog-text').onclick = () => advanceDialog();
@@ -291,8 +303,13 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       strip.textContent = `${t('tutorial')}: ${tx(step.hint)}`;
       return;
     }
-    strip.hidden = !project;
-    if (!project) return;
+    if (!project) {
+      strip.hidden = !isChapterComplete(state);
+      strip.classList.remove('ready');
+      strip.textContent = areAllOrdersDone(state) ? t('chapterAllDone') : t('chapterDone');
+      return;
+    }
+    strip.hidden = false;
     const ready = canCompleteProject(state, project);
     strip.classList.toggle('ready', ready);
     strip.textContent = `${t('project')} ${project.id}: ${tx(project.name)} — ${ready ? t('projectReady') : `${t('money')}: ${state.money}/${project.cost}`}`;
@@ -302,7 +319,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     const zones = $('.zones');
     zones.replaceChildren();
     const current = currentProject(state);
-    for (const p of PROJECTS.filter((p) => p.id <= SLICE.lastProject)) {
+    for (const p of PROJECTS) {
       const li = document.createElement('li');
       const done = state.completedProjects.includes(p.id);
       li.className = done ? 'zone done' : p.id === current?.id ? 'zone current' : 'zone';
@@ -316,7 +333,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     card.replaceChildren();
     if (!current) {
       const p = document.createElement('p');
-      p.textContent = t('sliceDone');
+      p.textContent = areAllOrdersDone(state) ? t('chapterAllDone') : t('chapterDone');
       card.appendChild(p);
       return;
     }
@@ -331,18 +348,28 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     btn.disabled = !canCompleteProject(state, current);
     btn.classList.toggle('tut', currentTutorialStep(state)?.targets.some((x) => x.kind === 'project') ?? false);
     btn.onclick = () => finishProject(current);
-    card.append(title, requirementChips(current.requires), cost, btn);
+    card.append(title, requirementChips(current.requires), cost);
+    if (current.requiresGenerator && !state.cells.some((c) => c?.kind === 'generator' && c.generatorId === current.requiresGenerator)) {
+      const need = document.createElement('p');
+      need.className = 'cost';
+      need.textContent = `${t('placeFirst')}: ${tx(GENERATORS[current.requiresGenerator].name)}`;
+      card.appendChild(need);
+    }
+    card.appendChild(btn);
   }
 
   function finishProject(project: ProjectDef): void {
     const r = completeProject(state, project.id);
     if (!r.ok) {
-      deps.toast(r.reason === 'no_money' ? 'noMoney' : 'missingItems');
+      deps.toast(r.reason === 'no_money' ? 'noMoney' : r.reason === 'generator_missing' ? 'placeFirst' : 'missingItems');
       return;
     }
     // окно итога открывается до принятия состояния, чтобы сцена после ремонта шла следом за ним
     $('.modal h3').textContent = `${t('restored')}: ${tx(project.name)}`;
-    $('.modal p').textContent = currentProject(r.state) ? tx(project.result) : `${tx(project.result)}. ${t('sliceDone')}`;
+    const parts = [tx(project.result)];
+    if (project.generatorReward) parts.push(r.placedCell !== null ? `${t('generatorPlaced')}: ${tx(GENERATORS[project.generatorReward].name)}` : `${t('generatorWaiting')}: ${tx(GENERATORS[project.generatorReward].name)}`);
+    if (isChapterComplete(r.state)) parts.push(t('chapterDone'));
+    $('.modal p').textContent = parts.join('. ');
     modal.hidden = false;
     commit(r.state, true);
     select(null);
@@ -369,6 +396,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     view.render(state);
     renderOrders();
     renderProjectStrip();
+    const incomingBtn = $<HTMLButtonElement>('.incoming-btn');
+    incomingBtn.hidden = state.incoming.length === 0;
+    if (state.incoming.length) incomingBtn.textContent = `${t('incoming')}: ${tx(GENERATORS[state.incoming[0]].name)}`;
     renderInfo();
     if (!shopEl.hidden) renderShop();
   }

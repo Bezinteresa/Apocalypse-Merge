@@ -7,7 +7,7 @@
   --muted: #a89c8a;
   --accent: #e0a040;
   --cell-size: min(calc((100vw - 50px) / 7), calc((100dvh - 400px) / 9), 64px);
-  --slot-size: min(calc((100vw - 90px) / 10), 40px);
+  --slot-size: min(calc((100vw - 130px) / 10), 40px);
   --ok: #7fd17f;
 }
 
@@ -681,4 +681,9 @@ body {
   background: transparent;
   color: var(--muted);
   border: 1px solid #4a4238;
+}
+
+.incoming-btn {
+  margin-left: auto;
+  animation: tut-pulse 1.1s ease-in-out infinite;
 }

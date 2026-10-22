@@ -53,4 +53,49 @@ export const DIALOGS: DialogDef[] = [
       { speaker: 'LEV', text: { ru: 'Ей пригодятся припасы. Я передам, что здесь снова торгуют.', en: "She'll need supplies. I'll tell her the shop is open again." } },
     ],
   },
+  {
+    id: 'D_NIKA',
+    after: { project: 'R03' },
+    lines: [
+      { speaker: 'NIKA', text: { ru: 'Привет! Лев сказал, у вас снова можно найти еду.', en: 'Hi! Lev said I can find food here again.' } },
+      { speaker: 'NIKA', text: { ru: 'В пункте помощи всегда кто-то голодный. Я буду заходить за припасами.', en: "Someone at the aid post is always hungry. I'll come by for supplies." } },
+    ],
+  },
+  {
+    id: 'D_AFTER_R04',
+    after: { project: 'R04' },
+    lines: [{ speaker: 'NIKA', text: { ru: 'Склад теперь как у настоящего магазина. Можно запасаться впрок.', en: 'The storeroom looks like a real shop now. We can stock up.' } }],
+  },
+  {
+    id: 'D_MARTA',
+    after: { project: 'R05' },
+    lines: [
+      { speaker: 'MARTA', text: { ru: 'Я Марта, механик. Твой верстак видно с улицы.', en: "I'm Marta, a mechanic. Your workbench is visible from the street." } },
+      { speaker: 'MARTA', text: { ru: 'Странно: к магазину идёт старая линия питания. На схемах квартала её нет.', en: "Odd: an old power line runs to the shop. It's not on any district map." } },
+      { speaker: 'MARTA', text: { ru: 'Принеси провода и детали — попробуем её оживить.', en: "Bring wires and parts and we'll try to bring it back." } },
+    ],
+  },
+  {
+    id: 'D_AFTER_R06',
+    after: { project: 'R06' },
+    lines: [
+      { speaker: 'MARTA', text: { ru: 'Свет есть! И слышишь? В старом радио что-то шипит.', en: 'We have light! And hear that? The old radio is hissing.' } },
+      { speaker: 'MARTA', text: { ru: 'Кто-то ещё пользуется этой линией. Надо будет разобраться.', en: 'Someone else is using this line. We should figure it out.' } },
+    ],
+  },
+  {
+    id: 'D_AFTER_R07',
+    after: { project: 'R07' },
+    lines: [{ speaker: 'NIKA', text: { ru: 'Чистая вода прямо у магазина! Теперь сюда потянутся все.', en: 'Clean water right by the shop! Everyone will come here now.' } }],
+  },
+  {
+    id: 'D_FINALE',
+    after: { project: 'R08' },
+    lines: [
+      { speaker: 'LEV', text: { ru: '«Перекрёсток» открыт! Во дворе очередь, как в старые времена.', en: 'The "Crossroads" is open! There is a queue in the yard, like the old days.' } },
+      { speaker: 'MARTA', text: { ru: 'Тихо! Радио… Сигнал стал чище.', en: 'Quiet! The radio… the signal is clearer.' } },
+      { speaker: 'RADIO', text: { ru: '«…всем, кто слышит… убежище под перекрёстком… ответьте…»', en: '"…anyone who hears this… shelter under the crossroads… respond…"' } },
+      { speaker: 'NIKA', text: { ru: 'Под перекрёстком? Это же прямо под нами.', en: "Under the crossroads? That's right below us." } },
+    ],
+  },
 ];

@@ -30,8 +30,10 @@ export interface ProjectDef {
   cost: number;
   /** Энергия начисляется, когда в игре включена энергия (этап 5). */
   energyReward: number;
-  /** Генератор-награда приходит во входящее хранилище (этап 4). */
+  /** Генератор-награда приходит во входящее хранилище. */
   generatorReward: string | null;
+  /** Генератор, который должен стоять на поле, чтобы проект можно было завершить. */
+  requiresGenerator?: string;
   /** Новая вместимость склада после проекта. */
   storageCapacity?: number;
 }
@@ -40,6 +42,8 @@ export const VISITORS: Record<string, VisitorDef> = {
   LEV: { id: 'LEV', name: { ru: 'Лев', en: 'Lev' } },
   NIKA: { id: 'NIKA', name: { ru: 'Ника', en: 'Nika' } },
   MARTA: { id: 'MARTA', name: { ru: 'Марта', en: 'Marta' } },
+  /** Не посетитель: голос в радиоэфире финальной сцены. */
+  RADIO: { id: 'RADIO', name: { ru: 'Радио', en: 'Radio' } },
 };
 
 export const STORAGE_CAPACITY = 6;
@@ -71,19 +75,13 @@ export const ORDERS: OrderDef[] = [
 export const PROJECTS: ProjectDef[] = [
   { id: 'R01', name: { ru: 'Расчистить и закрепить вход', en: 'Clear and secure the entrance' }, result: { ru: 'Завал убран, проход безопасен', en: 'Rubble cleared, the way in is safe' }, requires: [r('M02')], cost: 10, energyReward: 0, generatorReward: null },
   { id: 'R02', name: { ru: 'Восстановить прилавок', en: 'Restore the counter' }, result: { ru: 'Появился рабочий прилавок; открыто 3 клетки', en: 'A working counter; 3 cells unlocked' }, requires: [r('T02'), r('M03')], cost: 25, energyReward: 50, generatorReward: null },
-  { id: 'R03', name: { ru: 'Установить полку припасов', en: 'Install the supply shelf' }, result: { ru: 'На полке появились запасы; скоро придёт Ника', en: 'Supplies on the shelf; Nika is coming soon' }, requires: [r('T03'), r('M03')], cost: 35, energyReward: 0, generatorReward: 'G_PROVISION' },
-  { id: 'R04', name: { ru: 'Привести в порядок склад', en: 'Tidy up the storeroom' }, result: { ru: 'Ящики и стеллажи; склад 6 → 10, открыто 3 клетки', en: 'Crates and racks; storage 6 → 10, 3 cells unlocked' }, requires: [r('T03'), r('M04')], cost: 50, energyReward: 50, generatorReward: null, storageCapacity: STORAGE_CAPACITY_EXPANDED },
-  { id: 'R05', name: { ru: 'Оборудовать мастерскую', en: 'Equip the workshop' }, result: { ru: 'Верстак и место ремонта; приходит Марта', en: 'Workbench and repair spot; Marta arrives' }, requires: [r('T04'), r('M04')], cost: 70, energyReward: 0, generatorReward: 'G_ELECTRIC' },
-  { id: 'R06', name: { ru: 'Вернуть электричество', en: 'Bring back the power' }, result: { ru: 'Загорелись лампы; открыто 3 клетки', en: 'Lamps are on; 3 cells unlocked' }, requires: [r('E04'), r('T03')], cost: 70, energyReward: 50, generatorReward: null },
+  { id: 'R03', name: { ru: 'Установить полку припасов', en: 'Install the supply shelf' }, result: { ru: 'На полке появились запасы; получен ящик припасов, приходит Ника', en: 'Supplies on the shelf; provision crate received, Nika arrives' }, requires: [r('T03'), r('M03')], cost: 35, energyReward: 0, generatorReward: 'G_PROVISION' },
+  { id: 'R04', name: { ru: 'Привести в порядок склад', en: 'Tidy up the storeroom' }, result: { ru: 'Ящики и стеллажи; склад 6 → 10, открыто 3 клетки', en: 'Crates and racks; storage 6 → 10, 3 cells unlocked' }, requires: [r('T03'), r('M04')], cost: 50, energyReward: 50, generatorReward: null, storageCapacity: STORAGE_CAPACITY_EXPANDED, requiresGenerator: 'G_PROVISION' },
+  { id: 'R05', name: { ru: 'Оборудовать мастерскую', en: 'Equip the workshop' }, result: { ru: 'Верстак и место ремонта; получен стол радиодеталей, приходит Марта', en: 'Workbench and repair spot; radio parts bench received, Marta arrives' }, requires: [r('T04'), r('M04')], cost: 70, energyReward: 0, generatorReward: 'G_ELECTRIC' },
+  { id: 'R06', name: { ru: 'Вернуть электричество', en: 'Bring back the power' }, result: { ru: 'Загорелись лампы; открыто 3 клетки', en: 'Lamps are on; 3 cells unlocked' }, requires: [r('E04'), r('T03')], cost: 70, energyReward: 50, generatorReward: null, requiresGenerator: 'G_ELECTRIC' },
   { id: 'R07', name: { ru: 'Запустить точку чистой воды', en: 'Start the clean water point' }, result: { ru: 'Бак, насос и место выдачи воды', en: 'Tank, pump and water tap' }, requires: [r('P03'), r('E03')], cost: 50, energyReward: 0, generatorReward: null },
-  { id: 'R08', name: { ru: 'Открыть «Перекрёсток»', en: 'Open the "Crossroads"' }, result: { ru: 'Светится вывеска; открыты последние клетки', en: 'The sign is lit; the last cells unlocked' }, requires: [r('P04'), r('M04'), r('E04')], cost: 100, energyReward: 0, generatorReward: null },
+  { id: 'R08', name: { ru: 'Открыть «Перекрёсток»', en: 'Open the "Crossroads"' }, result: { ru: 'Светится вывеска, во дворе посетители; открыты последние клетки', en: 'The sign is lit and visitors fill the yard; the last cells unlocked' }, requires: [r('P04'), r('M04'), r('E04')], cost: 100, energyReward: 0, generatorReward: null },
 ];
-
-/**
- * Короткий срез этапа 2 (PROTOTYPE_PLAN): заказы O01–O05 и проекты R01–R03.
- * Остальной контент описан, но включается на этапе 4 вместе с входящим хранилищем.
- */
-export const SLICE = { lastOrder: 'O05', lastProject: 'R03' };
 
 export function getProject(id: string): ProjectDef {
   const def = PROJECTS.find((p) => p.id === id);

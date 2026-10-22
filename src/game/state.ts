@@ -1,7 +1,7 @@
 import { BOARD_SIZE, LOCKED_GROUPS, START_GENERATORS } from '../content/board';
 import { STORAGE_CAPACITY } from '../content/orders';
 
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 export interface ItemInstance {
   uid: number;
@@ -37,6 +37,8 @@ export interface GameState {
   lastSale: LastSale | null;
   /** Просмотренные или пропущенные сюжетные сцены. */
   seenDialogs: string[];
+  /** Входящее хранилище: полученные генераторы, ожидающие места на поле. */
+  incoming: string[];
 }
 
 export function createInitialState(): GameState {
@@ -55,5 +57,6 @@ export function createInitialState(): GameState {
     completedProjects: [],
     lastSale: null,
     seenDialogs: [],
+    incoming: [],
   };
 }

@@ -1,4 +1,4 @@
-import { STORAGE_CAPACITY } from '../content/orders';
+import { PROJECTS, STORAGE_CAPACITY } from '../content/orders';
 import { validateState } from '../game/rules';
 import { triggeredDialogIds } from '../game/tutorial';
 import { SCHEMA_VERSION, createInitialState, type GameState } from '../game/state';
@@ -56,6 +56,16 @@ export function migrate(raw: unknown): GameState | null {
     const progressed = (data.nextUid as number) > 1 || (data.completedOrders as string[]).length > 0;
     data = { ...data, schemaVersion: 3, seenDialogs: [] };
     if (progressed) data.seenDialogs = triggeredDialogIds(data as unknown as GameState);
+  }
+  if (data.schemaVersion === 3) {
+    // v4: входящее хранилище. Генераторы-награды уже завершённых проектов, которых нет на поле,
+    // выдаются туда (в пробном срезе этапа 2 награда R03 была только анонсом).
+    const cells = (data.cells as GameState['cells']) ?? [];
+    const onBoard = new Set(cells.flatMap((c) => (c?.kind === 'generator' ? [c.generatorId] : [])));
+    const incoming = ((data.completedProjects as string[]) ?? [])
+      .map((id) => PROJECTS.find((pr) => pr.id === id)?.generatorReward)
+      .filter((g): g is string => !!g && !onBoard.has(g));
+    data = { ...data, schemaVersion: 4, incoming };
   }
   return data.schemaVersion === SCHEMA_VERSION && validateState(data) ? data : null;
 }

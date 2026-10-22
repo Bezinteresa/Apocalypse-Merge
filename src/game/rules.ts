@@ -1,6 +1,6 @@
-import { BOARD_COLS, BOARD_SIZE, LOCKED_GROUPS } from '../content/board';
+import { BOARD_COLS, BOARD_SIZE, LOCKED_GROUPS, cellIndex } from '../content/board';
 import { GENERATORS, ITEMS, getItem, type ChainId } from '../content/items';
-import { ORDERS, PROJECTS, SLICE, getOrder, getProject, type OrderDef, type ProjectDef, type Requirement } from '../content/orders';
+import { ORDERS, PROJECTS, getOrder, getProject, type OrderDef, type ProjectDef, type Requirement } from '../content/orders';
 import type { CellContent, GameState, ItemInstance, Loc } from './state';
 
 // Правила игры. Функции не меняют входное состояние и возвращают новое вместе с результатом,
@@ -26,8 +26,10 @@ export type DeliverResult =
   | { ok: false; reason: 'unknown' | 'unavailable' | 'missing_items' };
 
 export type ProjectResult =
-  | { ok: true; state: GameState; project: ProjectDef; unlockedCells: number[] }
-  | { ok: false; reason: 'unknown' | 'not_current' | 'no_money' | 'missing_items' };
+  | { ok: true; state: GameState; project: ProjectDef; unlockedCells: number[]; placedCell: number | null }
+  | { ok: false; reason: 'unknown' | 'not_current' | 'no_money' | 'missing_items' | 'generator_missing' };
+
+export type PlaceResult = { ok: true; state: GameState; cell: number; generatorId: string } | { ok: false; reason: 'empty' | 'board_full' };
 
 function clone(state: GameState): GameState {
   return {
@@ -38,6 +40,7 @@ function clone(state: GameState): GameState {
     completedOrders: state.completedOrders.slice(),
     completedProjects: state.completedProjects.slice(),
     seenDialogs: state.seenDialogs.slice(),
+    incoming: state.incoming.slice(),
     lastSale: null,
   };
 }
@@ -181,10 +184,6 @@ export function undoSale(state: GameState): UndoResult {
 
 // ---------- Заказы и проекты ----------
 
-function inSlice(id: string, last: string): boolean {
-  return id <= last;
-}
-
 export function isChainAvailable(state: GameState, chain: ChainId): boolean {
   return state.cells.some((c) => c?.kind === 'generator' && getItem(GENERATORS[c.generatorId].output).chain === chain);
 }
@@ -205,7 +204,6 @@ export function availableOrders(state: GameState): OrderDef[] {
   if (!isTutorialGateOpen(state)) return ORDERS.filter((o) => o.id === TUTORIAL_FIRST_ORDER);
   return ORDERS.filter(
     (o) =>
-      inSlice(o.id, SLICE.lastOrder) &&
       !state.completedOrders.includes(o.id) &&
       isProjectDone(state, o.after) &&
       o.requires.every((req) => isChainAvailable(state, getItem(req.itemId).chain)),
@@ -215,7 +213,35 @@ export function availableOrders(state: GameState): OrderDef[] {
 /** Ближайший незавершённый проект; null — доступный срез пройден. */
 export function currentProject(state: GameState): ProjectDef | null {
   if (!isTutorialGateOpen(state)) return null;
-  return PROJECTS.find((p) => inSlice(p.id, SLICE.lastProject) && !state.completedProjects.includes(p.id)) ?? null;
+  return PROJECTS.find((p) => !state.completedProjects.includes(p.id)) ?? null;
+}
+
+/** Глава завершена после последнего проекта; оставшиеся заказы можно выполнить и после этого. */
+export function isChapterComplete(state: GameState): boolean {
+  return state.completedProjects.length === PROJECTS.length;
+}
+
+export function areAllOrdersDone(state: GameState): boolean {
+  return state.completedOrders.length === ORDERS.length;
+}
+
+function hasGeneratorOnBoard(state: GameState, generatorId: string): boolean {
+  return state.cells.some((c) => c?.kind === 'generator' && c.generatorId === generatorId);
+}
+
+/** Точка, от которой ищется место для полученного генератора: центр поля. */
+const INCOMING_ORIGIN = cellIndex(3, 4);
+
+/** Разместить первый генератор из входящего хранилища в свободную клетку. Без места он остаётся ждать. */
+export function placeIncoming(state: GameState): PlaceResult {
+  const generatorId = state.incoming[0];
+  if (!generatorId) return { ok: false, reason: 'empty' };
+  const cell = findFreeCellNear(state, INCOMING_ORIGIN);
+  if (cell === null) return { ok: false, reason: 'board_full' };
+  const next = clone(state);
+  next.incoming.shift();
+  next.cells[cell] = { kind: 'generator', generatorId };
+  return { ok: true, state: next, cell, generatorId };
 }
 
 export function countItem(state: GameState, itemId: string): number {
@@ -265,6 +291,7 @@ export function deliverOrder(state: GameState, orderId: string): DeliverResult {
 }
 
 export function canCompleteProject(state: GameState, project: ProjectDef): boolean {
+  if (project.requiresGenerator && !hasGeneratorOnBoard(state, project.requiresGenerator)) return false;
   return state.money >= project.cost && findSources(state, project.requires) !== null;
 }
 
@@ -273,6 +300,7 @@ export function completeProject(state: GameState, projectId: string): ProjectRes
   if (!PROJECTS.some((p) => p.id === projectId)) return { ok: false, reason: 'unknown' };
   const project = getProject(projectId);
   if (currentProject(state)?.id !== projectId) return { ok: false, reason: 'not_current' };
+  if (project.requiresGenerator && !hasGeneratorOnBoard(state, project.requiresGenerator)) return { ok: false, reason: 'generator_missing' };
   if (state.money < project.cost) return { ok: false, reason: 'no_money' };
   const sources = findSources(state, project.requires);
   if (!sources) return { ok: false, reason: 'missing_items' };
@@ -286,8 +314,18 @@ export function completeProject(state: GameState, projectId: string): ProjectRes
   if (project.storageCapacity && project.storageCapacity > next.storage.length) {
     next.storage = next.storage.concat(new Array(project.storageCapacity - next.storage.length).fill(null));
   }
-  // energyReward и generatorReward применяются на этапах 4–5 (энергия и входящее хранилище).
-  return { ok: true, state: next, project, unlockedCells };
+  // energyReward применяется, когда включена энергия (этап 5).
+  let placedCell: number | null = null;
+  let result = next;
+  if (project.generatorReward) {
+    result.incoming.push(project.generatorReward);
+    const placed = placeIncoming(result);
+    if (placed.ok) {
+      result = placed.state;
+      placedCell = placed.cell;
+    }
+  }
+  return { ok: true, state: result, project, unlockedCells, placedCell };
 }
 
 // ---------- Проверка сохранения ----------
@@ -320,6 +358,7 @@ export function validateState(raw: unknown): raw is GameState {
   if (!Array.isArray(s.completedOrders) || !s.completedOrders.every((id) => ORDERS.some((o) => o.id === id))) return false;
   if (!Array.isArray(s.completedProjects) || !s.completedProjects.every((id) => PROJECTS.some((p) => p.id === id))) return false;
   if (!Array.isArray(s.seenDialogs) || !s.seenDialogs.every((id) => typeof id === 'string')) return false;
+  if (!Array.isArray(s.incoming) || !s.incoming.every((id) => !!GENERATORS[id])) return false;
   const uids = new Set<number>();
   for (const c of s.cells) {
     if (c === null) continue;

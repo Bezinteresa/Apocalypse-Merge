@@ -74,15 +74,25 @@ describe('SaveStore', () => {
   it('migrates a v1 save without losing the board', async () => {
     const b = new MemoryBackend();
     const v2 = progressed();
-    const { storage: _s, completedOrders: _o, completedProjects: _p, lastSale: _l, seenDialogs: _d, ...v1 } = { ...v2, schemaVersion: 1 };
+    const { storage: _s, completedOrders: _o, completedProjects: _p, lastSale: _l, seenDialogs: _d, incoming: _i, ...v1 } = { ...v2, schemaVersion: 1 };
     b.data[SAVE_KEY] = v1;
     const r = await new SaveStore(b).load();
     expect(r.source).toBe('main');
-    expect(r.state.schemaVersion).toBe(3);
+    expect(r.state.schemaVersion).toBe(4);
+    expect(r.state.incoming).toEqual([]);
     expect(r.state.seenDialogs).toEqual(['D_INTRO']);
     expect(r.state.cells).toEqual(v2.cells);
     expect(r.state.storage).toHaveLength(6);
     expect(r.state.completedOrders).toEqual([]);
+  });
+
+  it('v3 → v4 delivers the R03 generator that the stage 2 slice only announced', async () => {
+    const b = new MemoryBackend();
+    const { incoming: _i, ...v3 } = { ...createInitialState(), schemaVersion: 3, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'] };
+    b.data[SAVE_KEY] = v3;
+    const r = await new SaveStore(b).load();
+    expect(r.state.schemaVersion).toBe(4);
+    expect(r.state.incoming).toEqual(['G_PROVISION']);
   });
 
   it('refuses saves from a newer schema', async () => {

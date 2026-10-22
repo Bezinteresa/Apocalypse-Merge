@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { BOARD_SIZE, LOCKED_GROUPS, START_GENERATORS } from '../content/board';
-import { GENERATORS, ITEMS } from '../content/items';
+import { GENERATORS, ITEMS, getItem } from '../content/items';
+import { ORDERS, PROJECTS } from '../content/orders';
 import { findFreeCellNear, moveContent, spawnFromGenerator, validateState } from './rules';
 import { createInitialState, type GameState } from './state';
 
@@ -24,6 +25,30 @@ describe('content', () => {
       }
     }
     for (const g of Object.values(GENERATORS)) expect(ITEMS[g.output].level).toBe(1);
+  });
+});
+
+describe('content reachability', () => {
+  // требования достижимы из генераторов, открытых к моменту доступности заказа/проекта
+  const chainsAfter = (projectIndex: number) => {
+    const gens = START_GENERATORS.map((g) => g.generatorId);
+    for (const p of PROJECTS.slice(0, projectIndex)) if (p.generatorReward) gens.push(p.generatorReward);
+    return new Set(gens.map((g) => getItem(GENERATORS[g].output).chain));
+  };
+
+  it('every order and project needs only opened chains and existing items', () => {
+    for (const o of ORDERS) {
+      const idx = o.after ? PROJECTS.findIndex((p) => p.id === o.after) + 1 : 0;
+      for (const r of o.requires) {
+        expect(ITEMS[r.itemId], o.id).toBeDefined();
+        expect(chainsAfter(idx).has(getItem(r.itemId).chain), `${o.id} ${r.itemId}`).toBe(true);
+        expect(getItem(r.itemId).level, o.id).toBeLessThanOrEqual(4);
+      }
+    }
+    PROJECTS.forEach((p, i) => {
+      for (const r of p.requires) expect(chainsAfter(i).has(getItem(r.itemId).chain), `${p.id} ${r.itemId}`).toBe(true);
+      if (p.requiresGenerator) expect(PROJECTS.slice(0, i).some((q) => q.generatorReward === p.requiresGenerator), p.id).toBe(true);
+    });
   });
 });
 

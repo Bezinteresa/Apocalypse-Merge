@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { LOCKED_GROUPS, START_GENERATORS } from '../content/board';
-import { getItem } from '../content/items';
+import { GENERATORS, getItem } from '../content/items';
+import { ORDERS, PROJECTS } from '../content/orders';
 import {
   availableOrders,
   board,
@@ -13,6 +14,9 @@ import {
   spawnFromGenerator,
   undoSale,
   validateState,
+  isChapterComplete,
+  areAllOrdersDone,
+  placeIncoming,
 } from './rules';
 import { createInitialState, type GameState } from './state';
 
@@ -35,7 +39,8 @@ function craft(state: GameState, itemId: string): GameState {
   const def = getItem(itemId);
   let s = state;
   for (let i = 0; i < 2 ** (def.level - 1); i++) {
-    const r = spawnFromGenerator(s, GEN_CELL[def.chain as 'T' | 'M']);
+    const gen = s.cells.findIndex((c) => c?.kind === 'generator' && GENERATORS[c.generatorId].output.startsWith(def.chain));
+    const r = spawnFromGenerator(s, gen);
     if (!r.ok) throw new Error(r.reason);
     s = r.state;
     for (;;) {
@@ -168,35 +173,75 @@ describe('projects', () => {
     for (const c of LOCKED_GROUPS[0].cells) expect(r.state.locked).not.toContain(c);
   });
 
-  it('plays the stage 2 slice with money matching the catalog table', () => {
+  it('plays the whole chapter with money matching the catalog table', () => {
     let s = createInitialState();
-    const step = (fn: (st: GameState) => { ok: boolean; state?: GameState }) => {
-      const r = fn(s) as { ok: true; state: GameState } | { ok: false; reason: string };
+    const run = (r: { ok: true; state: GameState } | { ok: false; reason: string }) => {
       if (!r.ok) throw new Error(r.reason);
       s = r.state;
     };
-    s = craft(s, 'T02');
-    step((x) => deliverOrder(x, 'O01'));
-    s = craft(s, 'M03');
-    step((x) => deliverOrder(x, 'O02'));
-    expect(s.money).toBe(34);
-    s = craft(s, 'M02');
-    step((x) => completeProject(x, 'R01'));
-    expect(s.money).toBe(24);
-    s = craft(s, 'T03');
-    step((x) => deliverOrder(x, 'O03'));
-    s = craft(craft(s, 'T02'), 'M03');
-    step((x) => completeProject(x, 'R02'));
-    expect(s.money).toBe(24);
-    s = craft(s, 'T04');
-    step((x) => deliverOrder(x, 'O04'));
-    s = craft(craft(s, 'M03'), 'T02');
-    step((x) => deliverOrder(x, 'O05'));
-    s = craft(craft(s, 'T03'), 'M03');
-    step((x) => completeProject(x, 'R03'));
-    expect(s.money).toBe(64);
+    const order = (id: string) => {
+      for (const req of ORDERS.find((o) => o.id === id)!.requires) s = craft(s, req.itemId);
+      run(deliverOrder(s, id));
+    };
+    const project = (id: string) => {
+      for (const req of PROJECTS.find((p) => p.id === id)!.requires) s = craft(s, req.itemId);
+      run(completeProject(s, id));
+    };
+    // порядок и суммы — CONTENT_CATALOG, раздел 6.3
+    const plan: [string[], string, number][] = [
+      [['O01', 'O02'], 'R01', 24],
+      [['O03'], 'R02', 24],
+      [['O04', 'O05'], 'R03', 64],
+      [['O06', 'O07', 'O08'], 'R04', 100],
+      [['O09', 'O10', 'O11'], 'R05', 186],
+      [['O12', 'O13', 'O14'], 'R06', 231],
+      [['O15', 'O16'], 'R07', 276],
+      [['O17', 'O18'], 'R08', 326],
+    ];
+    for (const [orders, proj, money] of plan) {
+      orders.forEach(order);
+      project(proj);
+      expect(s.money, proj).toBe(money);
+    }
+    expect(isChapterComplete(s)).toBe(true);
+    expect(areAllOrdersDone(s)).toBe(true);
     expect(currentProject(s)).toBeNull();
-    expect(availableOrders(s)).toEqual([]);
+    expect(s.locked).toEqual([]);
+    expect(s.storage).toHaveLength(10);
+    expect(s.incoming).toEqual([]);
+    expect(s.cells.filter((c) => c?.kind === 'generator')).toHaveLength(4);
     expect(validateState(s)).toBe(true);
+  });
+
+  it('R03 places the provision crate; without space it waits in incoming', () => {
+    const base = { ...put(put(createInitialState(), 0, 'T03'), 1, 'M03'), money: 35, completedOrders: ['O01'], completedProjects: ['R01', 'R02'] };
+    const placed = completeProject(base, 'R03');
+    expect(placed.ok && placed.placedCell).not.toBeNull();
+    if (!placed.ok) return;
+    expect(placed.state.incoming).toEqual([]);
+    expect(availableOrders(placed.state).map((o) => o.id)).toEqual(['O02', 'O03', 'O04']);
+
+    // заполнить все свободные клетки, оставив T03 и M03 для проекта
+    let full = base;
+    for (let i = 2; i < full.cells.length; i++) if (full.cells[i] === null && !full.locked.includes(i)) full = put(full, i, 'T06');
+    const waiting = completeProject(full, 'R03');
+    expect(waiting.ok).toBe(true);
+    if (!waiting.ok) return;
+    // T03 и M03 списаны — их клетки освободились, генератор занял одну из них
+    expect(waiting.state.incoming).toEqual([]);
+
+    let reallyFull = { ...full, cells: full.cells.slice() };
+    reallyFull = put(put(reallyFull, 0, 'T06'), 1, 'T06');
+    const stuck = placeIncoming({ ...reallyFull, incoming: ['G_PROVISION'] });
+    expect(stuck).toEqual({ ok: false, reason: 'board_full' });
+  });
+
+  it('R04 requires the provision crate on the board', () => {
+    const s = { ...put(put(createInitialState(), 0, 'T03'), 1, 'M04'), money: 50, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'], incoming: ['G_PROVISION'] };
+    expect(completeProject(s, 'R04')).toEqual({ ok: false, reason: 'generator_missing' });
+    const placed = placeIncoming(s);
+    if (!placed.ok) throw new Error();
+    const r = completeProject(placed.state, 'R04');
+    expect(r.ok && r.state.storage).toHaveLength(10);
   });
 });
