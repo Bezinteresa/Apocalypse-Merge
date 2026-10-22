@@ -1,4 +1,4 @@
-import { BOARD_COLS, BOARD_SIZE, LOCKED_GROUPS } from '../content/board';
+import { BOARD_COLS, BOARD_SIZE, type Fog } from '../content/board';
 import { CHAINS, GENERATORS, getItem } from '../content/items';
 import { t, tx } from '../i18n';
 import { canMerge, getAt } from '../game/rules';
@@ -15,7 +15,6 @@ export interface FieldHandlers {
 
 const DRAG_THRESHOLD_PX = 8;
 
-const LOCK_LABEL = new Map<number, string>(LOCKED_GROUPS.flatMap((g) => g.cells.map((c) => [c, g.unlockedBy] as [number, string])));
 
 function sameLoc(a: Loc | null, b: Loc | null): boolean {
   return !!a && !!b && a.area === b.area && a.index === b.index;
@@ -47,7 +46,7 @@ export class FieldView {
     boardRoot.classList.add('board');
     boardRoot.style.setProperty('--cols', String(BOARD_COLS));
     // плитки поля из графики, если они уже есть
-    for (const [name, prop] of [['cell', '--cell-img'], ['cell_locked', '--cell-locked-img']] as const) {
+    for (const [name, prop] of [['cell', '--cell-img'], ['cell_locked', '--cell-locked-img'], ['web', '--web-img']] as const) {
       if (hasSprite(uiSprite(name))) document.documentElement.style.setProperty(prop, `url("${spriteUrl(uiSprite(name))}")`);
     }
     for (let i = 0; i < BOARD_SIZE; i++) this.cellEls.push(this.createCell(boardRoot, 'board', i));
@@ -100,22 +99,24 @@ export class FieldView {
     this.state = state;
     while (this.slotEls.length < state.storage.length) this.slotEls.push(this.createCell(this.storageRoot, 'storage', this.slotEls.length));
     const selectedContent = this.selected ? getAt(state, this.selected) : null;
-    const paint = (el: HTMLElement, loc: Loc, locked: boolean) => {
-      const content = getAt(state, loc);
+    const paint = (el: HTMLElement, loc: Loc, fog: Fog | null) => {
+      // содержимое коробки скрыто
+      const content = fog === 'box' ? null : getAt(state, loc);
       const isSelected = sameLoc(loc, this.selected);
-      el.classList.toggle('locked', locked);
+      el.classList.toggle('locked', fog === 'box');
+      el.classList.toggle('web', fog === 'web');
       el.classList.toggle('selected', isSelected);
       el.classList.toggle('mergeable', !isSelected && canMerge(selectedContent, content));
-      el.classList.toggle('wanted', content?.kind === 'item' && this.wanted.has(content.itemId));
+      // под паутиной предмет нельзя сдать — не подсвечиваем его как нужный
+      el.classList.toggle('wanted', !fog && content?.kind === 'item' && this.wanted.has(content.itemId));
       const contentId = content ? (content.kind === 'item' ? content.itemId : content.generatorId) : null;
       el.classList.toggle('tut', contentId !== null && this.tutorialIds.has(contentId));
       el.classList.toggle('hint', loc.area === 'board' && this.hintCells.has(loc.index));
       el.replaceChildren();
       if (content) el.appendChild(renderContent(content));
-      else if (locked) el.appendChild(lockLabel(LOCK_LABEL.get(loc.index) ?? ''));
     };
-    this.cellEls.forEach((el, i) => paint(el, { area: 'board', index: i }, state.locked.includes(i)));
-    this.slotEls.forEach((el, i) => paint(el, { area: 'storage', index: i }, false));
+    this.cellEls.forEach((el, i) => paint(el, { area: 'board', index: i }, state.fog[i] ?? null));
+    this.slotEls.forEach((el, i) => paint(el, { area: 'storage', index: i }, null));
   }
 
   flash(loc: Loc, cls: 'pop' | 'shake'): void {
@@ -153,7 +154,7 @@ export class FieldView {
     if (!d.ghost) {
       if (Math.hypot(e.clientX - d.startX, e.clientY - d.startY) < DRAG_THRESHOLD_PX) return;
       const content = getAt(this.state, d.from);
-      if (!content || (d.from.area === 'board' && this.state.locked.includes(d.from.index))) return;
+      if (!content || (d.from.area === 'board' && this.state.fog[d.from.index] != null)) return;
       const src = this.elOf(d.from);
       const rect = src.getBoundingClientRect();
       d.ghost = renderContent(content);
@@ -196,13 +197,6 @@ export class FieldView {
     d.hover?.classList.remove('hover');
     this.drag = null;
   };
-}
-
-function lockLabel(projectId: string): HTMLElement {
-  const el = document.createElement('span');
-  el.className = 'lock-label';
-  el.textContent = projectId;
-  return el;
 }
 
 export function renderItemChip(itemId: string): HTMLElement {

@@ -76,8 +76,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     <main class="board-wrap"><div id="board"></div></main>
     <section class="storage-wrap"><span class="storage-label"></span><div id="storage"></div><button class="btn small incoming-btn" hidden></button></section>
     <footer class="info">
+      <button class="info-btn where-btn" hidden>i</button>
       <div class="info-text"><div class="info-title"></div><div class="info-detail"></div></div>
-      <div class="info-actions"><button class="btn small ghost where-btn" hidden></button><button class="btn small undo-btn"></button><button class="btn small sell-btn"></button></div>
+      <div class="info-actions"><button class="btn small undo-btn"></button><button class="btn small sell-btn"></button></div>
     </footer>
     <section class="shop" hidden>
       <header class="shop-head"><h2></h2><button class="btn small back-btn"></button></header>
@@ -136,7 +137,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   let dialog: { def: DialogDef; line: number } | null = null;
   const undoBtn = $<HTMLButtonElement>('.undo-btn');
   const whereBtn = $<HTMLButtonElement>('.where-btn');
-  whereBtn.textContent = t('whereToGet');
+  whereBtn.title = t('whereToGet');
+  whereBtn.setAttribute('aria-label', t('whereToGet'));
   const chainModal = $('.chain-modal');
   $('.chain-show').textContent = t('showOnBoard');
   $('.energy').title = t('energy');
@@ -196,9 +198,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   const view = new FieldView($('#board'), $('#storage'), {
     onTap(loc) {
       const content = getAt(state, loc);
-      if (loc.area === 'board' && state.locked.includes(loc.index)) {
+      if (loc.area === 'board' && state.fog[loc.index] === 'box') {
         view.flash(loc, 'shake');
-        deps.toast('locked');
+        deps.toast('boxHint');
         return;
       }
       if (content?.kind === 'generator' && loc.area === 'board') {
@@ -225,7 +227,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       const r = moveItem(state, from, to);
       if (!r.ok) {
         view.flash(from, 'shake');
-        if (r.reason === 'locked') deps.toast('locked');
+        if (r.reason === 'locked') deps.toast(to.area === 'board' && state.fog[to.index] === 'web' ? 'webHint' : 'locked');
         if (r.reason === 'generator_to_storage') deps.toast('generatorToStorage');
         return;
       }
@@ -235,6 +237,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       select(r.to);
       if (r.action === 'merge') {
         view.flash(r.to, 'pop');
+        if (r.freed) deps.toast('cellFreed');
         tel.once('first_merge', 'first_merge', { item: r.itemId ?? '' });
       }
       // одинаковые предметы максимального уровня меняются местами — объясняем, почему без объединения
@@ -436,7 +439,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     const levels = $('.chain-levels');
     levels.replaceChildren();
     for (const item of Object.values(ITEMS).filter((i) => i.chain === def.chain)) {
-      const chip = renderItemChip(item.id);
+      const known = item.id === itemId || state.discovered.includes(item.id);
+      const chip = known ? renderItemChip(item.id) : unknownChip(item.level);
       chip.classList.toggle('target', item.id === itemId);
       chip.classList.toggle('have', countItem(state, item.id) > 0);
       levels.appendChild(chip);
@@ -461,6 +465,14 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     chainModal.hidden = false;
   }
 
+  function unknownChip(level: number): HTMLElement {
+    const el = document.createElement('span');
+    el.className = 'chip unknown';
+    el.innerHTML = '<b></b><span>?</span>';
+    el.querySelector('b')!.textContent = String(level);
+    return el;
+  }
+
   function select(loc: Loc | null): void {
     selected = loc;
     sellArmed = false;
@@ -480,9 +492,11 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       if (users.length) detail += ` · ${t('neededFor')}: ${users.join(', ')}`;
     }
     $('.info-detail').textContent = detail;
-    const sellable = content?.kind === 'item';
+    const underWeb = selected?.area === 'board' && state.fog[selected.index] === 'web';
+    if (underWeb) detail = t('webHint');
+    const sellable = content?.kind === 'item' && !underWeb;
     sellBtn.hidden = !sellable;
-    whereBtn.hidden = !sellable;
+    whereBtn.hidden = content?.kind !== 'item';
     if (sellable) sellBtn.textContent = sellArmed ? t('sellConfirm') : `${t('sell')} +${getItem(content.itemId).sellPrice}`;
     sellBtn.classList.toggle('danger', sellArmed);
     undoBtn.hidden = !state.lastSale;

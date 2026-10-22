@@ -1,10 +1,10 @@
-import { BOARD_SIZE, LOCKED_GROUPS, START_GENERATORS } from '../content/board';
+import { parseLayout, type Fog } from '../content/board';
 import { STORAGE_CAPACITY } from '../content/orders';
 import { ENERGY_START } from './energy';
 import { initialCollections, type ChestResult, type SetProgress } from './collections';
 import { emptyAdRewards, type AdRewardState } from './ads';
 
-export const SCHEMA_VERSION = 7;
+export const SCHEMA_VERSION = 8;
 
 export interface ItemInstance {
   uid: number;
@@ -28,8 +28,10 @@ export interface GameState {
   schemaVersion: number;
   /** Содержимое клеток по индексу row * cols + col. */
   cells: (CellContent | null)[];
-  /** Индексы закрытых клеток. */
-  locked: number[];
+  /** Туман по клеткам: паутина (предмет виден, освобождается мерджем), коробка (скрыто) или null — открыто. */
+  fog: (Fog | null)[];
+  /** Предметы, которые игрок уже видел: в окне цепочки остальные показаны как «?». */
+  discovered: string[];
   /** Ячейки склада; длина массива — текущая вместимость. */
   storage: (ItemInstance | null)[];
   money: number;
@@ -63,17 +65,22 @@ export interface GameState {
 }
 
 export function createInitialState(seed: number = (Math.random() * 2 ** 32) >>> 0): GameState {
-  const cells: (CellContent | null)[] = new Array(BOARD_SIZE).fill(null);
-  for (const g of START_GENERATORS) {
-    cells[g.cell] = { kind: 'generator', generatorId: g.generatorId };
-  }
+  const layout = parseLayout();
+  let nextUid = 1;
+  const cells: (CellContent | null)[] = layout.map((c) => {
+    if (c.generatorId) return { kind: 'generator', generatorId: c.generatorId };
+    if (c.itemId) return { kind: 'item', uid: nextUid++, itemId: c.itemId };
+    return null;
+  });
+  const discovered = [...new Set(layout.filter((c) => c.fog === 'web' && c.itemId).map((c) => c.itemId!))];
   return {
     schemaVersion: SCHEMA_VERSION,
     cells,
-    locked: LOCKED_GROUPS.flatMap((g) => g.cells),
+    fog: layout.map((c) => c.fog),
+    discovered,
     storage: new Array(STORAGE_CAPACITY).fill(null),
     money: 0,
-    nextUid: 1,
+    nextUid,
     completedOrders: [],
     completedProjects: [],
     lastSale: null,

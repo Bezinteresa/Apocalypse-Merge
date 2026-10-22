@@ -1,5 +1,6 @@
+import { openBoard } from './testUtils';
 import { describe, expect, it } from 'vitest';
-import { LOCKED_GROUPS, START_GENERATORS } from '../content/board';
+import { START_GENERATORS } from '../content/board';
 import { GENERATORS, getItem } from '../content/items';
 import { ORDERS, PROJECTS } from '../content/orders';
 import {
@@ -20,7 +21,7 @@ import {
   whereToGet,
   ingredientCells,
 } from './rules';
-import { createInitialState, type GameState } from './state';
+import type { GameState } from './state';
 
 const GEN_CELL = { T: START_GENERATORS[0].cell, M: START_GENERATORS[1].cell } as const;
 
@@ -62,7 +63,7 @@ function craft(state: GameState, itemId: string): GameState {
 
 describe('storage', () => {
   it('moves items between board and storage and merges inside storage', () => {
-    let s = put(put(createInitialState(), 0, 'T01'), 1, 'T01');
+    let s = put(put(openBoard(), 0, 'T01'), 1, 'T01');
     let r = moveItem(s, board(0), slot(0));
     expect(r.ok && r.action).toBe('move');
     if (!r.ok) return;
@@ -77,7 +78,7 @@ describe('storage', () => {
   });
 
   it('never puts a generator into storage', () => {
-    const s = putStorage(createInitialState(), 0, 'T01');
+    const s = putStorage(openBoard(), 0, 'T01');
     expect(moveItem(s, board(GEN_CELL.T), slot(1))).toEqual({ ok: false, reason: 'generator_to_storage' });
     expect(moveItem(s, slot(0), board(GEN_CELL.T))).toEqual({ ok: false, reason: 'generator_to_storage' });
   });
@@ -85,7 +86,7 @@ describe('storage', () => {
 
 describe('selling', () => {
   it('sells an item, undoes the last sale, and blocks generators', () => {
-    const s = put(createInitialState(), 3, 'T03');
+    const s = put(openBoard(), 3, 'T03');
     const sold = sellItem(s, board(3));
     expect(sold.ok).toBe(true);
     if (!sold.ok) return;
@@ -102,7 +103,7 @@ describe('selling', () => {
   });
 
   it('loses the undo after the next game action', () => {
-    const sold = sellItem(put(createInitialState(), 3, 'T01'), board(3));
+    const sold = sellItem(put(openBoard(), 3, 'T01'), board(3));
     if (!sold.ok) throw new Error();
     const spawned = spawnFromGenerator(sold.state, GEN_CELL.M);
     if (!spawned.ok) throw new Error();
@@ -113,7 +114,7 @@ describe('selling', () => {
 
 describe('orders', () => {
   it('shows only O01 before the first delivery, then O02 and R01', () => {
-    const s = createInitialState();
+    const s = openBoard();
     expect(availableOrders(s).map((o) => o.id)).toEqual(['O01']);
     expect(currentProject(s)).toBeNull();
     const after = { ...s, completedOrders: ['O01'] };
@@ -122,7 +123,7 @@ describe('orders', () => {
   });
 
   it('delivers once, atomically, preferring board items over storage', () => {
-    const s = putStorage(put(createInitialState(), 0, 'T02'), 0, 'T02');
+    const s = putStorage(put(openBoard(), 0, 'T02'), 0, 'T02');
     const r = deliverOrder(s, 'O01');
     expect(r.ok).toBe(true);
     if (!r.ok) return;
@@ -134,7 +135,7 @@ describe('orders', () => {
   });
 
   it('rejects missing items without changing state', () => {
-    const s = put(createInitialState(), 0, 'T01');
+    const s = put(openBoard(), 0, 'T01');
     const before = JSON.stringify(s);
     expect(deliverOrder(s, 'O01')).toEqual({ ok: false, reason: 'missing_items' });
     expect(deliverOrder(s, 'O03')).toEqual({ ok: false, reason: 'unavailable' });
@@ -143,7 +144,7 @@ describe('orders', () => {
   });
 
   it('takes a storage item when the board has none', () => {
-    const s = { ...putStorage(createInitialState(), 2, 'M03'), completedOrders: ['O01'] };
+    const s = { ...putStorage(openBoard(), 2, 'M03'), completedOrders: ['O01'] };
     const r = deliverOrder(s, 'O02');
     expect(r.ok && r.state.storage[2]).toBeNull();
   });
@@ -151,7 +152,7 @@ describe('orders', () => {
 
 describe('projects', () => {
   it('requires the current project, money and items', () => {
-    let s = { ...put(createInitialState(), 0, 'M02'), completedOrders: ['O01'] };
+    let s = { ...put(openBoard(), 0, 'M02'), completedOrders: ['O01'] };
     expect(completeProject(s, 'R02')).toEqual({ ok: false, reason: 'not_current' });
     expect(completeProject(s, 'R01')).toEqual({ ok: false, reason: 'no_money' });
     s = { ...s, money: 10 };
@@ -165,18 +166,8 @@ describe('projects', () => {
     expect(availableOrders(r.state).map((o) => o.id)).toEqual(['O02', 'O03']);
   });
 
-  it('R02 unlocks its group of cells', () => {
-    const s = { ...put(put(createInitialState(), 0, 'T02'), 1, 'M03'), money: 25, completedOrders: ['O01'], completedProjects: ['R01'] };
-    const r = completeProject(s, 'R02');
-    expect(r.ok).toBe(true);
-    if (!r.ok) return;
-    expect(r.unlockedCells).toEqual(LOCKED_GROUPS[0].cells);
-    expect(r.state.locked).toHaveLength(9);
-    for (const c of LOCKED_GROUPS[0].cells) expect(r.state.locked).not.toContain(c);
-  });
-
   it('plays the whole chapter with money matching the catalog table', () => {
-    let s = createInitialState();
+    let s = openBoard();
     const run = (r: { ok: true; state: GameState } | { ok: false; reason: string }) => {
       if (!r.ok) throw new Error(r.reason);
       s = r.state;
@@ -212,7 +203,6 @@ describe('projects', () => {
     expect(isChapterComplete(s)).toBe(true);
     expect(areAllOrdersDone(s)).toBe(true);
     expect(currentProject(s)).toBeNull();
-    expect(s.locked).toEqual([]);
     expect(s.storage).toHaveLength(10);
     expect(s.incoming).toEqual([]);
     expect(s.cells.filter((c) => c?.kind === 'generator')).toHaveLength(4);
@@ -220,7 +210,7 @@ describe('projects', () => {
   });
 
   it('R03 places the provision crate; without space it waits in incoming', () => {
-    const base = { ...put(put(createInitialState(), 0, 'T03'), 1, 'M03'), money: 35, completedOrders: ['O01'], completedProjects: ['R01', 'R02'] };
+    const base = { ...put(put(openBoard(), 0, 'T03'), 1, 'M03'), money: 35, completedOrders: ['O01'], completedProjects: ['R01', 'R02'] };
     const placed = completeProject(base, 'R03');
     expect(placed.ok && placed.placedCell).not.toBeNull();
     if (!placed.ok) return;
@@ -229,7 +219,7 @@ describe('projects', () => {
 
     // заполнить все свободные клетки, оставив T03 и M03 для проекта
     let full = base;
-    for (let i = 2; i < full.cells.length; i++) if (full.cells[i] === null && !full.locked.includes(i)) full = put(full, i, 'T06');
+    for (let i = 2; i < full.cells.length; i++) if (full.cells[i] === null && !full.fog[i]) full = put(full, i, 'T06');
     const waiting = completeProject(full, 'R03');
     expect(waiting.ok).toBe(true);
     if (!waiting.ok) return;
@@ -243,7 +233,7 @@ describe('projects', () => {
   });
 
   it('R04 requires the provision crate on the board', () => {
-    const s = { ...put(put(createInitialState(), 0, 'T03'), 1, 'M04'), money: 50, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'], incoming: ['G_PROVISION'] };
+    const s = { ...put(put(openBoard(), 0, 'T03'), 1, 'M04'), money: 50, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'], incoming: ['G_PROVISION'] };
     expect(completeProject(s, 'R04')).toEqual({ ok: false, reason: 'generator_missing' });
     const placed = placeIncoming(s);
     if (!placed.ok) throw new Error();
@@ -254,14 +244,14 @@ describe('projects', () => {
 
 describe('where to get', () => {
   it('points to the generator on board, in incoming, or the project that unlocks it', () => {
-    const s = createInitialState();
+    const s = openBoard();
     expect(whereToGet(s, 'T03')).toEqual({ status: 'on_board', generatorId: 'G_TOOL', cell: GEN_CELL.T });
     expect(whereToGet(s, 'P02')).toEqual({ status: 'locked', generatorId: 'G_PROVISION', unlockProject: 'R03' });
     expect(whereToGet({ ...s, incoming: ['G_ELECTRIC'] }, 'E04')).toEqual({ status: 'incoming', generatorId: 'G_ELECTRIC' });
   });
 
   it('lists lower items of the same chain as ingredients', () => {
-    const s = put(put(put(createInitialState(), 0, 'T01'), 1, 'T03'), 2, 'M01');
+    const s = put(put(put(openBoard(), 0, 'T01'), 1, 'T03'), 2, 'M01');
     expect(ingredientCells(s, 'T02')).toEqual([0]);
     expect(ingredientCells(s, 'T04')).toEqual([0, 1]);
   });

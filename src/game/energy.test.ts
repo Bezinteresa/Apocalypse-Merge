@@ -1,11 +1,12 @@
+import { openBoard } from './testUtils';
 import { describe, expect, it } from 'vitest';
 import { START_GENERATORS } from '../content/board';
 import { ENERGY_REGEN_MS, msToNextEnergy, regenerate } from './energy';
 import { completeProject, spawnFromGenerator } from './rules';
-import { createInitialState, type GameState } from './state';
+import type { GameState } from './state';
 
 const TOOL = START_GENERATORS[0].cell;
-const at = (energy: number, energyUpdatedAt: number): GameState => ({ ...createInitialState(), energy, energyUpdatedAt });
+const at = (energy: number, energyUpdatedAt: number): GameState => ({ ...openBoard(), energy, energyUpdatedAt });
 
 describe('energy', () => {
   it('spawning costs 1 and refuses at zero without changing state', () => {
@@ -18,7 +19,7 @@ describe('energy', () => {
   it('a full board refuses before charging energy', () => {
     let s = at(100, 0);
     for (let i = 0; i < s.cells.length; i++) {
-      if (s.cells[i] === null && !s.locked.includes(i)) {
+      if (s.cells[i] === null && !s.fog[i]) {
         s = { ...s, cells: s.cells.map((c, j) => (j === i ? { kind: 'item', uid: s.nextUid, itemId: 'T01' } : c)), nextUid: s.nextUid + 1 };
       }
     }
@@ -68,7 +69,7 @@ describe('energy', () => {
   it('R02 adds 50 energy on top of the current amount', () => {
     const s: GameState = {
       ...at(100, 0),
-      cells: createInitialState().cells.map((c, i) => (i === 0 ? { kind: 'item', uid: 1, itemId: 'T02' } : i === 1 ? { kind: 'item', uid: 2, itemId: 'M03' } : c)),
+      cells: openBoard().cells.map((c, i) => (i === 0 ? { kind: 'item', uid: 1, itemId: 'T02' } : i === 1 ? { kind: 'item', uid: 2, itemId: 'M03' } : c)),
       nextUid: 3,
       money: 25,
       completedOrders: ['O01'],

@@ -1,6 +1,7 @@
+import { openBoard } from '../game/testUtils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { spawnFromGenerator } from '../game/rules';
-import { createInitialState, type GameState } from '../game/state';
+import type { GameState } from '../game/state';
 import { START_GENERATORS } from '../content/board';
 import { PREV_KEY, SAVE_KEY, SaveFormatError, SaveStore, type StorageBackend } from './saveStore';
 
@@ -24,7 +25,7 @@ class MemoryBackend implements StorageBackend {
 }
 
 function progressed(): GameState {
-  const r = spawnFromGenerator(createInitialState(), START_GENERATORS[0].cell);
+  const r = spawnFromGenerator(openBoard(), START_GENERATORS[0].cell);
   if (!r.ok) throw new Error();
   return r.state;
 }
@@ -49,7 +50,7 @@ describe('SaveStore', () => {
     const b = new MemoryBackend();
     const store = new SaveStore(b, 500);
     const s = progressed();
-    store.save(createInitialState());
+    store.save(openBoard());
     store.save(s);
     expect(b.setCalls).toBe(0);
     await vi.advanceTimersByTimeAsync(600);
@@ -78,7 +79,7 @@ describe('SaveStore', () => {
     b.data[SAVE_KEY] = v1;
     const r = await new SaveStore(b).load();
     expect(r.source).toBe('main');
-    expect(r.state.schemaVersion).toBe(7);
+    expect(r.state.schemaVersion).toBe(8);
     expect(r.state.incoming).toEqual([]);
     expect(r.state.energy).toBe(100);
     expect(r.state.chests).toEqual([]);
@@ -90,10 +91,10 @@ describe('SaveStore', () => {
 
   it('v3 → v4 delivers the R03 generator that the stage 2 slice only announced', async () => {
     const b = new MemoryBackend();
-    const { incoming: _i, energy: _e, energyUpdatedAt: _eu, energyUnlimited: _el, collections: _c, tokens: _t, chests: _ch, rng: _r, lastChest: _lc, adRewards: _ad, ...v3 } = { ...createInitialState(), schemaVersion: 3, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'] };
+    const { incoming: _i, energy: _e, energyUpdatedAt: _eu, energyUnlimited: _el, collections: _c, tokens: _t, chests: _ch, rng: _r, lastChest: _lc, adRewards: _ad, ...v3 } = { ...openBoard(), schemaVersion: 3, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'] };
     b.data[SAVE_KEY] = v3;
     const r = await new SaveStore(b).load();
-    expect(r.state.schemaVersion).toBe(7);
+    expect(r.state.schemaVersion).toBe(8);
     expect(r.state.incoming).toEqual(['G_PROVISION']);
     // сундуки задним числом: R01, R02, R03
     expect(r.state.chests).toEqual(['CH_WORN', 'CH_WORN', 'CH_WORN']);
@@ -103,7 +104,7 @@ describe('SaveStore', () => {
 
   it('refuses saves from a newer schema', async () => {
     const b = new MemoryBackend();
-    b.data[SAVE_KEY] = { ...createInitialState(), schemaVersion: 99 };
+    b.data[SAVE_KEY] = { ...openBoard(), schemaVersion: 99 };
     await expect(new SaveStore(b).load()).rejects.toBeInstanceOf(SaveFormatError);
   });
 
@@ -142,7 +143,7 @@ describe('SaveStore', () => {
   it('keeps the previous saved state as backup copy', async () => {
     const b = new MemoryBackend();
     const store = new SaveStore(b, 0);
-    const first = createInitialState();
+    const first = openBoard();
     const second = progressed();
     store.save(first);
     await vi.advanceTimersByTimeAsync(10);

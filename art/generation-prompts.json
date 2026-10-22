@@ -475,8 +475,15 @@
       "file": "ui/cell_locked.png",
       "w": 128,
       "h": 128,
-      "subject": "A closed cardboard box taped shut, slightly dusty, seen from above, filling the whole tile.",
+      "subject": "A closed cardboard box taped shut, slightly dusty with a few cobweb strands, seen from above, filling the whole tile. Covers hidden board cells.",
       "extra": "Square game board tile seen straight from above, fills the whole frame edge to edge, NOT transparent, no text, no border shadow."
+    },
+    {
+      "file": "ui/web.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Dusty white cobweb overlay for a square game board tile: thin strands anchored in the corners and along the edges, the center mostly clear so an item underneath stays visible.",
+      "extra": "Overlay only: transparent background, semi-transparent white strands, no object, no frame, no text, fills the whole square."
     }
   ]
 }

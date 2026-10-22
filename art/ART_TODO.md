@@ -1,6 +1,6 @@
 # Что сгенерировать сейчас
 
-Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 21:56:09). Генерируй **только** картинки из этого списка — остальные уже готовы.
+Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 22:21:19). Генерируй **только** картинки из этого списка — остальные уже готовы.
 
 Стиль: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls
 Референс: art/reference/style.png (прикладывай к каждой генерации, когда он появится)
@@ -12,7 +12,7 @@
 Проверь всё разом: `python art/verify_generated_assets.py` (превью в art/generated-previews).
 После этого снова запусти `node art/art_todo.mjs` — сделанное пропадёт из списка.
 
-Осталось: **60**
+Осталось: **61**
 
 ## items/T03.png — 256×256
 
@@ -383,5 +383,11 @@
 ## ui/cell_locked.png — 128×128
 
 - Почему: новая картинка
-- Что: A closed cardboard box taped shut, slightly dusty, seen from above, filling the whole tile.
+- Что: A closed cardboard box taped shut, slightly dusty with a few cobweb strands, seen from above, filling the whole tile. Covers hidden board cells.
 - Кадр: Square game board tile seen straight from above, fills the whole frame edge to edge, NOT transparent, no text, no border shadow.
+
+## ui/web.png — 256×256
+
+- Почему: новая картинка
+- Что: Dusty white cobweb overlay for a square game board tile: thin strands anchored in the corners and along the edges, the center mostly clear so an item underneath stays visible.
+- Кадр: Overlay only: transparent background, semi-transparent white strands, no object, no frame, no text, fills the whole square.

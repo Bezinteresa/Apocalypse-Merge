@@ -1,7 +1,8 @@
+import { openBoard } from './testUtils';
 import { describe, expect, it } from 'vitest';
 import { START_GENERATORS } from '../content/board';
 import { completeProject, deliverOrder, moveContent, spawnFromGenerator } from './rules';
-import { createInitialState, type GameState } from './state';
+import type { GameState } from './state';
 import { currentTutorialStep, markDialogSeen, pendingDialog } from './tutorial';
 
 const TOOL = START_GENERATORS[0].cell;
@@ -26,7 +27,7 @@ const step = (s: GameState) => currentTutorialStep(s)?.id ?? null;
 
 describe('tutorial', () => {
   it('follows the player actions up to R01', () => {
-    let s = createInitialState();
+    let s = openBoard();
     expect(step(s)).toBe('spawn_tools');
     s = spawn(s, TOOL);
     expect(step(s)).toBe('spawn_tools');
@@ -43,7 +44,7 @@ describe('tutorial', () => {
   });
 
   it('does not block a step whose action was done in advance', () => {
-    let s = createInitialState();
+    let s = openBoard();
     s = mergeFirstPair(spawn(spawn(s, TOOL), TOOL), 'T01');
     s = mergeFirstPair(spawn(spawn(s, MAT), MAT), 'M01');
     // T02 и M02 уже есть: обучение сразу просит сдать заказ
@@ -53,7 +54,7 @@ describe('tutorial', () => {
   });
 
   it('resumes from the same step after a save round-trip', () => {
-    const s = spawn(spawn(createInitialState(), TOOL), TOOL);
+    const s = spawn(spawn(openBoard(), TOOL), TOOL);
     const reloaded = JSON.parse(JSON.stringify(s)) as GameState;
     expect(step(reloaded)).toBe('merge_t02');
   });
@@ -61,7 +62,7 @@ describe('tutorial', () => {
 
 describe('dialogs', () => {
   it('shows the intro once and the next scene after O01', () => {
-    let s = createInitialState();
+    let s = openBoard();
     expect(pendingDialog(s)?.id).toBe('D_INTRO');
     s = markDialogSeen(s, 'D_INTRO');
     expect(markDialogSeen(s, 'D_INTRO')).toBe(s);

@@ -4,6 +4,8 @@ import { triggeredDialogIds } from '../game/tutorial';
 import { ENERGY_START } from '../game/energy';
 import { initialCollections } from '../game/collections';
 import { emptyAdRewards } from '../game/ads';
+import { BOARD_SIZE } from '../content/board';
+import { ITEMS } from '../content/items';
 import { CHEST_SOURCES } from '../content/collections';
 import { SCHEMA_VERSION, createInitialState, type GameState } from '../game/state';
 
@@ -87,6 +89,17 @@ export function migrate(raw: unknown): GameState | null {
   if (data.schemaVersion === 6) {
     // v7: лимит наград за рекламу
     data = { ...data, schemaVersion: 7, adRewards: emptyAdRewards() };
+  }
+  if (data.schemaVersion === 7) {
+    // v8: туман поля вместо закрытых проектами клеток. Прежние закрытые клетки пусты — у сохранения поле открыто целиком.
+    // Найденными считаются предметы игрока и все уровни ниже них.
+    const slots = [...((data.cells as unknown[]) ?? []), ...((data.storage as unknown[]) ?? [])] as ({ itemId?: string } | null)[];
+    const owned = slots.flatMap((c) => (c?.itemId ? [c.itemId] : []));
+    const discovered = Object.values(ITEMS)
+      .filter((d) => owned.some((id) => ITEMS[id] && ITEMS[id].chain === d.chain && ITEMS[id].level >= d.level))
+      .map((d) => d.id);
+    const { locked: _locked, ...rest } = data;
+    data = { ...rest, schemaVersion: 8, fog: new Array(BOARD_SIZE).fill(null), discovered };
   }
   return data.schemaVersion === SCHEMA_VERSION && validateState(data) ? data : null;
 }

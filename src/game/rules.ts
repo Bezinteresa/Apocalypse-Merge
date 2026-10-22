@@ -1,4 +1,4 @@
-import { BOARD_COLS, BOARD_SIZE, LOCKED_GROUPS, cellIndex } from '../content/board';
+import { BOARD_COLS, BOARD_SIZE, cellIndex, neighbors } from '../content/board';
 import { GENERATORS, ITEMS, getItem, type ChainId } from '../content/items';
 import { ORDERS, PROJECTS, getOrder, getProject, type OrderDef, type ProjectDef, type Requirement } from '../content/orders';
 import type { CellContent, GameState, ItemInstance, Loc } from './state';
@@ -15,7 +15,7 @@ export type SpawnResult =
   | { ok: false; reason: 'not_generator' | 'board_full' | 'no_energy' };
 
 export type MoveResult =
-  | { ok: true; state: GameState; action: 'move' | 'swap' | 'merge'; to: Loc; itemId?: string }
+  | { ok: true; state: GameState; action: 'move' | 'swap' | 'merge'; to: Loc; itemId?: string; freed?: boolean }
   | { ok: false; reason: 'same_cell' | 'empty_source' | 'locked' | 'out_of_bounds' | 'generator_to_storage' };
 
 export type SellResult =
@@ -29,7 +29,7 @@ export type DeliverResult =
   | { ok: false; reason: 'unknown' | 'unavailable' | 'missing_items' };
 
 export type ProjectResult =
-  | { ok: true; state: GameState; project: ProjectDef; unlockedCells: number[]; placedCell: number | null }
+  | { ok: true; state: GameState; project: ProjectDef; placedCell: number | null }
   | { ok: false; reason: 'unknown' | 'not_current' | 'no_money' | 'missing_items' | 'generator_missing' };
 
 export type PlaceResult = { ok: true; state: GameState; cell: number; generatorId: string } | { ok: false; reason: 'empty' | 'board_full' };
@@ -38,7 +38,8 @@ function clone(state: GameState): GameState {
   return {
     ...state,
     cells: state.cells.slice(),
-    locked: state.locked.slice(),
+    fog: state.fog.slice(),
+    discovered: state.discovered.slice(),
     storage: state.storage.slice(),
     completedOrders: state.completedOrders.slice(),
     completedProjects: state.completedProjects.slice(),
@@ -64,8 +65,35 @@ function sameLoc(a: Loc, b: Loc): boolean {
 export const board = (index: number): Loc => ({ area: 'board', index });
 export const slot = (index: number): Loc => ({ area: 'storage', index });
 
+/** Клетка под туманом (паутина или коробка): её нельзя занять, сдвинуть или продать. */
 export function isLocked(state: GameState, cell: number): boolean {
-  return state.locked.includes(cell);
+  return state.fog[cell] != null;
+}
+
+export function isWeb(state: GameState, cell: number): boolean {
+  return state.fog[cell] === 'web';
+}
+
+function discover(state: GameState, itemId: string): void {
+  if (!state.discovered.includes(itemId)) state.discovered.push(itemId);
+}
+
+/**
+ * Клетка стала открытой: соседние коробки превращаются в паутину и показывают предмет,
+ * пустая коробка открывается сразу и раскрывает своих соседей.
+ */
+function openCell(state: GameState, cell: number): void {
+  state.fog[cell] = null;
+  for (const n of neighbors(cell)) {
+    if (state.fog[n] !== 'box') continue;
+    const content = state.cells[n];
+    if (content?.kind === 'item') {
+      state.fog[n] = 'web';
+      discover(state, content.itemId);
+    } else {
+      openCell(state, n);
+    }
+  }
 }
 
 export function getAt(state: GameState, loc: Loc): CellContent | null {
@@ -115,6 +143,7 @@ export function spawnFromGenerator(state: GameState, generatorCell: number, now:
   const next = clone(spendSpawnEnergy(charged));
   next.cells[target] = { kind: 'item', uid: next.nextUid, itemId };
   next.nextUid += 1;
+  discover(next, itemId);
   return { ok: true, state: next, cell: target, itemId };
 }
 
@@ -133,10 +162,11 @@ export function moveItem(state: GameState, from: Loc, to: Loc): MoveResult {
   if (sameLoc(from, to)) return { ok: false, reason: 'same_cell' };
   const source = getAt(state, from);
   if (!source) return { ok: false, reason: 'empty_source' };
-  if ((from.area === 'board' && isLocked(state, from.index)) || (to.area === 'board' && isLocked(state, to.index))) {
-    return { ok: false, reason: 'locked' };
-  }
+  if (from.area === 'board' && isLocked(state, from.index)) return { ok: false, reason: 'locked' };
   const target = getAt(state, to);
+  const toWeb = to.area === 'board' && isWeb(state, to.index);
+  // на предмет под паутиной можно только объединить такой же; коробку не трогаем
+  if (to.area === 'board' && isLocked(state, to.index) && !(toWeb && canMerge(source, target))) return { ok: false, reason: 'locked' };
 
   if (canMerge(source, target)) {
     const nextId = getItem((source as ItemInstance).itemId).nextId!;
@@ -144,7 +174,9 @@ export function moveItem(state: GameState, from: Loc, to: Loc): MoveResult {
     setAt(next, from, null);
     setAt(next, to, { kind: 'item', uid: next.nextUid, itemId: nextId });
     next.nextUid += 1;
-    return { ok: true, state: next, action: 'merge', to, itemId: nextId };
+    discover(next, nextId);
+    if (toWeb) openCell(next, to.index);
+    return { ok: true, state: next, action: 'merge', to, itemId: nextId, freed: toWeb };
   }
 
   const movesGeneratorToStorage = (to.area === 'storage' && source.kind === 'generator') || (from.area === 'storage' && target?.kind === 'generator');
@@ -315,8 +347,6 @@ export function completeProject(state: GameState, projectId: string): ProjectRes
   for (const loc of sources) setAt(next, loc, null);
   next.money -= project.cost;
   next.completedProjects.push(project.id);
-  const unlockedCells = LOCKED_GROUPS.filter((g) => g.unlockedBy === project.id).flatMap((g) => g.cells);
-  next.locked = next.locked.filter((c) => !unlockedCells.includes(c));
   if (project.storageCapacity && project.storageCapacity > next.storage.length) {
     next.storage = next.storage.concat(new Array(project.storageCapacity - next.storage.length).fill(null));
   }
@@ -330,7 +360,7 @@ export function completeProject(state: GameState, projectId: string): ProjectRes
       placedCell = placed.cell;
     }
   }
-  return { ok: true, state: result, project, unlockedCells, placedCell };
+  return { ok: true, state: result, project, placedCell };
 }
 
 // ---------- Где получить ----------
@@ -399,7 +429,8 @@ export function validateState(raw: unknown): raw is GameState {
   const s = raw as Partial<GameState>;
   if (typeof s.schemaVersion !== 'number') return false;
   if (!Array.isArray(s.cells) || s.cells.length !== BOARD_SIZE) return false;
-  if (!Array.isArray(s.locked) || !s.locked.every((c) => inBounds(c))) return false;
+  if (!Array.isArray(s.fog) || s.fog.length !== BOARD_SIZE || !s.fog.every((f) => f === null || f === 'web' || f === 'box')) return false;
+  if (!Array.isArray(s.discovered) || !s.discovered.every((id) => !!ITEMS[id])) return false;
   if (!Array.isArray(s.storage) || s.storage.length < 1 || s.storage.length > 50) return false;
   if (typeof s.money !== 'number' || !Number.isFinite(s.money) || s.money < 0) return false;
   if (typeof s.nextUid !== 'number' || !Number.isInteger(s.nextUid) || s.nextUid < 1) return false;
