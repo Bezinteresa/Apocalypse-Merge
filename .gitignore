@@ -3,3 +3,5 @@ dist/
 release/
 *.zip
 .DS_Store
+art/generated-previews/
+art/generated-assets-report.json

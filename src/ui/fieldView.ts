@@ -3,6 +3,7 @@ import { CHAINS, GENERATORS, getItem } from '../content/items';
 import { t, tx } from '../i18n';
 import { canMerge, getAt } from '../game/rules';
 import type { CellContent, GameState, Loc } from '../game/state';
+import { generatorSprite, hasSprite, itemSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
 
 // Поле и склад с общим перетаскиванием. Условная графика: цветные плашки с подписью и номером уровня.
 // Отображение только показывает состояние и передаёт намерения игрока в контроллер.
@@ -45,6 +46,10 @@ export class FieldView {
   ) {
     boardRoot.classList.add('board');
     boardRoot.style.setProperty('--cols', String(BOARD_COLS));
+    // плитки поля из графики, если они уже есть
+    for (const [name, prop] of [['cell', '--cell-img'], ['cell_locked', '--cell-locked-img']] as const) {
+      if (hasSprite(uiSprite(name))) document.documentElement.style.setProperty(prop, `url("${spriteUrl(uiSprite(name))}")`);
+    }
     for (let i = 0; i < BOARD_SIZE; i++) this.cellEls.push(this.createCell(boardRoot, 'board', i));
     storageRoot.classList.add('storage');
     for (const root of [boardRoot, storageRoot]) {
@@ -208,6 +213,8 @@ export function renderItemChip(itemId: string): HTMLElement {
   el.innerHTML = '<b></b><span></span>';
   el.querySelector('b')!.textContent = String(def.level);
   el.querySelector('span')!.textContent = tx(def.name);
+  const img = spriteImg(itemSprite(itemId), 'chip-img');
+  if (img) el.prepend(img);
   return el;
 }
 
@@ -221,6 +228,7 @@ function renderContent(content: CellContent): HTMLElement {
     el.innerHTML = `<span class="badge">⟳</span><span class="label"></span>`;
     // в клетке — короткая подпись цепочки, полное название генератора выводится в панели информации
     el.querySelector('.label')!.textContent = tx(CHAINS[out.chain].name);
+    withArt(el, generatorSprite(def.id));
     return el;
   }
   const def = getItem(content.itemId);
@@ -230,7 +238,16 @@ function renderContent(content: CellContent): HTMLElement {
   el.querySelector('.badge')!.textContent = String(def.level);
   el.querySelector('.label')!.textContent = tx(def.name);
   if (!def.nextId) el.classList.add('max');
+  withArt(el, itemSprite(def.id));
   return el;
+}
+
+/** Если для слота есть картинка, плашка показывает её; номер уровня остаётся маленьким значком. */
+function withArt(el: HTMLElement, file: string): void {
+  const img = spriteImg(file, 'piece-img');
+  if (!img) return;
+  el.classList.add('has-art');
+  el.prepend(img);
 }
 
 export function describeContent(content: CellContent | null): { title: string; detail: string } | null {

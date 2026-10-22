@@ -28,6 +28,7 @@ import type { DialogDef } from '../content/dialogs';
 import { FieldView, describeContent, renderItemChip } from './fieldView';
 import type { Telemetry } from '../platform/telemetry';
 import { createAlbum } from './albumView';
+import { hasSprite, portraitSprite, shopSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
 import { CHESTS } from '../content/collections';
 
 // Экран игры: поле, склад, заказы, информация о предмете и сцена магазина.
@@ -73,6 +74,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     </footer>
     <section class="shop" hidden>
       <header class="shop-head"><h2></h2><button class="btn small back-btn"></button></header>
+      <img class="shop-scene" alt="" hidden>
       <ol class="zones"></ol>
       <div class="project-card"></div>
     </section>
@@ -80,7 +82,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       <header class="shop-head"><h2></h2><button class="btn small back-btn album-back"></button></header>
       <div class="album-body"></div>
     </section>
-    <div class="dialog" hidden><div class="dialog-box"><div class="dialog-speaker"></div><p class="dialog-text"></p>
+    <div class="dialog" hidden><div class="dialog-box"><img class="dialog-portrait" alt="" hidden><div class="dialog-speaker"></div><p class="dialog-text"></p>
       <div class="dialog-actions"><button class="btn small ghost dialog-skip"></button><button class="btn small dialog-next"></button></div></div></div>
     <div class="modal" hidden><div class="modal-box"><h3></h3><p></p><button class="btn modal-close"></button></div></div>
     <div class="modal chain-modal" hidden><div class="modal-box chain-box">
@@ -122,6 +124,18 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   const chainModal = $('.chain-modal');
   $('.chain-show').textContent = t('showOnBoard');
   $('.energy').title = t('energy');
+  // иконки валют из графики заменяют значки-символы
+  for (const [sel, name] of [['.energy > span', 'energy'], ['.money', 'coin']] as const) {
+    const icon = spriteImg(uiSprite(name), 'ui-icon');
+    if (!icon) continue;
+    const host = $(sel);
+    if (sel === '.money') {
+      host.classList.add('has-icon');
+      host.prepend(icon);
+    } else {
+      host.replaceChildren(icon);
+    }
+  }
   let hintTimer: ReturnType<typeof setTimeout> | undefined;
   const tel = deps.telemetry;
   const albumEl = $('.album');
@@ -307,6 +321,10 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     if (!dialog) return;
     const line = dialog.def.lines[dialog.line];
     $('.dialog-speaker').textContent = tx(VISITORS[line.speaker].name);
+    const portrait = $<HTMLImageElement>('.dialog-portrait');
+    const file = portraitSprite(line.speaker);
+    portrait.hidden = !hasSprite(file);
+    if (!portrait.hidden) portrait.src = spriteUrl(file);
     $('.dialog-text').textContent = tx(line.text);
     $('.dialog-next').textContent = dialog.line < dialog.def.lines.length - 1 ? t('next') : t('close');
   }
@@ -495,6 +513,11 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   }
 
   function renderShop(): void {
+    const scene = $<HTMLImageElement>('.shop-scene');
+    // пока сцены дорисовываются, показываем ближайшее готовое более раннее состояние
+    const sceneFile = [...state.completedProjects.map((id) => shopSprite(id)).reverse(), shopSprite(null)].find(hasSprite);
+    scene.hidden = !sceneFile;
+    if (sceneFile && !scene.src.endsWith(sceneFile)) scene.src = spriteUrl(sceneFile);
     const zones = $('.zones');
     zones.replaceChildren();
     const current = currentProject(state);

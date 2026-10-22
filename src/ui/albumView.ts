@@ -11,6 +11,7 @@ import {
   type ChestResult,
 } from '../game/collections';
 import type { GameState } from '../game/state';
+import { cardSprite, chestSprite, spriteImg } from './sprites';
 
 // Экран альбома: сундуки, карты набора, обмен жетонов и награда за набор.
 // Результат открытия принимается и сохраняется до показа окна с выдачами.
@@ -84,6 +85,8 @@ export function createAlbum(root: HTMLElement, ctx: AlbumContext): { render(): v
       btn.className = 'btn small';
       btn.textContent = t('openChest');
       btn.onclick = () => open(state.chests.indexOf(chestId));
+      const icon = spriteImg(chestSprite(chestId), 'chest-img');
+      if (icon) row.append(icon);
       row.append(info, btn);
       chestBox.appendChild(row);
     }
@@ -101,6 +104,8 @@ export function createAlbum(root: HTMLElement, ctx: AlbumContext): { render(): v
       tile.classList.toggle('done', done);
       tile.style.setProperty('--rarity', rarity.color);
       tile.innerHTML = '<small></small><b></b><div class="card-bar"><span></span></div><div class="card-count"></div>';
+      const art = spriteImg(cardSprite(card.id), 'card-img');
+      if (art) tile.prepend(art);
       tile.querySelector('small')!.textContent = tx(rarity.name);
       tile.querySelector('b')!.textContent = tx(card.name);
       (tile.querySelector('.card-bar span') as HTMLElement).style.width = `${Math.min(100, (100 * (done ? rarity.threshold : shards)) / rarity.threshold)}%`;
