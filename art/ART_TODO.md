@@ -1,6 +1,6 @@
 # Что сгенерировать сейчас
 
-Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:48:22). Генерируй **только** картинки из этого списка — остальные уже готовы.
+Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:57:39). Генерируй **только** картинки из этого списка — остальные уже готовы.
 
 **Порядок работы — в [art/README.md](README.md):** как собрать запрос, куда сохранить, как записать в `art/generation-log.json` и что закоммитить. Готовое исчезает из этого списка само, когда файл нужного размера лежит в `public/sprites/`.
 
@@ -14,46 +14,7 @@
 Проверь всё разом: `python art/verify_generated_assets.py` (превью в art/generated-previews).
 После этого снова запусти `node art/art_todo.mjs` — сделанное пропадёт из списка.
 
-Осталось: **32**
-
-## zones/R02_broken.png — 384×304
-
-- Почему: новая картинка
-- Что: Smashed shop counter lying on its side. Worn, dusty, clearly broken or missing, but not scary.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:304.
-
-## zones/R02_fixed.png — 384×304
-
-- Почему: новая картинка
-- Что: Restored shop counter patched with metal sheets, clean top with a small cash box. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:304.
-- Приложи как основу для правки: public/sprites/zones/R02_broken.png
-
-## zones/R03_broken.png — 192×656
-
-- Почему: новая картинка
-- Что: Tall empty broken wall shelf, planks hanging. Worn, dusty, clearly broken or missing, but not scary.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 192:656.
-
-## zones/R03_fixed.png — 192×656
-
-- Почему: новая картинка
-- Что: Fixed tall wall shelf stocked with tin cans, jars and olive-green food packs. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 192:656.
-- Приложи как основу для правки: public/sprites/zones/R03_broken.png
-
-## zones/R04_broken.png — 448×624
-
-- Почему: новая картинка
-- Что: Fallen crates and a toppled rusty rack. Worn, dusty, clearly broken or missing, but not scary.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:624.
-
-## zones/R04_fixed.png — 448×624
-
-- Почему: новая картинка
-- Что: Neat new metal racks with crates stacked in order. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:624.
-- Приложи как основу для правки: public/sprites/zones/R04_broken.png
+Осталось: **26**
 
 ## zones/R05_broken.png — 448×416
 
