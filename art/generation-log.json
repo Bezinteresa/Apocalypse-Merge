@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-22",
+  "baseCommit": "8c62f56552e535146b760f208068201a5963200c",
+  "assets": [
+    {
+      "file": "items/T01.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except shop scenes, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A single old flathead screwdriver with a chipped orange plastic handle wrapped in electrical tape, slightly rusty tip.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nCreate ONE standalone screwdriver only, with a clean bold silhouette readable at 48 pixels. The entire screwdriver must be visible with transparent padding, a diagonal orientation fits the square canvas. No cast shadow, no floor, no scenery. Genuine transparent background.",
+      "reference": null,
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-bf2b039d-e35e-481d-8e1e-11df52a4c5b6.png"
+    },
+    {
+      "file": "items/T02.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile game sprite for Apocalypse Merge.\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except shop scenes, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nThe attached image is a STYLE reference only: match its painted outlines, materials and warm lighting. Depict only the subject below, never copy the reference screwdriver into unrelated assets.\nSubject: A pair of worn combination pliers with orange rubber grips, one grip patched with tape — level 2 of the tool family, clearly more than a screwdriver.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nGenuine transparent background with fully visible object, no backdrop, floor or cast shadow.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-d27bba08-b11e-40b0-9328-fc6448c3a8ad.png"
+    },
+    {
+      "file": "items/M01.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile game sprite for Apocalypse Merge.\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except shop scenes, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nThe attached image is a STYLE reference only: match its painted outlines, materials and warm lighting. Depict only the subject below, never copy the reference screwdriver into unrelated assets.\nSubject: A small pile of scrap metal: a bent pipe piece, a rusty bracket and a few bolts.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nGenuine transparent background with fully visible object, no backdrop, floor or cast shadow.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-3f860e70-7f6b-48c3-83e6-25f7d520191f.png"
+    },
+    {
+      "file": "items/P01.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile game sprite for Apocalypse Merge.\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except shop scenes, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nThe attached image is a STYLE reference only: match its painted outlines, materials and warm lighting. Depict only the subject below, never copy the reference screwdriver into unrelated assets.\nSubject: A single dented tin can of food with a plain olive-green paper wrap, no text.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nGenuine transparent background with fully visible object, no backdrop, floor or cast shadow.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-9a4cac30-0999-4846-95f2-a34c549b2d03.png"
+    },
+    {
+      "file": "items/E01.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile game sprite for Apocalypse Merge.\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except shop scenes, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nThe attached image is a STYLE reference only: match its painted outlines, materials and warm lighting. Depict only the subject below, never copy the reference screwdriver into unrelated assets.\nSubject: A short piece of electrical wire with yellow insulation and bare copper ends, slightly kinked.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nGenuine transparent background with fully visible object, no backdrop, floor or cast shadow.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-cb4d8bb7-09d3-4620-9274-66634459222d.png"
+    },
+    {
+      "file": "generators/G_TOOL.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile game sprite for Apocalypse Merge.\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except shop scenes, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nThe attached image is a STYLE reference only: match its painted outlines, materials and warm lighting. Depict only the subject below, never copy the reference screwdriver into unrelated assets.\nSubject: A big old wooden workshop box with an orange painted lid propped open, screwdriver and tool handles sticking out, a strap handle on the side. A source of tools; larger and more furniture-like than regular items.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nGenuine transparent background with fully visible object, no backdrop, floor or cast shadow.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-fd89971f-9a03-4afc-9193-ce490e1c32f1.png"
+    },
+    {
+      "file": "shop/shop_00.webp",
+      "prompt": "Use case: stylized-concept. Asset type: wide 3:2 game environment illustration for Apocalypse Merge.\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except shop scenes, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nThe attached image is a STYLE reference only: match its painted outlines, materials and warm lighting. Depict only the subject below, never copy the reference screwdriver into unrelated assets.\nSubject: A small ruined corner shop at a city crossroads after the apocalypse, fixed slightly isometric front view. Left: the entrance blocked by a pile of rubble and broken boards. Center: a smashed shop counter lying on its side. Right wall: an empty broken shelf. Back: a doorway to a dark storeroom with fallen crates. Right back corner: a dusty workbench area covered with junk. Ceiling: dead lamps hanging on wires. Outside the right window: an empty dry water tank stand. Above the entrance: a blank broken sign board. Overcast cool light and dust, but cozy-looking and hopeful, not scary.\nComposition: Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout; this is the first, base picture of the shop. No people unless stated, no text anywhere.\nOpaque fully painted environment filling the frame.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-e2441ea8-c029-4038-9a4f-eb24c89e9ecb.png"
+    }
+  ]
+}

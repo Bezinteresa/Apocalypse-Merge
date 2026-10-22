@@ -1,6 +1,6 @@
 # Что сгенерировать сейчас
 
-Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 20:40:48). Генерируй **только** картинки из этого списка — остальные уже готовы.
+Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 15:40:47). Генерируй **только** картинки из этого списка — остальные уже готовы.
 
 Стиль: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls
 Референс: art/reference/style.png (прикладывай к каждой генерации, когда он появится)
@@ -12,19 +12,7 @@
 Проверь всё разом: `python art/verify_generated_assets.py` (превью в art/generated-previews).
 После этого снова запусти `node art/art_todo.mjs` — сделанное пропадёт из списка.
 
-Осталось: **55**
-
-## items/T01.png — 256×256
-
-- Почему: новая картинка
-- Что: A single old flathead screwdriver with a chipped orange plastic handle wrapped in electrical tape, slightly rusty tip.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/T02.png — 256×256
-
-- Почему: новая картинка
-- Что: A pair of worn combination pliers with orange rubber grips, one grip patched with tape — level 2 of the tool family, clearly more than a screwdriver.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
+Осталось: **48**
 
 ## items/T03.png — 256×256
 
@@ -48,12 +36,6 @@
 
 - Почему: новая картинка
 - Что: A master repair kit: a large orange-and-steel rolling tool chest with drawers slightly open, tools neatly organized, a small blank brass plate and a warm glint — the best tool item.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/M01.png — 256×256
-
-- Почему: новая картинка
-- Что: A small pile of scrap metal: a bent pipe piece, a rusty bracket and a few bolts.
 - Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
 
 ## items/M02.png — 256×256
@@ -80,12 +62,6 @@
 - Что: A construction kit: a sturdy pallet with steel beams, sheet panels, a bucket of bolts and a coil of rope, all strapped together — the top materials item.
 - Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
 
-## items/P01.png — 256×256
-
-- Почему: новая картинка
-- Что: A single dented tin can of food with a plain olive-green paper wrap, no text.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
 ## items/P02.png — 256×256
 
 - Почему: новая картинка
@@ -108,12 +84,6 @@
 
 - Почему: новая картинка
 - Что: An expedition supply crate: a wooden crate with an olive-green canvas cover, cans, ration pouches, a water canister and dried herbs — the top provisions item.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/E01.png — 256×256
-
-- Почему: новая картинка
-- Что: A short piece of electrical wire with yellow insulation and bare copper ends, slightly kinked.
 - Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
 
 ## items/E02.png — 256×256
@@ -145,12 +115,6 @@
 - Почему: новая картинка
 - Что: A control panel: a compact metal control panel with yellow switches, round dials and glowing amber lamps, cables neatly bundled — the top electrics item.
 - Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## generators/G_TOOL.png — 256×256
-
-- Почему: новая картинка
-- Что: A big old wooden workshop box with an orange painted lid propped open, screwdriver and tool handles sticking out, a strap handle on the side. A source of tools; larger and more furniture-like than regular items.
-- Кадр: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.
 
 ## generators/G_MATERIAL.png — 256×256
 
@@ -187,12 +151,6 @@
 - Почему: новая картинка
 - Что: Marta, an experienced mechanic in her mid-40s, grey-streaked hair in a bun, welding goggles pushed up on her forehead, oil-stained overalls with rolled sleeves, a wrench in her hand, shrewd amused expression.
 - Кадр: Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text.
-
-## shop/shop_00.webp — 1200×800
-
-- Почему: новая картинка
-- Что: A small ruined corner shop at a city crossroads after the apocalypse, fixed slightly isometric front view. Left: the entrance blocked by a pile of rubble and broken boards. Center: a smashed shop counter lying on its side. Right wall: an empty broken shelf. Back: a doorway to a dark storeroom with fallen crates. Right back corner: a dusty workbench area covered with junk. Ceiling: dead lamps hanging on wires. Outside the right window: an empty dry water tank stand. Above the entrance: a blank broken sign board. Overcast cool light and dust, but cozy-looking and hopeful, not scary.
-- Кадр: Wide 3:2 scene, NOT transparent. Keep exactly the same camera, framing and layout; this is the first, base picture of the shop. No people unless stated, no text anywhere.
 
 ## shop/shop_R01.webp — 1200×800
 
