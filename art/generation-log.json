@@ -184,6 +184,61 @@
         "art/reference/style.png",
         "public/sprites/items/P04.png"
       ]
+    },
+    {
+      "file": "items/E02.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/E02.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A neat coil of yellow electrical wire wrapped around a small wooden spool.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match painted outlines, materials and warm lighting. Image 2 is preceding electrics level for continuity of yellow insulation and copper. Depict the new subject only, neat yellow wire coiled on a small wooden spool. Entire asset visible with padding, recognizable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-dfdea519-d00a-49fc-91f5-78269b64a67e.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/E01.png"
+      ]
+    },
+    {
+      "file": "items/E03.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/E03.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A connector set: a small open tin box with assorted plugs, sockets and yellow connectors, a little roll of tape.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match painted outlines, materials and warm lighting. Image 2 is preceding electrics level for yellow accent family continuity only. Depict new subject only: small open tin box of plugs, sockets and yellow connectors plus a little roll of tape. Entire asset visible with padding, chunky readable shapes at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-64e43c6d-69b1-44d0-909b-60f8e43315ee.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/E02.png"
+      ]
+    },
+    {
+      "file": "items/E04.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/E04.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A repair circuit board: a green circuit board with yellow wires soldered on, a couple of capacitors and a small amber LED.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match painted outlines, materials and warm lighting. Image 2 is preceding electrics level for yellow accent family continuity only. Depict the new subject only: green circuit board with yellow soldered wires, chunky capacitors and small amber LED; no printed letters, numbers or markings. Entire asset visible with padding, readable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-9c9c3ca4-a67c-470b-adbc-7c471093ee92.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/E03.png"
+      ]
+    },
+    {
+      "file": "items/E05.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/E05.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A power unit: a boxy metal power supply with a yellow stripe, a cooling grill, a toggle switch and a short cable, softly glowing indicator.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match painted outlines, materials and warm lighting. Image 2 is preceding electrics level for yellow accent family continuity only. Depict new subject only: boxy metal power supply with yellow stripe, cooling grill, toggle switch, short cable, softly glowing indicator. No lettering or numbered controls. Entire asset visible with padding, readable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-7c551c7b-c8be-4be8-a978-083439f95c01.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/E04.png"
+      ]
+    },
+    {
+      "file": "items/E06.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/E06.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A control panel: a compact metal control panel with yellow switches, round dials and glowing amber lamps, cables neatly bundled — the top electrics item.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match painted outlines, materials and warm lighting. Image 2 is preceding electrics level for yellow accent and metal family continuity only. Depict new subject only: compact metal control panel with yellow switches, round dials, amber lamps, neatly bundled cables. Dials have simple ticks without numerals. No letters, numbers or symbols. Entire asset visible with padding, readable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-f5de6f90-99eb-4e86-88a7-daa645358d88.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/E05.png"
+      ]
     }
   ]
 }

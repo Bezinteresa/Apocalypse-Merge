@@ -1,6 +1,6 @@
 # Что сгенерировать сейчас
 
-Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:18:38). Генерируй **только** картинки из этого списка — остальные уже готовы.
+Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:26:31). Генерируй **только** картинки из этого списка — остальные уже готовы.
 
 **Порядок работы — в [art/README.md](README.md):** как собрать запрос, куда сохранить, как записать в `art/generation-log.json` и что закоммитить. Готовое исчезает из этого списка само, когда файл нужного размера лежит в `public/sprites/`.
 
@@ -14,37 +14,7 @@
 Проверь всё разом: `python art/verify_generated_assets.py` (превью в art/generated-previews).
 После этого снова запусти `node art/art_todo.mjs` — сделанное пропадёт из списка.
 
-Осталось: **49**
-
-## items/E02.png — 256×256
-
-- Почему: новая картинка
-- Что: A neat coil of yellow electrical wire wrapped around a small wooden spool.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/E03.png — 256×256
-
-- Почему: новая картинка
-- Что: A connector set: a small open tin box with assorted plugs, sockets and yellow connectors, a little roll of tape.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/E04.png — 256×256
-
-- Почему: новая картинка
-- Что: A repair circuit board: a green circuit board with yellow wires soldered on, a couple of capacitors and a small amber LED.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/E05.png — 256×256
-
-- Почему: новая картинка
-- Что: A power unit: a boxy metal power supply with a yellow stripe, a cooling grill, a toggle switch and a short cable, softly glowing indicator.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/E06.png — 256×256
-
-- Почему: новая картинка
-- Что: A control panel: a compact metal control panel with yellow switches, round dials and glowing amber lamps, cables neatly bundled — the top electrics item.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
+Осталось: **44**
 
 ## generators/G_MATERIAL.png — 256×256
 
