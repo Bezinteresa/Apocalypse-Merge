@@ -2,6 +2,8 @@ import { PROJECTS, STORAGE_CAPACITY } from '../content/orders';
 import { validateState } from '../game/rules';
 import { triggeredDialogIds } from '../game/tutorial';
 import { ENERGY_START } from '../game/energy';
+import { initialCollections } from '../game/collections';
+import { CHEST_SOURCES } from '../content/collections';
 import { SCHEMA_VERSION, createInitialState, type GameState } from '../game/state';
 
 // Сервис сохранений. Основной ключ и предыдущая корректная копия читаются и пишутся одним вызовом.
@@ -74,6 +76,12 @@ export function migrate(raw: unknown): GameState | null {
     // v5: энергия. Игроку с прогрессом начисляются стартовый запас и уже заработанные награды проектов.
     const earned = ((data.completedProjects as string[]) ?? []).reduce((sum, id) => sum + (PROJECTS.find((pr) => pr.id === id)?.energyReward ?? 0), 0);
     data = { ...data, schemaVersion: 5, energy: ENERGY_START + earned, energyUpdatedAt: 0, energyUnlimited: false };
+  }
+  if (data.schemaVersion === 5) {
+    // v6: коллекции. Сундуки за уже выполненные заказы и проекты выдаются задним числом.
+    const done = [...((data.completedOrders as string[]) ?? []), ...((data.completedProjects as string[]) ?? [])];
+    const chests = done.flatMap((id) => (CHEST_SOURCES[id] ? [CHEST_SOURCES[id]] : []));
+    data = { ...data, schemaVersion: 6, collections: initialCollections(), tokens: 0, chests, rng: (Math.random() * 2 ** 32) >>> 0, lastChest: null };
   }
   return data.schemaVersion === SCHEMA_VERSION && validateState(data) ? data : null;
 }

@@ -1,8 +1,9 @@
 import { BOARD_SIZE, LOCKED_GROUPS, START_GENERATORS } from '../content/board';
 import { STORAGE_CAPACITY } from '../content/orders';
 import { ENERGY_START } from './energy';
+import { initialCollections, type ChestResult, type SetProgress } from './collections';
 
-export const SCHEMA_VERSION = 5;
+export const SCHEMA_VERSION = 6;
 
 export interface ItemInstance {
   uid: number;
@@ -46,9 +47,19 @@ export interface GameState {
   energyUpdatedAt: number;
   /** Режим проверки без лимита: выдача не тратит энергию. Доступен только в отладке. */
   energyUnlimited: boolean;
+  /** Прогресс коллекционных наборов по ID набора. */
+  collections: Record<string, SetProgress>;
+  /** Жетоны архива за лишние осколки. */
+  tokens: number;
+  /** Неоткрытые сундуки (ID типа сундука). */
+  chests: string[];
+  /** Состояние генератора случайных чисел для сундуков. */
+  rng: number;
+  /** Последний результат открытия: показывается после перезапуска так же. */
+  lastChest: ChestResult | null;
 }
 
-export function createInitialState(): GameState {
+export function createInitialState(seed: number = (Math.random() * 2 ** 32) >>> 0): GameState {
   const cells: (CellContent | null)[] = new Array(BOARD_SIZE).fill(null);
   for (const g of START_GENERATORS) {
     cells[g.cell] = { kind: 'generator', generatorId: g.generatorId };
@@ -68,5 +79,10 @@ export function createInitialState(): GameState {
     energy: ENERGY_START,
     energyUpdatedAt: 0,
     energyUnlimited: false,
+    collections: initialCollections(),
+    tokens: 0,
+    chests: [],
+    rng: seed >>> 0,
+    lastChest: null,
   };
 }

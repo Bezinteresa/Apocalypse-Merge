@@ -27,6 +27,8 @@ import { currentTutorialStep, markDialogSeen, pendingDialog } from '../game/tuto
 import type { DialogDef } from '../content/dialogs';
 import { FieldView, describeContent, renderItemChip } from './fieldView';
 import type { Telemetry } from '../platform/telemetry';
+import { createAlbum } from './albumView';
+import { CHESTS } from '../content/collections';
 
 // Экран игры: поле, склад, заказы, информация о предмете и сцена магазина.
 // Все изменения состояния идут через правила; после принятия состояние сразу сохраняется.
@@ -58,6 +60,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       <div class="money"><span class="money-label"></span> <b class="money-value"></b></div>
       <div class="energy"><span>⚡</span> <b class="energy-value"></b> <small class="energy-timer"></small></div>
       <button class="btn small ghost debug-btn" hidden>DBG</button>
+      <button class="btn small album-btn"></button>
       <button class="btn small shop-btn"></button>
     </header>
     <section class="orders"></section>
@@ -73,6 +76,10 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       <ol class="zones"></ol>
       <div class="project-card"></div>
     </section>
+    <section class="shop album" hidden>
+      <header class="shop-head"><h2></h2><button class="btn small back-btn album-back"></button></header>
+      <div class="album-body"></div>
+    </section>
     <div class="dialog" hidden><div class="dialog-box"><div class="dialog-speaker"></div><p class="dialog-text"></p>
       <div class="dialog-actions"><button class="btn small ghost dialog-skip"></button><button class="btn small dialog-next"></button></div></div></div>
     <div class="modal" hidden><div class="modal-box"><h3></h3><p></p><button class="btn modal-close"></button></div></div>
@@ -84,6 +91,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       <h3>Debug</h3>
       <label class="debug-row"><input type="checkbox" class="debug-unlimited"> <span></span></label>
       <button class="btn small debug-refill">+100 ⚡</button>
+      <button class="btn small debug-chests">+3 🎁</button>
       <pre class="debug-summary"></pre>
       <button class="btn small debug-export"></button>
       <button class="btn small ghost debug-close">✕</button>
@@ -116,6 +124,27 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   $('.energy').title = t('energy');
   let hintTimer: ReturnType<typeof setTimeout> | undefined;
   const tel = deps.telemetry;
+  const albumEl = $('.album');
+  const albumBtn = $<HTMLButtonElement>('.album-btn');
+  $('.album .shop-head h2').textContent = t('album');
+  $('.album-back').textContent = t('field');
+  const album = createAlbum($('.album-body'), {
+    getState: () => state,
+    commit: (next, critical) => commit(next, critical),
+    toast: (key, extra) => deps.toast(key, extra),
+    showModal: (title, text) => {
+      $('.modal h3').textContent = title;
+      $('.modal p').textContent = text;
+      modal.hidden = false;
+    },
+    track: (name, data) => tel.track(name, data),
+  });
+  albumBtn.onclick = () => {
+    album.render();
+    albumEl.hidden = false;
+    albumEl.classList.add('enter');
+  };
+  $('.album-back').onclick = () => (albumEl.hidden = true);
 
   const view = new FieldView($('#board'), $('#storage'), {
     onTap(loc) {
@@ -220,6 +249,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     $('.debug-close').onclick = () => (dbgModal.hidden = true);
     $<HTMLInputElement>('.debug-unlimited').onchange = (e) => commit(setUnlimited(state, (e.target as HTMLInputElement).checked));
     $('.debug-refill').onclick = () => commit(addEnergy(regenerate(state, Date.now()), 100));
+    $('.debug-chests').onclick = () => commit({ ...state, chests: [...state.chests, 'CH_WORN', 'CH_TRADER', 'CH_ARCHIVE'] });
   }
   $('.dialog-next').onclick = () => advanceDialog();
   $('.dialog-text').onclick = () => advanceDialog();
@@ -430,8 +460,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
           return;
         }
         tel.goal('order_delivered', order.id);
+        const gotChest = r.state.chests.length > state.chests.length;
         commit(r.state, true);
-        deps.toast('delivered', `+${r.reward}`);
+        deps.toast('delivered', gotChest ? `+${r.reward} · ${t('chestReceived')}` : `+${r.reward}`);
         select(null);
       };
       card.append(head, text, requirementChips(order.requires), btn);
@@ -518,6 +549,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     $('.modal h3').textContent = `${t('restored')}: ${tx(project.name)}`;
     const parts = [tx(project.result)];
     if (project.generatorReward) parts.push(r.placedCell !== null ? `${t('generatorPlaced')}: ${tx(GENERATORS[project.generatorReward].name)}` : `${t('generatorWaiting')}: ${tx(GENERATORS[project.generatorReward].name)}`);
+    if (r.state.chests.length > state.chests.length) parts.push(`${t('chestReceived')}: ${tx(CHESTS[r.state.chests[r.state.chests.length - 1]].name)}`);
     if (isChapterComplete(r.state)) parts.push(t('chapterDone'));
     $('.modal p').textContent = parts.join('. ');
     modal.hidden = false;
@@ -554,6 +586,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     if (state.incoming.length) incomingBtn.textContent = `${t('incoming')}: ${tx(GENERATORS[state.incoming[0]].name)}`;
     renderInfo();
     if (!shopEl.hidden) renderShop();
+    if (!albumEl.hidden) album.render();
+    albumBtn.textContent = state.chests.length ? `${t('album')} · ${state.chests.length}` : t('album');
+    albumBtn.classList.toggle('has-chests', state.chests.length > 0);
   }
 
   render();

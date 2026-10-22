@@ -3,6 +3,8 @@ import { GENERATORS, ITEMS, getItem, type ChainId } from '../content/items';
 import { ORDERS, PROJECTS, getOrder, getProject, type OrderDef, type ProjectDef, type Requirement } from '../content/orders';
 import type { CellContent, GameState, ItemInstance, Loc } from './state';
 import { addEnergy, hasEnergyForSpawn, regenerate, spendSpawnEnergy } from './energy';
+import { grantChestFor } from './collections';
+import { CARDS, CHESTS, SETS } from '../content/collections';
 
 // Правила игры. Функции не меняют входное состояние и возвращают новое вместе с результатом,
 // чтобы отображение и сохранение работали с уже принятым состоянием.
@@ -291,7 +293,7 @@ export function deliverOrder(state: GameState, orderId: string): DeliverResult {
   for (const loc of sources) setAt(next, loc, null);
   next.money += order.reward;
   next.completedOrders.push(order.id);
-  return { ok: true, state: next, reward: order.reward };
+  return { ok: true, state: grantChestFor(next, order.id), reward: order.reward };
 }
 
 export function canCompleteProject(state: GameState, project: ProjectDef): boolean {
@@ -319,7 +321,7 @@ export function completeProject(state: GameState, projectId: string): ProjectRes
     next.storage = next.storage.concat(new Array(project.storageCapacity - next.storage.length).fill(null));
   }
   let placedCell: number | null = null;
-  let result = addEnergy(next, project.energyReward);
+  let result = grantChestFor(addEnergy(next, project.energyReward), project.id);
   if (project.generatorReward) {
     result.incoming.push(project.generatorReward);
     const placed = placeIncoming(result);
@@ -377,6 +379,20 @@ function validLoc(raw: unknown, storageLength: number): boolean {
   return loc.area === 'storage' && Number.isInteger(loc.index) && loc.index >= 0 && loc.index < storageLength;
 }
 
+function validCollections(s: Partial<GameState>): boolean {
+  if (typeof s.tokens !== 'number' || !Number.isFinite(s.tokens) || s.tokens < 0) return false;
+  if (typeof s.rng !== 'number' || !Number.isInteger(s.rng) || s.rng < 0) return false;
+  if (!Array.isArray(s.chests) || !s.chests.every((c) => !!CHESTS[c])) return false;
+  if (!s.collections || typeof s.collections !== 'object') return false;
+  for (const set of SETS) {
+    const p = s.collections[set.id];
+    if (!p || typeof p.pity !== 'number' || typeof p.rewardClaimed !== 'boolean' || !Array.isArray(p.assembled)) return false;
+    if (!Object.keys(p.shards ?? {}).every((id) => CARDS.some((c) => c.id === id && c.setId === set.id))) return false;
+    if (!p.assembled.every((id) => CARDS.some((c) => c.id === id && c.setId === set.id))) return false;
+  }
+  return s.lastChest === null || (typeof s.lastChest === 'object' && Array.isArray(s.lastChest?.draws));
+}
+
 /** Проверка загруженного состояния: структура, известные ID, уникальные uid. */
 export function validateState(raw: unknown): raw is GameState {
   if (!raw || typeof raw !== 'object') return false;
@@ -394,6 +410,7 @@ export function validateState(raw: unknown): raw is GameState {
   if (typeof s.energy !== 'number' || !Number.isFinite(s.energy) || s.energy < 0) return false;
   if (typeof s.energyUpdatedAt !== 'number' || !Number.isFinite(s.energyUpdatedAt)) return false;
   if (typeof s.energyUnlimited !== 'boolean') return false;
+  if (!validCollections(s)) return false;
   const uids = new Set<number>();
   for (const c of s.cells) {
     if (c === null) continue;

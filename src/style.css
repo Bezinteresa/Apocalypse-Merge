@@ -779,3 +779,116 @@ body {
   border-radius: 6px;
   max-width: 320px;
 }
+
+.album-btn.has-chests {
+  animation: tut-pulse 1.1s ease-in-out infinite;
+}
+
+.album-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.album-head {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.chest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chest-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.chest-row small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.card-tile {
+  background: var(--panel);
+  border: 2px solid color-mix(in srgb, var(--rarity) 50%, transparent);
+  border-radius: 8px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.card-tile.done {
+  border-color: var(--rarity);
+  background: color-mix(in srgb, var(--rarity) 18%, var(--panel));
+}
+
+.card-tile small {
+  color: var(--rarity);
+  font-size: 11px;
+}
+
+.card-tile b {
+  font-size: 13px;
+  line-height: 1.15;
+  min-height: 2.3em;
+}
+
+.card-bar {
+  height: 6px;
+  background: #0006;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.card-bar span {
+  display: block;
+  height: 100%;
+  background: var(--rarity);
+}
+
+.card-count {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.set-reward {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.last-chest pre {
+  white-space: pre-wrap;
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.modal-box p {
+  white-space: pre-line;
+}
+
+@media (max-width: 480px) {
+  .money-label {
+    display: none;
+  }
+
+  .money::before {
+    content: '🪙';
+  }
+}

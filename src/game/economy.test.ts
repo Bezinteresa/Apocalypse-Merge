@@ -207,6 +207,8 @@ describe('projects', () => {
     }
     // каталог 6.2: 100 стартовой + 3 × 50 = 250 энергии покрывают 216 обязательных выдач с запасом 34
     expect(s.energy).toBe(34);
+    // каждый проект и каждый третий заказ дают потёртый сундук: 8 + 6
+    expect(s.chests).toHaveLength(14);
     expect(isChapterComplete(s)).toBe(true);
     expect(areAllOrdersDone(s)).toBe(true);
     expect(currentProject(s)).toBeNull();
