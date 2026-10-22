@@ -1,13 +1,15 @@
 # Что сгенерировать сейчас
 
-Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 22:21:19). Генерируй **только** картинки из этого списка — остальные уже готовы.
+Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 22:46:07). Генерируй **только** картинки из этого списка — остальные уже готовы.
+
+**Порядок работы — в [art/README.md](README.md):** как собрать запрос, куда сохранить, как записать в `art/generation-log.json` и что закоммитить. Готовое исчезает из этого списка само, когда файл нужного размера лежит в `public/sprites/`.
 
 Стиль: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls
-Референс: art/reference/style.png (прикладывай к каждой генерации, когда он появится)
+Референс: art/reference/style.png — прикладывай к каждой генерации
 Правила: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.
 
 Готовую картинку сохраняй в `public/sprites/<файл>` точно указанного размера:
-`python art/save_generated_asset.py <исходник> <файл> <ширина> <высота>` (для переделки добавь `--replace`).
+`python art/save_generated_asset.py <исходник> <файл> <ширина> <высота> [--trim]` (`--trim` — для items/, generators/, chests/ и иконок; для переделки добавь `--replace`). Затем допиши запись в `art/generation-log.json`.
 Потом сожми тяжёлые картинки: `python art/compress_sprites.py` (оригиналы останутся в art/originals).
 Проверь всё разом: `python art/verify_generated_assets.py` (превью в art/generated-previews).
 После этого снова запусти `node art/art_todo.mjs` — сделанное пропадёт из списка.
