@@ -10,13 +10,15 @@ import { SCHEMA_VERSION, createInitialState, type GameState } from '../game/stat
 
 export const SAVE_KEY = 'am_save';
 export const PREV_KEY = 'am_save_prev';
+/** Журнал наблюдаемого теста; пишется тем же вызовом, что и сохранение. */
+export const LOG_KEY = 'am_log';
 
 export interface StorageBackend {
   get(keys: string[]): Promise<unknown[]>;
   set(keys: string[], values: unknown[]): Promise<void>;
 }
 
-export type LoadResult = { state: GameState; source: 'main' | 'prev' | 'new'; recovered: boolean };
+export type LoadResult = { state: GameState; source: 'main' | 'prev' | 'new'; recovered: boolean; log: unknown };
 
 export class SaveFormatError extends Error {}
 
@@ -84,6 +86,7 @@ export class SaveStore {
   private timer: ReturnType<typeof setTimeout> | null = null;
   private writing: Promise<void> | null = null;
   private retryDelay = 0;
+  private getLog: () => unknown = () => null;
 
   constructor(
     private backend: StorageBackend,
@@ -91,20 +94,32 @@ export class SaveStore {
   ) {}
 
   async load(): Promise<LoadResult> {
-    const [mainRaw, prevRaw] = await this.backend.get([SAVE_KEY, PREV_KEY]);
-    if (isEmpty(mainRaw) && isEmpty(prevRaw)) return { state: createInitialState(), source: 'new', recovered: false };
+    const [mainRaw, prevRaw, logRaw] = await this.backend.get([SAVE_KEY, PREV_KEY, LOG_KEY]);
+    const log = parse(logRaw) ?? null;
+    if (isEmpty(mainRaw) && isEmpty(prevRaw)) return { state: createInitialState(), source: 'new', recovered: false, log };
 
     const main = migrate(parse(mainRaw));
     if (main) {
       this.lastSaved = main;
-      return { state: main, source: 'main', recovered: false };
+      return { state: main, source: 'main', recovered: false, log };
     }
     const prev = migrate(parse(prevRaw));
     if (prev) {
       this.lastSaved = prev;
-      return { state: prev, source: 'prev', recovered: true };
+      return { state: prev, source: 'prev', recovered: true, log };
     }
-    return { state: createInitialState(), source: 'new', recovered: true };
+    return { state: createInitialState(), source: 'new', recovered: true, log };
+  }
+
+  /** Источник журнала, который записывается вместе с каждым сохранением. */
+  attachLog(getLog: () => unknown): void {
+    this.getLog = getLog;
+  }
+
+  /** Изменился только журнал: записать его с последним состоянием. */
+  touch(): void {
+    const state = this.pending ?? this.lastSaved;
+    if (state) this.save(state);
   }
 
   get isDirty(): boolean {
@@ -147,7 +162,7 @@ export class SaveStore {
     const revision = this.revision;
     const prev = this.lastSaved ?? state;
 
-    this.writing = this.backend.set([SAVE_KEY, PREV_KEY], [state, prev]).then(
+    this.writing = this.backend.set([SAVE_KEY, PREV_KEY, LOG_KEY], [state, prev, this.getLog()]).then(
       () => {
         this.lastSaved = state;
         // старый ответ не помечает более новое изменение сохранённым

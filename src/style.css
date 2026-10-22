@@ -769,3 +769,13 @@ body {
   align-items: center;
   margin-bottom: 8px;
 }
+
+.debug-summary {
+  font-size: 11px;
+  text-align: left;
+  white-space: pre-wrap;
+  background: #0006;
+  padding: 6px;
+  border-radius: 6px;
+  max-width: 320px;
+}

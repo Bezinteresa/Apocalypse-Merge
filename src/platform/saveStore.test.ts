@@ -125,6 +125,17 @@ describe('SaveStore', () => {
     expect(b.setCalls).toBe(1);
   });
 
+  it('writes the attached log in the same call and returns it on load', async () => {
+    const b = new MemoryBackend();
+    const store = new SaveStore(b, 0);
+    store.attachLog(() => ({ version: 1, events: [{ t: 1, e: 'x' }] }));
+    store.save(progressed());
+    await vi.advanceTimersByTimeAsync(10);
+    expect(b.setCalls).toBe(1);
+    const loaded = await new SaveStore(b).load();
+    expect(loaded.log).toEqual({ version: 1, events: [{ t: 1, e: 'x' }] });
+  });
+
   it('keeps the previous saved state as backup copy', async () => {
     const b = new MemoryBackend();
     const store = new SaveStore(b, 0);

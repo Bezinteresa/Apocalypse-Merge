@@ -69,6 +69,7 @@ const STRINGS = {
   opensAfter: { ru: 'откроется после', en: 'unlocks after' },
   mergeFrom: { ru: 'Собирается из', en: 'Merged from' },
   showOnBoard: { ru: 'Показать на поле', en: 'Show on board' },
+  exportLog: { ru: 'Скачать журнал теста', en: 'Download test log' },
   tutorial: { ru: 'Обучение', en: 'Tutorial' },
   skip: { ru: 'Пропустить', en: 'Skip' },
   neededFor: { ru: 'Нужно', en: 'Needed for' },

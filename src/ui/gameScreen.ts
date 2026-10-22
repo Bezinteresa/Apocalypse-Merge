@@ -26,6 +26,7 @@ import type { GameState, Loc } from '../game/state';
 import { currentTutorialStep, markDialogSeen, pendingDialog } from '../game/tutorial';
 import type { DialogDef } from '../content/dialogs';
 import { FieldView, describeContent, renderItemChip } from './fieldView';
+import type { Telemetry } from '../platform/telemetry';
 
 // Экран игры: поле, склад, заказы, информация о предмете и сцена магазина.
 // Все изменения состояния идут через правила; после принятия состояние сразу сохраняется.
@@ -36,6 +37,7 @@ export interface GameScreenDeps {
   toast(key: StringKey, extra?: string): void;
   /** Отладочная панель (энергия без лимита, пополнение). Только локальная разработка. */
   debug: boolean;
+  telemetry: Telemetry;
 }
 
 export interface GameScreen {
@@ -82,6 +84,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       <h3>Debug</h3>
       <label class="debug-row"><input type="checkbox" class="debug-unlimited"> <span></span></label>
       <button class="btn small debug-refill">+100 ⚡</button>
+      <pre class="debug-summary"></pre>
+      <button class="btn small debug-export"></button>
       <button class="btn small ghost debug-close">✕</button>
     </div></div>
     <div class="pause-overlay" hidden><span></span></div>
@@ -111,6 +115,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   $('.chain-show').textContent = t('showOnBoard');
   $('.energy').title = t('energy');
   let hintTimer: ReturnType<typeof setTimeout> | undefined;
+  const tel = deps.telemetry;
 
   const view = new FieldView($('#board'), $('#storage'), {
     onTap(loc) {
@@ -124,6 +129,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         const r = spawnFromGenerator(state, loc.index);
         if (!r.ok) {
           view.flash(loc, 'shake');
+          tel.refused(r.reason);
           if (r.reason === 'no_energy') {
             const ms = msToNextEnergy(state, Date.now());
             deps.toast('noEnergy', ms !== null ? `+1 ⚡ ${formatMs(ms)}` : '');
@@ -131,6 +137,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
             deps.toast('boardFull');
           }
         } else {
+          tel.spawned(content.generatorId);
           commit(r.state);
           view.flash({ area: 'board', index: r.cell }, 'pop');
         }
@@ -149,7 +156,10 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       const target = getAt(state, to);
       commit(r.state);
       select(r.to);
-      if (r.action === 'merge') view.flash(r.to, 'pop');
+      if (r.action === 'merge') {
+        view.flash(r.to, 'pop');
+        tel.once('first_merge', 'first_merge', { item: r.itemId ?? '' });
+      }
       // одинаковые предметы максимального уровня меняются местами — объясняем, почему без объединения
       if (r.action === 'swap' && source?.kind === 'item' && target?.kind === 'item' && source.itemId === target.itemId) deps.toast('maxLevelNoMerge');
     },
@@ -186,9 +196,26 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     const dbgBtn = $('.debug-btn');
     dbgBtn.hidden = false;
     $('.debug-row span').textContent = t('energyUnlimited');
+    $('.debug-export').textContent = t('exportLog');
     dbgBtn.onclick = () => {
       $<HTMLInputElement>('.debug-unlimited').checked = state.energyUnlimited;
+      const d = tel.data;
+      $('.debug-summary').textContent = [
+        `active: ${Math.round(d.activeMs / 60000)} min`,
+        `spawns: ${d.spawnsTotal} ${JSON.stringify(d.spawnsByGenerator)}`,
+        `refusals: ${JSON.stringify(d.refusals)}`,
+        `sales: ${d.sales}, undos: ${d.undos}`,
+        `events: ${d.events.length}`,
+      ].join('\n');
       dbgModal.hidden = false;
+    };
+    $('.debug-export').onclick = () => {
+      const blob = new Blob([JSON.stringify({ log: tel.data, state }, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `apocalypse-merge-log-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
     };
     $('.debug-close').onclick = () => (dbgModal.hidden = true);
     $<HTMLInputElement>('.debug-unlimited').onchange = (e) => commit(setUnlimited(state, (e.target as HTMLInputElement).checked));
@@ -209,6 +236,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     }
     const r = sellItem(state, selected);
     if (!r.ok) return;
+    tel.sold(content.itemId);
     commit(r.state);
     deps.toast('sold', `+${r.price}`);
     select(null);
@@ -217,13 +245,20 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   undoBtn.onclick = () => {
     const r = undoSale(state);
     if (!r.ok) return;
+    tel.undone(state.lastSale?.item.itemId ?? '');
     commit(r.state);
     select(r.loc);
     view.flash(r.loc, 'pop');
   };
 
   function commit(next: GameState, critical = false): void {
+    const prevStep = currentTutorialStep(state)?.id ?? null;
     state = next;
+    const step = currentTutorialStep(state)?.id ?? null;
+    if (step !== prevStep) {
+      if (prevStep) tel.track('tutorial_step', { step: prevStep });
+      if (!step) tel.once('tutorial_completed', 'tutorial_completed');
+    }
     deps.save(state, critical);
     render();
     maybeShowDialog();
@@ -394,6 +429,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
           deps.toast('missingItems', missingList(order.requires));
           return;
         }
+        tel.goal('order_delivered', order.id);
         commit(r.state, true);
         deps.toast('delivered', `+${r.reward}`);
         select(null);
@@ -485,6 +521,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     if (isChapterComplete(r.state)) parts.push(t('chapterDone'));
     $('.modal p').textContent = parts.join('. ');
     modal.hidden = false;
+    tel.goal('project_completed', project.id);
+    if (isChapterComplete(r.state)) tel.track('chapter_completed', { spawns_total: tel.data.spawnsTotal, active_sec: Math.round(tel.data.activeMs / 1000) });
     commit(r.state, true);
     select(null);
   }

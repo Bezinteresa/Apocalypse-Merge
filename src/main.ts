@@ -4,6 +4,7 @@ import { bridge, initPlatform, isLocalDev, platformId, platformLanguage, sendGam
 import { isPaused, onLifecycleChange, startLifecycle } from './platform/lifecycle';
 import { SaveStore, type StorageBackend } from './platform/saveStore';
 import { createGameScreen } from './ui/gameScreen';
+import { Telemetry, parseLog } from './platform/telemetry';
 
 const app = document.getElementById('app')!;
 const loader = document.getElementById('loader')!;
@@ -61,6 +62,15 @@ async function boot(): Promise<void> {
     return;
   }
 
+  const telemetry = new Telemetry(
+    parseLog(loaded.log),
+    (name, data) => bridge.analytics.send(name, data),
+    () => store.touch(),
+  );
+  store.attachLog(() => telemetry.data);
+  telemetry.setActive(!isPaused());
+  telemetry.track('session_start', { returning: loaded.source !== 'new', platform: platformId() });
+
   const screen = createGameScreen(app, loaded.state, {
     save: (s, critical) => {
       store.save(s);
@@ -68,9 +78,11 @@ async function boot(): Promise<void> {
     },
     toast: showToast,
     debug: isLocalDev(),
+    telemetry,
   });
   screen.setPaused(isPaused());
   onLifecycleChange(({ paused }) => {
+    telemetry.setActive(!paused);
     screen.setPaused(paused);
     setGameplayActive(!paused);
     if (paused) void store.flush();
