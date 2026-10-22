@@ -61,7 +61,13 @@ async function boot(): Promise<void> {
     return;
   }
 
-  const screen = createGameScreen(app, loaded.state, { save: (s) => store.save(s), toast: showToast });
+  const screen = createGameScreen(app, loaded.state, {
+    save: (s, critical) => {
+      store.save(s);
+      if (critical) void store.flush();
+    },
+    toast: showToast,
+  });
   screen.setPaused(isPaused());
   onLifecycleChange(({ paused }) => {
     screen.setPaused(paused);

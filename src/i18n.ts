@@ -55,6 +55,8 @@ const STRINGS = {
   close: { ru: 'Закрыть', en: 'Close' },
   restored: { ru: 'Восстановлено', en: 'Restored' },
   sliceDone: { ru: 'Пробный срез пройден. Ящик припасов и Ника появятся в следующей версии прототипа.', en: 'Test slice complete. The provision crate and Nika arrive in the next prototype version.' },
+  tutorial: { ru: 'Обучение', en: 'Tutorial' },
+  skip: { ru: 'Пропустить', en: 'Skip' },
   neededFor: { ru: 'Нужно', en: 'Needed for' },
   initError: { ru: 'Не удалось подключиться к игровой платформе.', en: 'Could not connect to the game platform.' },
   loadError: { ru: 'Не удалось загрузить сохранение. Прогресс не будет перезаписан.', en: 'Could not load your save. Your progress will not be overwritten.' },

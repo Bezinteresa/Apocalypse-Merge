@@ -37,6 +37,7 @@ function clone(state: GameState): GameState {
     storage: state.storage.slice(),
     completedOrders: state.completedOrders.slice(),
     completedProjects: state.completedProjects.slice(),
+    seenDialogs: state.seenDialogs.slice(),
     lastSale: null,
   };
 }
@@ -192,8 +193,16 @@ function isProjectDone(state: GameState, id: string | null): boolean {
   return id === null || state.completedProjects.includes(id);
 }
 
+/** Обучение: до сдачи первого заказа виден только O01, ремонт R01 — после него (CONTENT_CATALOG, раздел 5). */
+export function isTutorialGateOpen(state: GameState): boolean {
+  return state.completedOrders.includes(TUTORIAL_FIRST_ORDER);
+}
+
+const TUTORIAL_FIRST_ORDER = 'O01';
+
 /** Доступные незавершённые заказы по возрастанию ID, не более трёх. */
 export function availableOrders(state: GameState): OrderDef[] {
+  if (!isTutorialGateOpen(state)) return ORDERS.filter((o) => o.id === TUTORIAL_FIRST_ORDER);
   return ORDERS.filter(
     (o) =>
       inSlice(o.id, SLICE.lastOrder) &&
@@ -205,6 +214,7 @@ export function availableOrders(state: GameState): OrderDef[] {
 
 /** Ближайший незавершённый проект; null — доступный срез пройден. */
 export function currentProject(state: GameState): ProjectDef | null {
+  if (!isTutorialGateOpen(state)) return null;
   return PROJECTS.find((p) => inSlice(p.id, SLICE.lastProject) && !state.completedProjects.includes(p.id)) ?? null;
 }
 
@@ -309,6 +319,7 @@ export function validateState(raw: unknown): raw is GameState {
   if (typeof s.nextUid !== 'number' || !Number.isInteger(s.nextUid) || s.nextUid < 1) return false;
   if (!Array.isArray(s.completedOrders) || !s.completedOrders.every((id) => ORDERS.some((o) => o.id === id))) return false;
   if (!Array.isArray(s.completedProjects) || !s.completedProjects.every((id) => PROJECTS.some((p) => p.id === id))) return false;
+  if (!Array.isArray(s.seenDialogs) || !s.seenDialogs.every((id) => typeof id === 'string')) return false;
   const uids = new Set<number>();
   for (const c of s.cells) {
     if (c === null) continue;

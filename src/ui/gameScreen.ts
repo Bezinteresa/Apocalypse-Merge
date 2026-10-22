@@ -16,13 +16,16 @@ import {
   undoSale,
 } from '../game/rules';
 import type { GameState, Loc } from '../game/state';
+import { currentTutorialStep, markDialogSeen, pendingDialog } from '../game/tutorial';
+import type { DialogDef } from '../content/dialogs';
 import { FieldView, describeContent, renderItemChip } from './fieldView';
 
 // Экран игры: поле, склад, заказы, информация о предмете и сцена магазина.
 // Все изменения состояния идут через правила; после принятия состояние сразу сохраняется.
 
 export interface GameScreenDeps {
-  save(state: GameState): void;
+  /** critical — записать сразу, без объединения по времени (сдача заказа, ремонт). */
+  save(state: GameState, critical?: boolean): void;
   toast(key: StringKey, extra?: string): void;
 }
 
@@ -57,6 +60,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       <ol class="zones"></ol>
       <div class="project-card"></div>
     </section>
+    <div class="dialog" hidden><div class="dialog-box"><div class="dialog-speaker"></div><p class="dialog-text"></p>
+      <div class="dialog-actions"><button class="btn small ghost dialog-skip"></button><button class="btn small dialog-next"></button></div></div></div>
     <div class="modal" hidden><div class="modal-box"><h3></h3><p></p><button class="btn modal-close"></button></div></div>
     <div class="pause-overlay" hidden><span></span></div>
   `;
@@ -74,6 +79,10 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   const shopEl = $('.shop');
   const modal = $('.modal');
   const sellBtn = $<HTMLButtonElement>('.sell-btn');
+  const dialogEl = $('.dialog');
+  $('.dialog-skip').textContent = t('skip');
+  $('.dialog-next').textContent = t('next');
+  let dialog: { def: DialogDef; line: number } | null = null;
   const undoBtn = $<HTMLButtonElement>('.undo-btn');
 
   const view = new FieldView($('#board'), $('#storage'), {
@@ -111,9 +120,17 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   });
 
   shopBtn.onclick = () => openShop(true);
-  $('.project-strip').onclick = () => openShop(true);
+  $('.project-strip').onclick = () => {
+    if (currentProject(state)) openShop(true);
+  };
   $('.back-btn').onclick = () => openShop(false);
-  $('.modal-close').onclick = () => (modal.hidden = true);
+  $('.modal-close').onclick = () => {
+    modal.hidden = true;
+    maybeShowDialog();
+  };
+  $('.dialog-next').onclick = () => advanceDialog();
+  $('.dialog-text').onclick = () => advanceDialog();
+  $('.dialog-skip').onclick = () => closeDialog();
 
   sellBtn.onclick = () => {
     if (!selected) return;
@@ -139,10 +156,47 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     view.flash(r.loc, 'pop');
   };
 
-  function commit(next: GameState): void {
+  function commit(next: GameState, critical = false): void {
     state = next;
-    deps.save(state);
+    deps.save(state, critical);
     render();
+    maybeShowDialog();
+  }
+
+  function maybeShowDialog(): void {
+    if (dialog || !modal.hidden) return;
+    const def = pendingDialog(state);
+    if (!def) return;
+    dialog = { def, line: 0 };
+    renderDialog();
+    dialogEl.hidden = false;
+  }
+
+  function renderDialog(): void {
+    if (!dialog) return;
+    const line = dialog.def.lines[dialog.line];
+    $('.dialog-speaker').textContent = tx(VISITORS[line.speaker].name);
+    $('.dialog-text').textContent = tx(line.text);
+    $('.dialog-next').textContent = dialog.line < dialog.def.lines.length - 1 ? t('next') : t('close');
+  }
+
+  function advanceDialog(): void {
+    if (!dialog) return;
+    if (dialog.line < dialog.def.lines.length - 1) {
+      dialog.line += 1;
+      renderDialog();
+    } else {
+      closeDialog();
+    }
+  }
+
+  function closeDialog(): void {
+    if (!dialog) return;
+    const id = dialog.def.id;
+    dialog = null;
+    dialogEl.hidden = true;
+    commit(markDialogSeen(state, id));
+    maybeShowDialog();
   }
 
   function select(loc: Loc | null): void {
@@ -209,13 +263,14 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       btn.className = 'btn small';
       btn.textContent = `${t('deliver')} +${order.reward}`;
       btn.disabled = !ready;
+      btn.classList.toggle('tut', currentTutorialStep(state)?.targets.some((x) => x.kind === 'order' && x.orderId === order.id) ?? false);
       btn.onclick = () => {
         const r = deliverOrder(state, order.id);
         if (!r.ok) {
           deps.toast('missingItems');
           return;
         }
-        commit(r.state);
+        commit(r.state, true);
         deps.toast('delivered', `+${r.reward}`);
         select(null);
       };
@@ -227,6 +282,15 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   function renderProjectStrip(): void {
     const strip = $('.project-strip');
     const project = currentProject(state);
+    const step = currentTutorialStep(state);
+    strip.classList.toggle('tutorial', !!step);
+    strip.classList.toggle('tut', step?.targets.some((x) => x.kind === 'project') ?? false);
+    if (step) {
+      strip.hidden = false;
+      strip.classList.remove('ready');
+      strip.textContent = `${t('tutorial')}: ${tx(step.hint)}`;
+      return;
+    }
     strip.hidden = !project;
     if (!project) return;
     const ready = canCompleteProject(state, project);
@@ -265,6 +329,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     btn.className = 'btn';
     btn.textContent = t('restore');
     btn.disabled = !canCompleteProject(state, current);
+    btn.classList.toggle('tut', currentTutorialStep(state)?.targets.some((x) => x.kind === 'project') ?? false);
     btn.onclick = () => finishProject(current);
     card.append(title, requirementChips(current.requires), cost, btn);
   }
@@ -275,16 +340,18 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       deps.toast(r.reason === 'no_money' ? 'noMoney' : 'missingItems');
       return;
     }
-    commit(r.state);
-    select(null);
+    // окно итога открывается до принятия состояния, чтобы сцена после ремонта шла следом за ним
     $('.modal h3').textContent = `${t('restored')}: ${tx(project.name)}`;
-    $('.modal p').textContent = currentProject(state) ? tx(project.result) : `${tx(project.result)}. ${t('sliceDone')}`;
+    $('.modal p').textContent = currentProject(r.state) ? tx(project.result) : `${tx(project.result)}. ${t('sliceDone')}`;
     modal.hidden = false;
+    commit(r.state, true);
+    select(null);
   }
 
   function openShop(open: boolean): void {
-    shopEl.hidden = !open;
     if (open) renderShop();
+    shopEl.hidden = !open;
+    shopEl.classList.toggle('enter', open);
   }
 
   function render(): void {
@@ -293,6 +360,12 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     for (const o of availableOrders(state)) for (const r of o.requires) wanted.add(r.itemId);
     for (const r of currentProject(state)?.requires ?? []) wanted.add(r.itemId);
     view.setWanted(wanted);
+    const tutIds = new Set<string>();
+    for (const target of currentTutorialStep(state)?.targets ?? []) {
+      if (target.kind === 'generator') tutIds.add(target.generatorId);
+      if (target.kind === 'item') tutIds.add(target.itemId);
+    }
+    view.setTutorialTargets(tutIds);
     view.render(state);
     renderOrders();
     renderProjectStrip();
@@ -301,6 +374,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   }
 
   render();
+  maybeShowDialog();
 
   return {
     setPaused(paused) {

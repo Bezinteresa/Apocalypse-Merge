@@ -74,11 +74,12 @@ describe('SaveStore', () => {
   it('migrates a v1 save without losing the board', async () => {
     const b = new MemoryBackend();
     const v2 = progressed();
-    const { storage: _s, completedOrders: _o, completedProjects: _p, lastSale: _l, ...v1 } = { ...v2, schemaVersion: 1 };
+    const { storage: _s, completedOrders: _o, completedProjects: _p, lastSale: _l, seenDialogs: _d, ...v1 } = { ...v2, schemaVersion: 1 };
     b.data[SAVE_KEY] = v1;
     const r = await new SaveStore(b).load();
     expect(r.source).toBe('main');
-    expect(r.state.schemaVersion).toBe(2);
+    expect(r.state.schemaVersion).toBe(3);
+    expect(r.state.seenDialogs).toEqual(['D_INTRO']);
     expect(r.state.cells).toEqual(v2.cells);
     expect(r.state.storage).toHaveLength(6);
     expect(r.state.completedOrders).toEqual([]);
@@ -101,6 +102,14 @@ describe('SaveStore', () => {
     await vi.advanceTimersByTimeAsync(2100);
     expect(store.isDirty).toBe(false);
     expect(b.data[SAVE_KEY]).toEqual(s);
+  });
+
+  it('flush starts writing synchronously, without waiting for a timer', () => {
+    const b = new MemoryBackend();
+    const store = new SaveStore(b, 800);
+    store.save(progressed());
+    void store.flush();
+    expect(b.setCalls).toBe(1);
   });
 
   it('keeps the previous saved state as backup copy', async () => {

@@ -1,5 +1,6 @@
 import { STORAGE_CAPACITY } from '../content/orders';
 import { validateState } from '../game/rules';
+import { triggeredDialogIds } from '../game/tutorial';
 import { SCHEMA_VERSION, createInitialState, type GameState } from '../game/state';
 
 // Сервис сохранений. Основной ключ и предыдущая корректная копия читаются и пишутся одним вызовом.
@@ -50,6 +51,12 @@ export function migrate(raw: unknown): GameState | null {
       lastSale: null,
     };
   }
+  if (data.schemaVersion === 2) {
+    // v3: просмотренные сцены. Игроку с прогрессом уже доступные сцены не повторяем.
+    const progressed = (data.nextUid as number) > 1 || (data.completedOrders as string[]).length > 0;
+    data = { ...data, schemaVersion: 3, seenDialogs: [] };
+    if (progressed) data.seenDialogs = triggeredDialogIds(data as unknown as GameState);
+  }
   return data.schemaVersion === SCHEMA_VERSION && validateState(data) ? data : null;
 }
 
@@ -97,8 +104,12 @@ export class SaveStore {
 
   /** Немедленная попытка записи, например при уходе в фон. */
   flush(): Promise<void> {
-    this.schedule(0);
-    return this.writing ?? Promise.resolve();
+    // запись начинается синхронно: при уходе со страницы таймер уже может не сработать
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
+    return this.write();
   }
 
   private schedule(delay: number): void {

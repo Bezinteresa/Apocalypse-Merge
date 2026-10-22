@@ -26,6 +26,7 @@ export class FieldView {
   private state: GameState | null = null;
   private selected: Loc | null = null;
   private wanted = new Set<string>();
+  private tutorialIds = new Set<string>();
   private enabled = true;
   private drag: {
     pointerId: number;
@@ -78,6 +79,11 @@ export class FieldView {
     this.wanted = itemIds;
   }
 
+  /** Подсветка обучения: ID генераторов и предметов, на которые нужно нажать или которые нужно соединить. */
+  setTutorialTargets(ids: Set<string>): void {
+    this.tutorialIds = ids;
+  }
+
   render(state: GameState): void {
     this.state = state;
     while (this.slotEls.length < state.storage.length) this.slotEls.push(this.createCell(this.storageRoot, 'storage', this.slotEls.length));
@@ -89,6 +95,8 @@ export class FieldView {
       el.classList.toggle('selected', isSelected);
       el.classList.toggle('mergeable', !isSelected && canMerge(selectedContent, content));
       el.classList.toggle('wanted', content?.kind === 'item' && this.wanted.has(content.itemId));
+      const contentId = content ? (content.kind === 'item' ? content.itemId : content.generatorId) : null;
+      el.classList.toggle('tut', contentId !== null && this.tutorialIds.has(contentId));
       el.replaceChildren();
       if (content) el.appendChild(renderContent(content));
       else if (locked) el.appendChild(lockLabel(LOCK_LABEL.get(loc.index) ?? ''));

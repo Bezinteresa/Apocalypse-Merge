@@ -105,8 +105,13 @@ describe('selling', () => {
 });
 
 describe('orders', () => {
-  it('shows only start orders at the beginning', () => {
-    expect(availableOrders(createInitialState()).map((o) => o.id)).toEqual(['O01', 'O02']);
+  it('shows only O01 before the first delivery, then O02 and R01', () => {
+    const s = createInitialState();
+    expect(availableOrders(s).map((o) => o.id)).toEqual(['O01']);
+    expect(currentProject(s)).toBeNull();
+    const after = { ...s, completedOrders: ['O01'] };
+    expect(availableOrders(after).map((o) => o.id)).toEqual(['O02']);
+    expect(currentProject(after)?.id).toBe('R01');
   });
 
   it('delivers once, atomically, preferring board items over storage', () => {
@@ -131,7 +136,7 @@ describe('orders', () => {
   });
 
   it('takes a storage item when the board has none', () => {
-    const s = putStorage(createInitialState(), 2, 'M03');
+    const s = { ...putStorage(createInitialState(), 2, 'M03'), completedOrders: ['O01'] };
     const r = deliverOrder(s, 'O02');
     expect(r.ok && r.state.storage[2]).toBeNull();
   });
@@ -139,7 +144,7 @@ describe('orders', () => {
 
 describe('projects', () => {
   it('requires the current project, money and items', () => {
-    let s = put(createInitialState(), 0, 'M02');
+    let s = { ...put(createInitialState(), 0, 'M02'), completedOrders: ['O01'] };
     expect(completeProject(s, 'R02')).toEqual({ ok: false, reason: 'not_current' });
     expect(completeProject(s, 'R01')).toEqual({ ok: false, reason: 'no_money' });
     s = { ...s, money: 10 };
@@ -150,11 +155,11 @@ describe('projects', () => {
     expect(r.state.cells[0]).toBeNull();
     expect(currentProject(r.state)?.id).toBe('R02');
     expect(completeProject(r.state, 'R01')).toEqual({ ok: false, reason: 'not_current' });
-    expect(availableOrders(r.state).map((o) => o.id)).toEqual(['O01', 'O02', 'O03']);
+    expect(availableOrders(r.state).map((o) => o.id)).toEqual(['O02', 'O03']);
   });
 
   it('R02 unlocks its group of cells', () => {
-    const s = { ...put(put(createInitialState(), 0, 'T02'), 1, 'M03'), money: 25, completedProjects: ['R01'] };
+    const s = { ...put(put(createInitialState(), 0, 'T02'), 1, 'M03'), money: 25, completedOrders: ['O01'], completedProjects: ['R01'] };
     const r = completeProject(s, 'R02');
     expect(r.ok).toBe(true);
     if (!r.ok) return;
