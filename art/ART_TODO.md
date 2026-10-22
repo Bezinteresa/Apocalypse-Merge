@@ -1,6 +1,6 @@
 # Что сгенерировать сейчас
 
-Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:07:32). Генерируй **только** картинки из этого списка — остальные уже готовы.
+Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:18:38). Генерируй **только** картинки из этого списка — остальные уже готовы.
 
 **Порядок работы — в [art/README.md](README.md):** как собрать запрос, куда сохранить, как записать в `art/generation-log.json` и что закоммитить. Готовое исчезает из этого списка само, когда файл нужного размера лежит в `public/sprites/`.
 
@@ -14,49 +14,7 @@
 Проверь всё разом: `python art/verify_generated_assets.py` (превью в art/generated-previews).
 После этого снова запусти `node art/art_todo.mjs` — сделанное пропадёт из списка.
 
-Осталось: **56**
-
-## items/M03.png — 256×256
-
-- Почему: новая картинка
-- Что: A stack of flat sheet metal panels with straightened edges, cool steel-blue tone, held by a strap.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/M04.png — 256×256
-
-- Почему: новая картинка
-- Что: A reinforced metal frame: a welded rectangular steel frame with diagonal braces and fresh bolts, steel-blue with a few orange paint marks.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/M05.png — 256×256
-
-- Почему: новая картинка
-- Что: A construction kit: a sturdy pallet with steel beams, sheet panels, a bucket of bolts and a coil of rope, all strapped together — the top materials item.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/P02.png — 256×256
-
-- Почему: новая картинка
-- Что: Two tin cans of food tied together with twine, olive-green wraps, one can slightly dented.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/P03.png — 256×256
-
-- Почему: новая картинка
-- Что: A packed lunch: a cloth bundle tied with twine holding a can, a bread loaf and an apple, olive-green cloth.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/P04.png — 256×256
-
-- Почему: новая картинка
-- Что: A field ration pack: a sturdy olive-green canvas pouch with straps, a flask clipped to it, a few sealed packets peeking out.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
-
-## items/P05.png — 256×256
-
-- Почему: новая картинка
-- Что: An expedition supply crate: a wooden crate with an olive-green canvas cover, cans, ration pouches, a water canister and dried herbs — the top provisions item.
-- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
+Осталось: **49**
 
 ## items/E02.png — 256×256
 

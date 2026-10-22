@@ -107,6 +107,83 @@
         "art/reference/style.png",
         "public/sprites/items/M01.png"
       ]
+    },
+    {
+      "file": "items/M03.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/M03.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A stack of flat sheet metal panels with straightened edges, cool steel-blue tone, held by a strap.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match its painted outlines, materials and warm lighting. Image 2 is the preceding material level for family continuity only. Draw only the new subject: flat sheet metal panels stacked and strapped, cool steel-blue, clearly less rusty and more refined than the preceding brackets. Entire asset visible with padding, recognizable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-ba216089-5ecc-4a99-ac30-e30857fda6a8.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/M02.png"
+      ]
+    },
+    {
+      "file": "items/M04.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/M04.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A reinforced metal frame: a welded rectangular steel frame with diagonal braces and fresh bolts, steel-blue with a few orange paint marks.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match its painted outlines, materials and warm lighting. Image 2 is preceding materials level for family continuity only. Depict only the new subject: a welded rectangular steel frame with diagonal braces, fresh bolts, steel-blue with a few orange paint marks. Open gaps through frame are transparent. Entire asset visible with padding, recognizable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-b6016abf-2477-466b-81d1-5b8ca8f88fa2.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/M03.png"
+      ]
+    },
+    {
+      "file": "items/M05.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/M05.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A construction kit: a sturdy pallet with steel beams, sheet panels, a bucket of bolts and a coil of rope, all strapped together — the top materials item.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match its painted outlines, materials and warm lighting. Image 2 is preceding materials level for family continuity only. Depict only the new subject, a sturdy pallet loaded with construction materials as one cohesive bundle. Steel-blue panels and beams, bucket of bolts, rope, all strapped down. Entire asset visible with padding, recognizable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-7c3ec78b-7e10-4c17-bd09-b4b2277c7323.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/M04.png"
+      ]
+    },
+    {
+      "file": "items/P02.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/P02.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Two tin cans of food tied together with twine, olive-green wraps, one can slightly dented.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match painted outlines, materials and warm lighting. Image 2 is preceding provisions level for continuity: match olive-green unlabeled can design. Depict two cans tied with twine as one cohesive bundle, not a collage. Entire asset visible with padding, recognizable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-a41a481c-a09f-4073-b009-02ef7565642b.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/P01.png"
+      ]
+    },
+    {
+      "file": "items/P03.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/P03.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A packed lunch: a cloth bundle tied with twine holding a can, a bread loaf and an apple, olive-green cloth.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match painted outlines, materials and warm lighting. Image 2 is preceding provisions level for continuity of olive-green can design only. Depict new subject only, olive-green cloth packed lunch bundle tied with twine, with can, bread and apple visible. Entire asset visible with padding, recognizable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-71e74256-8040-4ce2-8b3e-599f93513918.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/P02.png"
+      ]
+    },
+    {
+      "file": "items/P04.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/P04.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A field ration pack: a sturdy olive-green canvas pouch with straps, a flask clipped to it, a few sealed packets peeking out.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match painted outlines, materials and warm lighting. Image 2 is preceding provisions level, for continuity of olive-green canvas only. Depict new subject only: sturdy structured olive-green field ration pouch with straps, clipped flask and sealed packets peeking out. More organized and valuable than a cloth lunch bundle. Entire asset visible with padding, recognizable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-6e488210-e86c-406a-81d1-73ba7f17dd2b.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/P03.png"
+      ]
+    },
+    {
+      "file": "items/P05.png",
+      "prompt": "Use case: stylized-concept. Asset type: single mobile merge-game sprite for Apocalypse Merge, items/P05.png.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nRules: One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An expedition supply crate: a wooden crate with an olive-green canvas cover, cans, ration pouches, a water canister and dried herbs — the top provisions item.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is style reference, match painted outlines, materials and warm lighting. Image 2 is preceding provisions level for continuity of olive-green canvas ration pouches. Depict new subject only: one wooden expedition crate full of supplies, partly covered with olive canvas, cans, ration pouches, water canister and dried herbs clearly visible, unified readable silhouette. Entire asset visible with padding, recognizable at 48 pixels. Genuine transparent background.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "exec-1d40e948-a28d-4d00-8dfe-d1b5c49381aa.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/items/P04.png"
+      ]
     }
   ]
 }
