@@ -1,6 +1,6 @@
 # Что сгенерировать сейчас
 
-Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:26:31). Генерируй **только** картинки из этого списка — остальные уже готовы.
+Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:37:03). Генерируй **только** картинки из этого списка — остальные уже готовы.
 
 **Порядок работы — в [art/README.md](README.md):** как собрать запрос, куда сохранить, как записать в `art/generation-log.json` и что закоммитить. Готовое исчезает из этого списка само, когда файл нужного размера лежит в `public/sprites/`.
 
@@ -14,43 +14,7 @@
 Проверь всё разом: `python art/verify_generated_assets.py` (превью в art/generated-previews).
 После этого снова запусти `node art/art_todo.mjs` — сделанное пропадёт из списка.
 
-Осталось: **44**
-
-## generators/G_MATERIAL.png — 256×256
-
-- Почему: новая картинка
-- Что: A rusty steel-blue cargo container cut down to a small crate size, door half open, pipes and metal sheets visible inside. A source of building materials.
-- Кадр: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.
-
-## generators/G_PROVISION.png — 256×256
-
-- Почему: новая картинка
-- Что: A wooden supply crate with an olive-green canvas tarp pulled back, tin cans and bread visible inside, a hand-painted green leaf mark. A source of food.
-- Кадр: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.
-
-## generators/G_ELECTRIC.png — 256×256
-
-- Почему: новая картинка
-- Что: A small workbench with a yellow lamp, an old radio, coils of wire and circuit boards on it, a drawer half open with parts. A source of electrical parts.
-- Кадр: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.
-
-## portraits/LEV.png — 512×512
-
-- Почему: новая картинка
-- Что: Lev, a friendly young courier in his mid-20s, messy dark hair, light stubble, a long patched scarf, a canvas messenger bag across his chest, fingerless gloves, a warm confident grin, waving with one hand.
-- Кадр: Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text.
-
-## portraits/NIKA.png — 512×512
-
-- Почему: новая картинка
-- Что: Nika, a kind young assistant of the local medic, about 20, short ginger hair with a green bandana, freckles, a light jacket with a hand-sewn armband with a simple plus sign, holding a clipboard, gentle caring smile.
-- Кадр: Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text.
-
-## portraits/MARTA.png — 512×512
-
-- Почему: новая картинка
-- Что: Marta, an experienced mechanic in her mid-40s, grey-streaked hair in a bun, welding goggles pushed up on her forehead, oil-stained overalls with rolled sleeves, a wrench in her hand, shrewd amused expression.
-- Кадр: Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text.
+Осталось: **38**
 
 ## shop/building.webp — 1600×1000
 
