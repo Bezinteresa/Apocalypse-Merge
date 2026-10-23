@@ -4,7 +4,7 @@ import { ENERGY_START } from './energy';
 import { initialCollections, type ChestResult, type SetProgress } from './collections';
 import { emptyAdRewards, type AdRewardState } from './ads';
 
-export const SCHEMA_VERSION = 8;
+export const SCHEMA_VERSION = 9;
 
 export interface ItemInstance {
   uid: number;
@@ -62,6 +62,8 @@ export interface GameState {
   lastChest: ChestResult | null;
   /** Лимит наград за рекламу; сохраняется в облаке вместе с прогрессом. */
   adRewards: AdRewardState;
+  /** Однократные действия для подсказок пальцем (game/hints.ts). */
+  flags: string[];
 }
 
 export function createInitialState(seed: number = (Math.random() * 2 ** 32) >>> 0): GameState {
@@ -95,5 +97,6 @@ export function createInitialState(seed: number = (Math.random() * 2 ** 32) >>> 
     rng: seed >>> 0,
     lastChest: null,
     adRewards: emptyAdRewards(),
+    flags: [],
   };
 }

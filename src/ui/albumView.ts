@@ -101,6 +101,7 @@ export function createAlbum(root: HTMLElement, ctx: AlbumContext): { render(): v
       const done = isAssembled(state, card.id);
       const tile = document.createElement('div');
       tile.className = 'card-tile';
+      tile.dataset.card = card.id;
       tile.classList.toggle('done', done);
       tile.style.setProperty('--rarity', rarity.color);
       tile.innerHTML = '<small></small><b></b><div class="card-bar"><span></span></div><div class="card-count"></div>';

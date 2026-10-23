@@ -101,6 +101,17 @@ export function migrate(raw: unknown): GameState | null {
     const { locked: _locked, ...rest } = data;
     data = { ...rest, schemaVersion: 8, fog: new Array(BOARD_SIZE).fill(null), discovered };
   }
+  if (data.schemaVersion === 8) {
+    // v9: флаги подсказок. Игроку с прогрессом не показываем подсказки по уже знакомым действиям:
+    // генераторы на поле считаются использованными, паутина и склад — освоенными.
+    const cells = (data.cells as unknown[]) ?? [];
+    const progressed = ((data.completedProjects as string[]) ?? []).length > 0;
+    const spawned = cells.flatMap((c) => {
+      const g = c as { kind?: string; generatorId?: string } | null;
+      return g?.kind === 'generator' && g.generatorId ? [`spawn:${g.generatorId}`] : [];
+    });
+    data = { ...data, schemaVersion: 9, flags: progressed ? [...spawned, 'web_freed', 'storage_used'] : [] };
+  }
   return data.schemaVersion === SCHEMA_VERSION && validateState(data) ? data : null;
 }
 

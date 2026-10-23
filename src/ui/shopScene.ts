@@ -71,6 +71,10 @@ export function renderShopScene(root: HTMLElement, state: GameState, handlers: S
   for (const zone of ZONES) {
     const done = state.completedProjects.includes(zone.project);
     const isCurrent = current?.id === zone.project;
+    // в закрытой комнате место ремонта видно, только когда до него дошла очередь
+    const room = ROOMS.find((r) => r.id === zone.room);
+    const roomLocked = !!room?.locked && !(room.unlockAfter && state.completedProjects.includes(room.unlockAfter));
+    if (roomLocked && !done && !isCurrent) continue;
     const project = PROJECTS.find((p) => p.id === zone.project)!;
     const el = document.createElement('button');
     el.className = 'zone-spot';

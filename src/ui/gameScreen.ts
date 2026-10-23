@@ -30,6 +30,8 @@ import type { Telemetry } from '../platform/telemetry';
 import type { AdService } from '../platform/ads';
 import { AD_REWARD_ENERGY, AD_REWARD_LIMIT, adCooldownLeft, adRewardsAt, canShowInterstitial, canWatchRewardAd, grantAdReward } from '../game/ads';
 import { createAlbum } from './albumView';
+import { Finger } from './finger';
+import { currentHint, markFlag } from '../game/hints';
 import { hasSprite, portraitSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
 import { renderShopScene } from './shopScene';
 import { VISITOR_COLOR } from '../content/shopLayout';
@@ -452,6 +454,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
 
   /** Окно цепочки: все уровни, нужный выделен, откуда получить и кнопка показать на поле. */
   function openChain(itemId: string): void {
+    if (!state.flags.includes('chain_opened')) commit(markFlag(state, 'chain_opened'));
     const def = getItem(itemId);
     $('.chain-head h3').textContent = `${tx(CHAINS[def.chain].name)}: ${tx(def.name)}`;
     const levels = $('.chain-levels');
@@ -566,6 +569,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       text.textContent = tx(order.text);
       const btn = document.createElement('button');
       btn.className = 'btn small';
+      btn.dataset.order = order.id;
       btn.textContent = `${t('deliver')} +${order.reward}`;
       // кнопка не блокируется: нажатие на неготовый заказ объясняет, чего не хватает
       btn.classList.toggle('dim', !ready);
@@ -728,7 +732,52 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     if (!albumEl.hidden) album.render();
     albumBtn.textContent = state.chests.length ? `${t('album')} · ${state.chests.length}` : t('album');
     albumBtn.classList.toggle('has-chests', state.chests.length > 0);
+    finger.show(currentHint(state));
   }
+
+  /** Где сейчас цель подсказки: зависит от того, открыт ли магазин, альбом или окно. */
+  function resolveHint(hint: ReturnType<typeof currentHint> & object) {
+    const overlayOpen = !modal.hidden || !dialogEl.hidden || !chainModal.hidden || !energyModal.hidden;
+    if (overlayOpen) return null;
+    const cell = (i: number) => app.querySelector<HTMLElement>(`#board .cell[data-index="${i}"]`);
+    const target = hint.target;
+    const onField = shopEl.hidden && albumEl.hidden;
+    if (target.kind === 'tap') {
+      const el = onField ? cell(target.cell) : null;
+      return el ? { from: el } : null;
+    }
+    if (target.kind === 'drag') {
+      if (!onField) return null;
+      const from = cell(target.from);
+      const free = state.storage.findIndex((x) => x === null);
+      const to = target.to === 'storage' ? app.querySelector<HTMLElement>(`#storage .cell[data-index="${free}"]`) : cell(target.to);
+      return from && to ? { from, to } : null;
+    }
+    const pick = (sel: string) => {
+      const el = app.querySelector<HTMLElement>(sel);
+      return el ? { from: el } : null;
+    };
+    switch (target.anchor) {
+      case 'order':
+        return onField ? pick(`.order .btn[data-order="${target.id}"]`) : null;
+      case 'chip':
+        return onField ? pick(`.order .chip[data-item="${target.id}"]`) : null;
+      case 'incoming':
+        return onField ? pick('.incoming-btn') : null;
+      case 'project':
+        if (!shopEl.hidden) return pick('.project-card .btn');
+        return onField ? pick('.project-strip') : null;
+      case 'chest':
+        if (!albumEl.hidden) return pick('.chest-row .btn');
+        return onField ? pick('.album-btn') : null;
+      case 'assemble':
+        if (!albumEl.hidden) return pick(`.card-tile[data-card="${target.id}"] .btn`);
+        return onField ? pick('.album-btn') : null;
+    }
+    return null;
+  }
+
+  const finger = new Finger((hint) => resolveHint(hint));
 
   render();
   maybeShowDialog();

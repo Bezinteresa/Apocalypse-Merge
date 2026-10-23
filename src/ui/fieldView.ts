@@ -203,6 +203,7 @@ export function renderItemChip(itemId: string): HTMLElement {
   const def = getItem(itemId);
   const el = document.createElement('span');
   el.className = 'chip';
+  el.dataset.item = itemId;
   el.style.setProperty('--chain', CHAINS[def.chain].color);
   el.innerHTML = '<b></b><span></span>';
   el.querySelector('b')!.textContent = String(def.level);

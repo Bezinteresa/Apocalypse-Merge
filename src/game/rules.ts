@@ -40,6 +40,7 @@ function clone(state: GameState): GameState {
     cells: state.cells.slice(),
     fog: state.fog.slice(),
     discovered: state.discovered.slice(),
+    flags: state.flags.slice(),
     storage: state.storage.slice(),
     completedOrders: state.completedOrders.slice(),
     completedProjects: state.completedProjects.slice(),
@@ -72,6 +73,10 @@ export function isLocked(state: GameState, cell: number): boolean {
 
 export function isWeb(state: GameState, cell: number): boolean {
   return state.fog[cell] === 'web';
+}
+
+function addFlag(state: GameState, flag: string): void {
+  if (!state.flags.includes(flag)) state.flags.push(flag);
 }
 
 function discover(state: GameState, itemId: string): void {
@@ -144,6 +149,7 @@ export function spawnFromGenerator(state: GameState, generatorCell: number, now:
   next.cells[target] = { kind: 'item', uid: next.nextUid, itemId };
   next.nextUid += 1;
   discover(next, itemId);
+  addFlag(next, `spawn:${content.generatorId}`);
   return { ok: true, state: next, cell: target, itemId };
 }
 
@@ -175,7 +181,11 @@ export function moveItem(state: GameState, from: Loc, to: Loc): MoveResult {
     setAt(next, to, { kind: 'item', uid: next.nextUid, itemId: nextId });
     next.nextUid += 1;
     discover(next, nextId);
-    if (toWeb) openCell(next, to.index);
+    if (toWeb) {
+      openCell(next, to.index);
+      addFlag(next, 'web_freed');
+    }
+    if (to.area === 'storage') addFlag(next, 'storage_used');
     return { ok: true, state: next, action: 'merge', to, itemId: nextId, freed: toWeb };
   }
 
@@ -185,6 +195,7 @@ export function moveItem(state: GameState, from: Loc, to: Loc): MoveResult {
   const next = clone(state);
   setAt(next, to, source);
   setAt(next, from, target);
+  if (to.area === 'storage') addFlag(next, 'storage_used');
   return { ok: true, state: next, action: target ? 'swap' : 'move', to };
 }
 
@@ -442,6 +453,7 @@ export function validateState(raw: unknown): raw is GameState {
   if (typeof s.energyUpdatedAt !== 'number' || !Number.isFinite(s.energyUpdatedAt)) return false;
   if (typeof s.energyUnlimited !== 'boolean') return false;
   if (!validCollections(s)) return false;
+  if (!Array.isArray(s.flags) || !s.flags.every((f) => typeof f === 'string')) return false;
   const ad = s.adRewards;
   if (!ad || typeof ad.used !== 'number' || ad.used < 0 || typeof ad.cooldownUntil !== 'number' || !Number.isFinite(ad.cooldownUntil)) return false;
   const uids = new Set<number>();
