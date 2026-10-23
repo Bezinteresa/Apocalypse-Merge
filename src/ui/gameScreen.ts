@@ -205,6 +205,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     });
   };
   const albumEl = $('.album');
+  // альбом тянется мышью вверх-вниз; пальцем он листается обычной прокруткой
+  dragScroll(albumEl, 'y');
   const albumBtn = $<HTMLButtonElement>('.album-btn');
   $('.album .shop-head h2').textContent = t('album');
   $('.album-back').textContent = t('field');

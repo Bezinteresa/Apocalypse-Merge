@@ -2613,3 +2613,15 @@ body {
     height: min(180px, 22dvh);
   }
 }
+
+.drag-scroll-y {
+  cursor: grab;
+}
+
+.drag-scroll-y.panning {
+  cursor: grabbing;
+}
+
+.drag-scroll-y.panning > * {
+  pointer-events: none;
+}
