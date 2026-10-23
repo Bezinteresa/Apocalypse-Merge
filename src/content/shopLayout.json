@@ -65,25 +65,58 @@
       "outdoor": true
     },
     {
-      "id": "SHELTER",
+      "id": "SH_POWER",
       "x": 1,
       "y": 66,
-      "w": 98,
+      "w": 32,
       "h": 32,
       "name": {
-        "ru": "Убежище, этаж −1",
-        "en": "Shelter, level −1"
+        "ru": "Электрощитовая, этаж −1",
+        "en": "Switch room, level −1"
       },
       "locked": {
         "ru": "Откроется после гаража",
         "en": "Opens after the garage"
       },
       "lockedAfter": {
-        "R13": {
-          "ru": "Спуск открыт · следующая глава",
-          "en": "Descent open · next chapter"
+        "R12": {
+          "ru": "Под гаражом найден люк",
+          "en": "A hatch found under the garage"
         }
-      }
+      },
+      "unlockAfter": "R13"
+    },
+    {
+      "id": "SH_WATER",
+      "x": 33,
+      "y": 66,
+      "w": 33,
+      "h": 32,
+      "name": {
+        "ru": "Водоочистка",
+        "en": "Water treatment"
+      },
+      "locked": {
+        "ru": "Откроется после гаража",
+        "en": "Opens after the garage"
+      },
+      "unlockAfter": "R13"
+    },
+    {
+      "id": "SH_VENT",
+      "x": 66,
+      "y": 66,
+      "w": 33,
+      "h": 32,
+      "name": {
+        "ru": "Вентиляция",
+        "en": "Ventilation"
+      },
+      "locked": {
+        "ru": "Откроется после гаража",
+        "en": "Opens after the garage"
+      },
+      "unlockAfter": "R13"
     }
   ],
   "zones": [
@@ -209,7 +242,7 @@
     },
     {
       "project": "R13",
-      "room": "SHELTER",
+      "room": "SH_POWER",
       "x": 3,
       "y": 67,
       "w": 12,
@@ -285,7 +318,7 @@
     },
     {
       "project": "C07",
-      "room": "SHELTER",
+      "room": "SH_POWER",
       "x": 2.5,
       "y": 66,
       "w": 13,
@@ -293,6 +326,89 @@
       "rubble": true,
       "broken": "a heap of concrete slabs, a fallen beam and dust",
       "fixed": ""
+    },
+    {
+      "project": "R14",
+      "room": "SH_WATER",
+      "x": 17,
+      "y": 66.5,
+      "w": 80,
+      "h": 5,
+      "broken": "a row of dead caged bulbs on a sagging cable along the ceiling",
+      "fixed": "a row of caged bulbs glowing warm yellow on a tidy cable"
+    },
+    {
+      "project": "C08",
+      "room": "SH_POWER",
+      "x": 17,
+      "y": 84,
+      "w": 14,
+      "h": 13,
+      "rubble": true,
+      "broken": "a heap of a collapsed metal rack, cable reels and broken crates",
+      "fixed": ""
+    },
+    {
+      "project": "R15",
+      "room": "SH_POWER",
+      "x": 17,
+      "y": 73,
+      "w": 14,
+      "h": 24,
+      "broken": "a dead rusty diesel backup generator with an open panel and loose wires",
+      "fixed": "the same backup generator running, panel closed, green indicator lights, small exhaust pipe"
+    },
+    {
+      "project": "R16",
+      "room": "SH_WATER",
+      "x": 35,
+      "y": 75,
+      "w": 15,
+      "h": 22,
+      "broken": "a disassembled water pump station: two rusty pumps, disconnected pipes on the floor",
+      "fixed": "an assembled pump station with two blue pumps, pipes connected, pressure gauges"
+    },
+    {
+      "project": "C09",
+      "room": "SH_WATER",
+      "x": 51,
+      "y": 85,
+      "w": 13,
+      "h": 12,
+      "rubble": true,
+      "broken": "a heap of grey silt, sludge buckets and rotten boards",
+      "fixed": ""
+    },
+    {
+      "project": "R17",
+      "room": "SH_WATER",
+      "x": 51,
+      "y": 73,
+      "w": 13,
+      "h": 24,
+      "broken": "empty filter tanks with cracked glass and dry hoses",
+      "fixed": "tall filter tanks full of clear water, clean hoses and a shiny tap"
+    },
+    {
+      "project": "C10",
+      "room": "SH_VENT",
+      "x": 70,
+      "y": 84,
+      "w": 13,
+      "h": 13,
+      "rubble": true,
+      "broken": "a heap of torn air ducts, grilles and dust",
+      "fixed": ""
+    },
+    {
+      "project": "R18",
+      "room": "SH_VENT",
+      "x": 68,
+      "y": 69,
+      "w": 22,
+      "h": 28,
+      "broken": "a huge rusty ventilation fan unit, blades jammed, ducts torn off",
+      "fixed": "the same ventilation unit working, fan spinning, ducts reattached, light breeze ribbons"
     }
   ],
   "spots": [
@@ -318,6 +434,12 @@
       "visitor": "SAVVA",
       "x": 92,
       "bottom": 61,
+      "h": 22
+    },
+    {
+      "visitor": "TIKHON",
+      "x": 94,
+      "bottom": 97,
       "h": 22
     }
   ]

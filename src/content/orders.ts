@@ -47,6 +47,7 @@ export const VISITORS: Record<string, VisitorDef> = {
   NIKA: { id: 'NIKA', name: { ru: 'Ника', en: 'Nika' } },
   MARTA: { id: 'MARTA', name: { ru: 'Марта', en: 'Marta' } },
   SAVVA: { id: 'SAVVA', name: { ru: 'Савва', en: 'Savva' } },
+  TIKHON: { id: 'TIKHON', name: { ru: 'Тихон', en: 'Tikhon' } },
   /** Не посетитель: голос в радиоэфире финальной сцены. */
   RADIO: { id: 'RADIO', name: { ru: 'Радио', en: 'Radio' } },
 };
@@ -95,6 +96,22 @@ export const ORDERS: OrderDef[] = [
   { id: 'O28', visitor: 'SAVVA', text: { ru: 'Ремонтный комплект и проводка в дальний рейс', en: 'A repair kit and wiring for the long run' }, requires: [r('A05'), r('E04')], reward: 95, after: 'R12' },
   { id: 'O29', visitor: 'NIKA', text: { ru: 'Аптечный груз для каравана', en: 'Medical cargo for the caravan' }, requires: [r('P05'), r('E04')], reward: 95, after: 'R12' },
   { id: 'O30', visitor: 'SAVVA', text: { ru: 'Первая поставка каравана', en: 'The first caravan delivery' }, requires: [r('A05'), r('M05')], reward: 110, after: 'R12' },
+  // глава 3: технический этаж убежища (PROTOTYPE_PLAN, этап 8)
+  { id: 'O31', visitor: 'MARTA', text: { ru: 'Фонари для спуска', en: 'Lamps for the descent' }, requires: [r('E05')], reward: 70, after: 'R13' },
+  { id: 'O32', visitor: 'LEV', text: { ru: 'Крепления для лестницы вниз', en: 'Brackets for the ladder down' }, requires: [r('M05'), r('T04')], reward: 80, after: 'R13' },
+  { id: 'O33', visitor: 'SAVVA', text: { ru: 'Груз для нижнего этажа', en: 'Cargo for the lower level' }, requires: [r('A05'), r('P04')], reward: 100, after: 'R13' },
+  { id: 'O34', visitor: 'TIKHON', text: { ru: 'Вентиль для бойлерной', en: 'A valve for the boiler room' }, requires: [r('F04')], reward: 45, after: 'R14' },
+  { id: 'O35', visitor: 'TIKHON', text: { ru: 'Подтянуть трубы в щитовой', en: 'Tighten the pipes in the switch room' }, requires: [r('F04'), r('T05')], reward: 90, after: 'R14' },
+  { id: 'O36', visitor: 'NIKA', text: { ru: 'Чистая вода для медпункта', en: 'Clean water for the aid post' }, requires: [r('P05'), r('F04')], reward: 105, after: 'R14' },
+  { id: 'O37', visitor: 'TIKHON', text: { ru: 'Сменить фильтр в отстойнике', en: 'Replace the settling tank filter' }, requires: [r('F05'), r('T04')], reward: 100, after: 'R15' },
+  { id: 'O38', visitor: 'MARTA', text: { ru: 'Насос для колодца квартала', en: 'A pump for the district well' }, requires: [r('F04'), r('E05')], reward: 105, after: 'R15' },
+  { id: 'O39', visitor: 'SAVVA', text: { ru: 'Запас труб в рейс', en: 'Spare pipes for the run' }, requires: [r('A05'), r('F04')], reward: 105, after: 'R15' },
+  { id: 'O40', visitor: 'TIKHON', text: { ru: 'Проверить линию фильтров', en: 'Check the filter line' }, requires: [r('F05'), r('E05')], reward: 130, after: 'R16' },
+  { id: 'O41', visitor: 'NIKA', text: { ru: 'Вода для пункта помощи', en: 'Water for the aid post' }, requires: [r('P05'), r('F05')], reward: 130, after: 'R16' },
+  { id: 'O42', visitor: 'LEV', text: { ru: 'Починить водовод квартала', en: 'Fix the district water main' }, requires: [r('T05'), r('M05'), r('F04')], reward: 130, after: 'R16' },
+  { id: 'O43', visitor: 'TIKHON', text: { ru: 'Заслонки для вентшахты', en: 'Dampers for the air shaft' }, requires: [r('F05'), r('A05')], reward: 130, after: 'R17' },
+  { id: 'O44', visitor: 'MARTA', text: { ru: 'Мотор для вентилятора', en: 'A motor for the fan' }, requires: [r('E05'), r('F05'), r('T05')], reward: 180, after: 'R17' },
+  { id: 'O45', visitor: 'SAVVA', text: { ru: 'Припасы для дальнего рейса', en: 'Supplies for a long run' }, requires: [r('A05'), r('P05'), r('M05')], reward: 180, after: 'R17' },
 ];
 
 export const PROJECTS: ProjectDef[] = [
@@ -118,13 +135,23 @@ export const PROJECTS: ProjectDef[] = [
   { id: 'R11', name: { ru: 'Поставить подъёмник', en: 'Install the car lift' }, result: { ru: 'Подъёмник работает', en: 'The lift works' }, requires: [r('A04'), r('E05'), r('T05')], cost: 140, energyReward: 70, generatorReward: null },
   { id: 'R12', name: { ru: 'Починить фургон каравана', en: 'Repair the caravan van' }, result: { ru: 'Фургон на ходу — караван готов к первому рейсу', en: 'The van runs — the caravan is ready for its first run' }, requires: [r('A05'), r('P05'), r('M05')], cost: 180, energyReward: 70, generatorReward: null , generatorUpgrade: 'G_AUTO:4' },
   { id: 'C07', kind: 'rubble', name: { ru: 'Разобрать завал над люком', en: 'Clear the debris over the hatch' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 60, energyReward: 0, generatorReward: null },
-  { id: 'R13', name: { ru: 'Расчистить служебный спуск', en: 'Clear the service descent' }, result: { ru: 'Под гаражом открылся люк вниз', en: 'A hatch leading down opened under the garage' }, requires: [r('M05'), r('T05'), r('E05'), r('A04')], cost: 250, energyReward: 0, generatorReward: null },
+  { id: 'R13', name: { ru: 'Расчистить служебный спуск', en: 'Clear the service descent' }, result: { ru: 'Под гаражом открылся люк вниз', en: 'A hatch leading down opened under the garage' }, requires: [r('M05'), r('T05'), r('E05'), r('A04')], cost: 250, energyReward: 100, generatorReward: null },
+  // глава 3: технический этаж убежища (PROTOTYPE_PLAN, этап 8)
+  { id: 'R14', name: { ru: 'Осветить коридор убежища', en: 'Light the shelter corridor' }, result: { ru: 'Коридор освещён; найден трубный стеллаж, внизу ждёт инженер Тихон', en: 'The corridor is lit; a pipe rack found, engineer Tikhon waits below' }, requires: [r('E05'), r('M05')], cost: 230, energyReward: 150, generatorReward: 'G_PIPE' },
+  { id: 'C08', kind: 'rubble', name: { ru: 'Разобрать обвалившийся стеллаж', en: 'Clear the collapsed rack' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 60, energyReward: 0, generatorReward: null },
+  { id: 'R15', name: { ru: 'Запустить резервный генератор', en: 'Start the backup generator' }, result: { ru: 'Генератор гудит — у убежища своё питание', en: 'The generator hums — the shelter has its own power' }, requires: [r('E05'), r('A05'), r('F05')], cost: 200, energyReward: 150, generatorReward: null, requiresGenerator: 'G_PIPE' },
+  { id: 'R16', name: { ru: 'Собрать насосную станцию', en: 'Build the pump station' }, result: { ru: 'Насосы качают воду из скважины', en: 'The pumps draw water from the well' }, requires: [r('F05'), r('P05'), r('M05'), r('T05')], cost: 250, energyReward: 150, generatorReward: null, generatorUpgrade: 'G_PIPE:4' },
+  { id: 'C09', kind: 'rubble', name: { ru: 'Вычерпать ил из отстойника', en: 'Scoop the silt out of the settling tank' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 70, energyReward: 0, generatorReward: null },
+  { id: 'R17', name: { ru: 'Запустить фильтры воды', en: 'Start the water filters' }, result: { ru: 'Из крана течёт чистая вода', en: 'Clean water runs from the tap' }, requires: [r('F05'), r('E05'), r('A05'), r('M05')], cost: 320, energyReward: 150, generatorReward: null },
+  { id: 'C10', kind: 'rubble', name: { ru: 'Расчистить вентиляционную шахту', en: 'Clear the air shaft' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 80, energyReward: 0, generatorReward: null },
+  { id: 'R18', name: { ru: 'Включить вентиляцию', en: 'Turn on the ventilation' }, result: { ru: 'Свежий воздух — технический этаж ожил', en: 'Fresh air — the technical level is alive' }, requires: [r('F05'), r('E05'), r('T05'), r('M05'), r('A05')], cost: 400, energyReward: 0, generatorReward: null },
 ];
 
 /** Главы: последний проект главы завершает её. */
 export const CHAPTERS: { id: number; lastProject: string }[] = [
   { id: 1, lastProject: 'R08' },
   { id: 2, lastProject: 'R13' },
+  { id: 3, lastProject: 'R18' },
 ];
 
 export function chapterEndedBy(projectId: string): number | null {

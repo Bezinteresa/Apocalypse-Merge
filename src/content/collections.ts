@@ -104,6 +104,17 @@ export const CHEST_SOURCES: Record<string, string> = {
   O24: 'CH_WORN',
   O27: 'CH_WORN',
   O30: 'CH_WORN',
+  // глава 3
+  R14: 'CH_WORN',
+  R15: 'CH_WORN',
+  R16: 'CH_WORN',
+  R17: 'CH_WORN',
+  R18: 'CH_WORN',
+  O33: 'CH_WORN',
+  O36: 'CH_WORN',
+  O39: 'CH_WORN',
+  O42: 'CH_WORN',
+  O45: 'CH_WORN',
 };
 
 export function getCard(id: string): CardDef {

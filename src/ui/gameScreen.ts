@@ -902,6 +902,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     const chapter = chapterEndedBy(project.id);
     if (chapter === 1) parts.push(t('chapterEnd1'));
     if (chapter === 2) parts.push(t('chapterEnd2'));
+    if (chapter === 3) parts.push(t('chapterEnd3'));
     $('.modal p').textContent = parts.join('. ');
     interstitialAfterModal = true;
     tel.goal('project_completed', project.id);

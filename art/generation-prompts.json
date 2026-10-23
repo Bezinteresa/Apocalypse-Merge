@@ -194,6 +194,41 @@
       "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
     },
     {
+      "file": "items/F01.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A short rusty pipe offcut with a threaded end, a blue paint stripe around it.",
+      "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
+    },
+    {
+      "file": "items/F02.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A pipe coupling: a chunky blue-painted metal sleeve joining two short pipe ends, two bolts.",
+      "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
+    },
+    {
+      "file": "items/F03.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A valve: a brass pipe valve with a round bright blue handwheel.",
+      "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
+    },
+    {
+      "file": "items/F04.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A water filter: a tall clear cylinder cartridge with a blue cap and white pleated filter inside.",
+      "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
+    },
+    {
+      "file": "items/F05.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A purifier unit: a compact blue metal box with two filter cartridges, a pressure gauge and a small tap.",
+      "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
+    },
+    {
       "file": "generators/G_TOOL.png",
       "w": 256,
       "h": 256,
@@ -429,6 +464,53 @@
       "guide": "public/sprites/generators/G_AUTO.png"
     },
     {
+      "file": "generators/G_PIPE.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A pipe rack: a blue-grey metal rack stacked with pipes of different sizes, valves on hooks and a box of filters. A source of pipes and filters; larger and more furniture-like than regular items.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text."
+    },
+    {
+      "file": "generators/G_PIPE_1.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 1 of 6: not working yet, looks incomplete. A few loose pipe clamps and a bent bracket.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_PIPE.png"
+    },
+    {
+      "file": "generators/G_PIPE_2.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 2 of 6: not working yet, looks incomplete. A single blue-grey rack upright with one pipe hook.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_PIPE.png"
+    },
+    {
+      "file": "generators/G_PIPE_3.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 3 of 6: not working yet, looks incomplete. An empty blue-grey pipe rack frame.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_PIPE.png"
+    },
+    {
+      "file": "generators/G_PIPE_5.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 5 of 6: clearly bigger and richer than level 4, same family and colors. A bigger blue-grey pipe rack full of pipes, valves and filter boxes, a small hand pump on top.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_PIPE.png"
+    },
+    {
+      "file": "generators/G_PIPE_6.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 6 of 6: clearly bigger and richer than level 4, same family and colors. A large blue-grey plumbing station: pipe rack, filter cabinet and a pressure tank.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_PIPE.png"
+    },
+    {
       "file": "portraits/LEV.png",
       "w": 512,
       "h": 512,
@@ -454,6 +536,13 @@
       "w": 512,
       "h": 512,
       "subject": "Savva, a weathered caravan driver in his 50s, short grey beard, flat cap, leather jacket with patches, driving goggles around his neck, a road map in his hand, calm friendly smile.",
+      "extra": "Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text."
+    },
+    {
+      "file": "portraits/TIKHON.png",
+      "w": 512,
+      "h": 512,
+      "subject": "Tikhon, a lean shelter engineer in his 60s, white stubble, round glasses, knitted cap, worn blue work overalls with many pockets, a headlamp on his forehead, a wrench in the chest pocket, tired but kind smile.",
       "extra": "Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text."
     },
     {
@@ -709,6 +798,102 @@
       "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, the heap rises from a wide flat base, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 416:256."
     },
     {
+      "file": "zones/R14_broken.png",
+      "w": 2560,
+      "h": 96,
+      "subject": "A row of dead caged bulbs on a sagging cable along the ceiling. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 2560:96."
+    },
+    {
+      "file": "zones/R14_fixed.png",
+      "w": 2560,
+      "h": 96,
+      "subject": "A row of caged bulbs glowing warm yellow on a tidy cable. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 2560:96.",
+      "guide": "public/sprites/zones/R14_broken.png"
+    },
+    {
+      "file": "zones/C08_broken.png",
+      "w": 448,
+      "h": 256,
+      "subject": "A rubble pile to clear: a heap of a collapsed metal rack, cable reels and broken crates. Dusty and messy but not scary, reads clearly as junk to be removed.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, the heap rises from a wide flat base, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:256."
+    },
+    {
+      "file": "zones/R15_broken.png",
+      "w": 448,
+      "h": 480,
+      "subject": "A dead rusty diesel backup generator with an open panel and loose wires. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:480."
+    },
+    {
+      "file": "zones/R15_fixed.png",
+      "w": 448,
+      "h": 480,
+      "subject": "The same backup generator running, panel closed, green indicator lights, small exhaust pipe. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:480.",
+      "guide": "public/sprites/zones/R15_broken.png"
+    },
+    {
+      "file": "zones/R16_broken.png",
+      "w": 480,
+      "h": 448,
+      "subject": "A disassembled water pump station: two rusty pumps, disconnected pipes on the floor. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 480:448."
+    },
+    {
+      "file": "zones/R16_fixed.png",
+      "w": 480,
+      "h": 448,
+      "subject": "An assembled pump station with two blue pumps, pipes connected, pressure gauges. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 480:448.",
+      "guide": "public/sprites/zones/R16_broken.png"
+    },
+    {
+      "file": "zones/C09_broken.png",
+      "w": 416,
+      "h": 256,
+      "subject": "A rubble pile to clear: a heap of grey silt, sludge buckets and rotten boards. Dusty and messy but not scary, reads clearly as junk to be removed.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, the heap rises from a wide flat base, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 416:256."
+    },
+    {
+      "file": "zones/R17_broken.png",
+      "w": 416,
+      "h": 480,
+      "subject": "Empty filter tanks with cracked glass and dry hoses. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 416:480."
+    },
+    {
+      "file": "zones/R17_fixed.png",
+      "w": 416,
+      "h": 480,
+      "subject": "Tall filter tanks full of clear water, clean hoses and a shiny tap. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 416:480.",
+      "guide": "public/sprites/zones/R17_broken.png"
+    },
+    {
+      "file": "zones/C10_broken.png",
+      "w": 416,
+      "h": 256,
+      "subject": "A rubble pile to clear: a heap of torn air ducts, grilles and dust. Dusty and messy but not scary, reads clearly as junk to be removed.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, the heap rises from a wide flat base, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 416:256."
+    },
+    {
+      "file": "zones/R18_broken.png",
+      "w": 704,
+      "h": 576,
+      "subject": "A huge rusty ventilation fan unit, blades jammed, ducts torn off. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 704:576."
+    },
+    {
+      "file": "zones/R18_fixed.png",
+      "w": 704,
+      "h": 576,
+      "subject": "The same ventilation unit working, fan spinning, ducts reattached, light breeze ribbons. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 704:576.",
+      "guide": "public/sprites/zones/R18_broken.png"
+    },
+    {
       "file": "characters/LEV.png",
       "w": 320,
       "h": 640,
@@ -739,6 +924,14 @@
       "subject": "Savva, a weathered caravan driver in his 50s, short grey beard, flat cap, leather jacket with patches, driving goggles around his neck, cargo trousers, heavy boots, a road map in his hand.",
       "extra": "Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.",
       "guide": "public/sprites/portraits/SAVVA.png"
+    },
+    {
+      "file": "characters/TIKHON.png",
+      "w": 320,
+      "h": 640,
+      "subject": "Tikhon, a lean shelter engineer in his 60s, white stubble, round glasses, knitted cap, worn blue work overalls with many pockets, a headlamp on his forehead, a wrench in the chest pocket, rubber boots, holding an old radio handset.",
+      "extra": "Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.",
+      "guide": "public/sprites/portraits/TIKHON.png"
     },
     {
       "file": "chests/CH_WORN.png",

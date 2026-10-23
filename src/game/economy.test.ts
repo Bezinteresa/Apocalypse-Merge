@@ -2,7 +2,7 @@ import { openBoard } from './testUtils';
 import { describe, expect, it } from 'vitest';
 import { START_GENERATORS } from '../content/board';
 import { GENERATORS, GENERATOR_ACTIVE_LEVEL, GENERATOR_MAX_LEVEL, GENERATOR_ODDS, getItem, parseGeneratorToken } from '../content/items';
-import { MAX_ACTIVE_ORDERS, ORDERS, PROJECTS } from '../content/orders';
+import { CHAPTERS, MAX_ACTIVE_ORDERS, ORDERS, PROJECTS } from '../content/orders';
 import { ENERGY_START } from './energy';
 import {
   availableOrders,
@@ -63,9 +63,24 @@ const STEPS: [string[], string][] = [
   [['O25', 'O26', 'O27'], 'R12'],
   [[], 'C07'],
   [['O28', 'O29', 'O30'], 'R13'],
+  // глава 3 (технический этаж убежища): заказы после спуска, затем ремонты этажа
+  [['O31', 'O32', 'O33'], 'R14'],
+  [[], 'C08'],
+  [['O34', 'O35', 'O36'], 'R15'],
+  [['O37', 'O38', 'O39'], 'R16'],
+  [[], 'C09'],
+  [['O40', 'O41', 'O42'], 'R17'],
+  [[], 'C10'],
+  [['O43', 'O44', 'O45'], 'R18'],
 ];
 const CHAPTER_2 = ['R09', 'R10', 'R11', 'R12', 'R13'];
-const CHAPTER_2_TASKS = [...CHAPTER_2, 'C05', 'C06', 'C07'];
+const CHAPTER_3 = ['R14', 'R15', 'R16', 'R17', 'R18'];
+
+/** Номер главы задачи: по порядку проектов до последнего проекта главы. */
+function chapterOf(projectId: string): number {
+  const index = PROJECTS.findIndex((p) => p.id === projectId);
+  return CHAPTERS.find((c) => index <= PROJECTS.findIndex((p) => p.id === c.lastProject))!.id;
+}
 
 const project = (id: string) => PROJECTS.find((p) => p.id === id)!;
 const stepItems = ([orders, proj]: [string[], string]) => [...orders.flatMap((id) => ORDERS.find((o) => o.id === id)!.requires), ...project(proj).requires];
@@ -115,8 +130,9 @@ function expectedCurve(): { project: string; spawns: number }[] {
   });
 }
 
-const chapterSum = (curve: { project: string; spawns: number }[], second: boolean) =>
-  curve.filter((c) => CHAPTER_2_TASKS.includes(c.project) === second).reduce((a, c) => a + c.spawns, 0);
+const chapterSum = (curve: { project: string; spawns: number }[], chapter: number) =>
+  curve.filter((c) => chapterOf(c.project) === chapter).reduce((a, c) => a + c.spawns, 0);
+const chapterEnergy = (chapter: number) => PROJECTS.filter((p) => chapterOf(p.id) === chapter).reduce((a, p) => a + p.energyReward, 0);
 
 /** Изготовить предмет: выдачи из лучшего ящика цепочки и объединение пар этой цепочки ниже нужного уровня. */
 function craft(state: GameState, itemId: string, stats: { spawns: number }): GameState {
@@ -265,10 +281,10 @@ describe('projects', () => {
     expect(availableOrders(r.state).map((o) => o.id)).toEqual(['O02', 'O03']);
   });
 
-  it('plays both chapters with money and energy matching the plan', () => {
+  it('plays all three chapters with money and energy matching the plan', () => {
     let s = openBoard();
     const stats = { spawns: 0 };
-    const spawns = [0, 0];
+    const spawns = [0, 0, 0];
     let peak = 0;
     const run = (r: { ok: true; state: GameState } | { ok: false; reason: string }) => {
       if (!r.ok) throw new Error(r.reason);
@@ -291,12 +307,13 @@ describe('projects', () => {
     const money: Record<string, number> = {
       R01: 24, C01: 14, R02: 14, R03: 54, C02: 34, R04: 70, C03: 40, R05: 126, R06: 171, C04: 141, R07: 186, R08: 236,
       C05: 196, R09: 96, R10: 111, C06: 61, R11: 61, R12: 81, C07: 21, R13: 71,
+      R14: 91, C08: 31, R15: 71, R16: 131, C09: 61, R17: 131, C10: 51, R18: 141,
     };
     for (const step of STEPS) {
       const before = stats.spawns;
       step[0].forEach(deliver);
       repair(step[1]);
-      spawns[CHAPTER_2_TASKS.includes(step[1]) ? 1 : 0] += stats.spawns - before;
+      spawns[chapterOf(step[1]) - 1] += stats.spawns - before;
       expect(s.money, step[1]).toBe(money[step[1]]);
       if (step[1] === 'R08') {
         expect(s.energy).toBe(ENERGY_START + 3 * 50 - spawns[0]);
@@ -307,22 +324,22 @@ describe('projects', () => {
     expect(peak).toBeLessThanOrEqual(MAX_ACTIVE_ORDERS);
     // выдачи этого прохождения (сид 1) близки к модели ожидаемых значений
     const curve = expectedCurve();
-    for (const ch of [0, 1]) {
-      const model = chapterSum(curve, ch === 1);
+    for (const ch of [0, 1, 2]) {
+      const model = chapterSum(curve, ch + 1);
       expect(Math.abs(spawns[ch] - model) / model, `chapter ${ch + 1}: ${spawns[ch]} vs ${model.toFixed(0)}`).toBeLessThan(0.2);
     }
-    // энергии хватает без восстановления и рекламы: 100 + 3 × 50 на первую главу, 4 × 70 на вторую
-    expect(s.energy).toBe(ENERGY_START + 3 * 50 + 4 * 70 - stats.spawns);
+    // энергии хватает без восстановления и рекламы: 100 + 3 × 50 на первую главу, 4 × 70 + 100 (спуск R13) на вторую, 4 × 150 на третью
+    expect(s.energy).toBe(ENERGY_START + 3 * 50 + 4 * 70 + 100 + 4 * 150 - stats.spawns);
     expect(s.energy).toBeGreaterThan(0);
-    // каждый проект и каждый третий заказ дают потёртый сундук: 13 + 10
-    expect(s.chests).toHaveLength(23);
+    // каждый ремонт и каждый третий заказ дают потёртый сундук: 18 + 15
+    expect(s.chests).toHaveLength(33);
     expect(isChapterComplete(s)).toBe(true);
     expect(areAllOrdersDone(s)).toBe(true);
     expect(currentProject(s)).toBeNull();
     expect(s.storage).toHaveLength(10);
     expect(s.incoming).toEqual([]);
-    // пять цепочек — пять видов генераторов; ящики-улучшения из ремонтов стоят рядом, их объединяет игрок
-    expect(new Set(s.cells.flatMap((c) => (c?.kind === 'generator' ? [c.generatorId] : []))).size).toBe(5);
+    // шесть цепочек — шесть видов генераторов; ящики-улучшения из ремонтов игрок объединяет
+    expect(new Set(s.cells.flatMap((c) => (c?.kind === 'generator' ? [c.generatorId] : []))).size).toBe(6);
     expect(validateState(s)).toBe(true);
   });
 
@@ -383,16 +400,26 @@ describe('difficulty curve', () => {
     expect(at('R09')).toBeLessThan(at('R08'));
     for (let i = 1; i < CHAPTER_2.length; i++) expect(at(CHAPTER_2[i]), CHAPTER_2[i]).toBeGreaterThan(at(CHAPTER_2[i - 1]) * 1.2);
     expect(at('R11')).toBeGreaterThan(at('R08'));
-    expect(Math.max(...curve.map((c) => c.spawns))).toBe(at('R13'));
+    expect(Math.max(...curve.filter((c) => chapterOf(c.project) <= 2).map((c) => c.spawns))).toBe(at('R13'));
   });
 
-  it('matches the catalog totals and leaves an energy reserve in both chapters', () => {
-    const [ch1, ch2] = [chapterSum(curve, false), chapterSum(curve, true)];
+  it('chapter 3 starts with a breather after the descent and grows to its finale', () => {
+    for (const id of CHAPTER_3) expect(Math.max(...project(id).requires.map((r) => getItem(r.itemId).level)), id).toBe(5);
+    expect(at('R14')).toBeLessThan(at('R13'));
+    for (let i = 1; i < CHAPTER_3.length; i++) expect(at(CHAPTER_3[i]), CHAPTER_3[i]).toBeGreaterThan(at(CHAPTER_3[i - 1]) * 1.1);
+    expect(Math.max(...curve.map((c) => c.spawns))).toBe(at('R18'));
+  });
+
+  it('matches the catalog totals and leaves an energy reserve in every chapter', () => {
+    const [ch1, ch2, ch3] = [1, 2, 3].map((ch) => chapterSum(curve, ch));
     expect(Math.round(ch1)).toBe(197);
     expect(Math.round(ch2)).toBe(293);
-    const energy = (second: boolean) => PROJECTS.filter((p) => CHAPTER_2_TASKS.includes(p.id) === second).reduce((a, p) => a + p.energyReward, 0);
-    expect(ENERGY_START + energy(false) - ch1).toBeGreaterThan(0.1 * ch1);
-    expect(ENERGY_START + energy(false) + energy(true) - ch1 - ch2).toBeGreaterThan(0.1 * ch2);
+    expect(Math.round(ch3)).toBe(569);
+    let reserve = ENERGY_START;
+    for (const [ch, need] of [[1, ch1], [2, ch2], [3, ch3]]) {
+      reserve += chapterEnergy(ch) - need;
+      expect(reserve, `chapter ${ch}`).toBeGreaterThan(0.08 * need);
+    }
   });
 });
 

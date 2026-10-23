@@ -132,4 +132,36 @@ export const DIALOGS: DialogDef[] = [
       { speaker: 'NIKA', text: { ru: 'Возьмём фонари и аптечку. Спустимся вместе.', en: "Let's take lamps and a first-aid kit. We go down together." } },
     ],
   },
+  // глава 3: технический этаж убежища
+  {
+    id: 'D_TIKHON',
+    after: { project: 'R14' },
+    lines: [
+      { speaker: 'TIKHON', text: { ru: 'Свет… Наконец-то. Я Тихон, инженер этого убежища. Это я звал по радио.', en: "Light… at last. I'm Tikhon, this shelter's engineer. I was the one on the radio." } },
+      { speaker: 'TIKHON', text: { ru: 'Один я тут не справлюсь: генератор встал, вода гнилая, воздух тяжёлый.', en: "I can't manage alone: the generator is dead, the water is foul, the air is heavy." } },
+      { speaker: 'TIKHON', text: { ru: 'Трубы и фильтры берите со стеллажа. Поможете — убежище снова примет людей.', en: 'Take pipes and filters from the rack. Help me, and the shelter will take people in again.' } },
+    ],
+  },
+  {
+    id: 'D_AFTER_R15',
+    after: { project: 'R15' },
+    lines: [{ speaker: 'TIKHON', text: { ru: 'Слышите гул? Это генератор. Теперь у нас своё питание — можно браться за воду.', en: 'Hear that hum? The generator. We have our own power — time to fix the water.' } }],
+  },
+  {
+    id: 'D_AFTER_R17',
+    after: { project: 'R17' },
+    lines: [
+      { speaker: 'NIKA', text: { ru: 'Чистая вода из-под земли! Пункт помощи больше не будет таскать её вёдрами.', en: 'Clean water from underground! The aid post will stop hauling it in buckets.' } },
+      { speaker: 'TIKHON', text: { ru: 'Осталась вентиляция. Без воздуха жилые комнаты не открыть.', en: "Only the ventilation is left. Without air we can't open the living quarters." } },
+    ],
+  },
+  {
+    id: 'D_FINALE3',
+    after: { project: 'R18' },
+    lines: [
+      { speaker: 'TIKHON', text: { ru: 'Вентиляция пошла! Технический этаж живёт.', en: 'The ventilation is running! The technical level lives.' } },
+      { speaker: 'MARTA', text: { ru: 'А за той дверью — лестница ниже. Жилой этаж.', en: 'And behind that door — stairs further down. The living level.' } },
+      { speaker: 'LEV', text: { ru: 'Значит, скоро у «Перекрёстка» будут жильцы. Продолжим?', en: 'So soon the "Crossroads" will have residents. Shall we go on?' } },
+    ],
+  },
 ];

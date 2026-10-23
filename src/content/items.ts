@@ -1,6 +1,6 @@
 // Определения контента по docs/CONTENT_CATALOG.md. ID постоянные: на них ссылаются сохранения, заказы и проекты.
 
-export type ChainId = 'T' | 'M' | 'P' | 'E' | 'A';
+export type ChainId = 'T' | 'M' | 'P' | 'E' | 'A' | 'F';
 export type LangText = { ru: string; en: string };
 
 export interface ItemDef {
@@ -30,6 +30,7 @@ export const CHAINS: Record<ChainId, ChainDef> = {
   P: { id: 'P', name: { ru: 'Припасы', en: 'Provisions' }, color: '#6f9a4a' },
   E: { id: 'E', name: { ru: 'Электрика', en: 'Electrics' }, color: '#d1b832' },
   A: { id: 'A', name: { ru: 'Автодетали', en: 'Car parts' }, color: '#b5533c' },
+  F: { id: 'F', name: { ru: 'Трубы и фильтры', en: 'Pipes and filters' }, color: '#3f9fc4' },
 };
 
 const CHAIN_NAMES: Record<ChainId, LangText[]> = {
@@ -71,6 +72,14 @@ const CHAIN_NAMES: Record<ChainId, LangText[]> = {
     { ru: 'Двигатель в сборе', en: 'Engine block' },
     { ru: 'Комплект ремонта машины', en: 'Vehicle repair kit' },
   ],
+  // глава 3 (технический этаж убежища): CONTENT_CATALOG, раздел 10а — «обрезок трубы → муфта → вентиль → фильтр → блок очистки»
+  F: [
+    { ru: 'Обрезок трубы', en: 'Pipe offcut' },
+    { ru: 'Муфта', en: 'Pipe coupling' },
+    { ru: 'Вентиль', en: 'Valve' },
+    { ru: 'Фильтр', en: 'Filter' },
+    { ru: 'Блок очистки', en: 'Purifier unit' },
+  ],
 };
 
 /** Цена продажи по уровню, раздел 7 каталога. */
@@ -107,6 +116,7 @@ export const GENERATORS: Record<string, GeneratorDef> = {
   G_PROVISION: { id: 'G_PROVISION', name: { ru: 'Ящик припасов', en: 'Provision crate' }, output: 'P01' },
   G_ELECTRIC: { id: 'G_ELECTRIC', name: { ru: 'Стол радиодеталей', en: 'Radio parts bench' }, output: 'E01' },
   G_AUTO: { id: 'G_AUTO', name: { ru: 'Гаражный стеллаж', en: 'Garage parts rack' }, output: 'A01' },
+  G_PIPE: { id: 'G_PIPE', name: { ru: 'Трубный стеллаж', en: 'Pipe rack' }, output: 'F01' },
 };
 
 /**
