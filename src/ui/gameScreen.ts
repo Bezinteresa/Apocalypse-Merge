@@ -284,7 +284,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
 
   shopBtn.onclick = () => openShop(true);
   $('.project-strip').onclick = () => {
-    if (currentProject(state)) openShop(true);
+    // в полосе обучение или подсказка — она не ведёт в магазин
+    if (currentProject(state) && !$('.project-strip').classList.contains('tutorial')) openShop(true);
   };
   $('.back-btn').onclick = () => openShop(false);
   $('.modal-close').onclick = () => {
@@ -674,6 +675,15 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       strip.textContent = `${t('tutorial')}: ${tx(step.hint)}`;
       return;
     }
+    // подсказка к новому действию — в той же полосе, что и обучение; выполнили — полоса вернулась к ремонту
+    const hint = currentHint(state);
+    if (hint) {
+      strip.hidden = false;
+      strip.classList.add('tutorial');
+      strip.classList.remove('ready');
+      strip.textContent = `💡 ${tx(hint.text)}`;
+      return;
+    }
     if (!project) {
       strip.hidden = !isChapterComplete(state);
       strip.classList.remove('ready');
@@ -894,7 +904,10 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     return null;
   }
 
-  const finger = new Finger((hint) => resolveHint(hint));
+  const finger = new Finger(
+    (hint) => resolveHint(hint),
+    () => !shopEl.hidden || !albumEl.hidden,
+  );
 
   render();
   maybeShowDialog();

@@ -20,7 +20,14 @@ export class Finger {
   private withText = true;
   private key = '';
 
-  constructor(private resolve: (hint: Hint) => FingerTargets | null) {
+  /**
+   * bannerAllowed — можно ли показать плашку с текстом. На поле текст подсказки выводится в нижней панели,
+   * плашка нужна только поверх других экранов (магазин, альбом).
+   */
+  constructor(
+    private resolve: (hint: Hint) => FingerTargets | null,
+    private bannerAllowed: () => boolean = () => true,
+  ) {
     this.el = document.createElement('div');
     this.el.className = 'finger';
     this.el.hidden = true;
@@ -52,7 +59,7 @@ export class Finger {
     const targets = this.hint ? this.resolve(this.hint) : null;
     const visible = !!targets && targets.from.offsetParent !== null && (!targets.to || targets.to.offsetParent !== null);
     this.el.hidden = !visible;
-    this.text.hidden = !visible || !this.withText;
+    this.text.hidden = !visible || !this.withText || !this.bannerAllowed();
     if (!visible || !this.hint) return;
     const a = targets.from.getBoundingClientRect();
     const b = targets.to?.getBoundingClientRect();
