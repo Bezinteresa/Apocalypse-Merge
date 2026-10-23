@@ -1,6 +1,6 @@
 # Что сгенерировать сейчас
 
-Файл создан скриптом `node art/art_todo.mjs` (22.10.2026, 23:57:39). Генерируй **только** картинки из этого списка — остальные уже готовы.
+Файл создан скриптом `node art/art_todo.mjs` (23.10.2026, 10:39:00). Генерируй **только** картинки из этого списка — остальные уже готовы.
 
 **Порядок работы — в [art/README.md](README.md):** как собрать запрос, куда сохранить, как записать в `art/generation-log.json` и что закоммитить. Готовое исчезает из этого списка само, когда файл нужного размера лежит в `public/sprites/`.
 
@@ -14,59 +14,128 @@
 Проверь всё разом: `python art/verify_generated_assets.py` (превью в art/generated-previews).
 После этого снова запусти `node art/art_todo.mjs` — сделанное пропадёт из списка.
 
-Осталось: **26**
+Осталось: **38**
 
-## zones/R05_broken.png — 448×416
-
-- Почему: новая картинка
-- Что: Dusty workbench buried under junk. Worn, dusty, clearly broken or missing, but not scary.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:416.
-
-## zones/R05_fixed.png — 448×416
+## items/A01.png — 256×256
 
 - Почему: новая картинка
-- Что: Working mechanic's workbench with a vise, hanging tools and a small lamp. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:416.
-- Приложи как основу для правки: public/sprites/zones/R05_broken.png
+- Что: A small rusty tin with car fasteners: bolts, nuts, washers and a spark plug, dark red paint chips on the tin.
+- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
 
-## zones/R06_broken.png — 1472×120
-
-- Почему: новая картинка
-- Что: A row of dead ceiling lamps hanging on loose wires. Worn, dusty, clearly broken or missing, but not scary.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 1472:120.
-
-## zones/R06_fixed.png — 1472×120
+## items/A02.png — 256×256
 
 - Почему: новая картинка
-- Что: A row of ceiling lamps glowing warm yellow on tidy wires. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 1472:120.
-- Приложи как основу для правки: public/sprites/zones/R06_broken.png
+- Что: A repair assembly: a cleaned car part bundle — a pulley, a short drive belt and a bracket tied together with wire, dark red accents.
+- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
 
-## zones/R07_broken.png — 384×624
-
-- Почему: новая картинка
-- Что: Empty dry rusty water tank stand. Worn, dusty, clearly broken or missing, but not scary.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:624.
-
-## zones/R07_fixed.png — 384×624
+## items/A03.png — 256×256
 
 - Почему: новая картинка
-- Что: Clean blue water tank on a stand with a small pump and a tap with a bucket. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:624.
-- Приложи как основу для правки: public/sprites/zones/R07_broken.png
+- Что: A transmission unit: a compact metal gearbox with visible gears through an open cover, dark red painted housing, oily but restored.
+- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
 
-## zones/R08_broken.png — 832×200
-
-- Почему: новая картинка
-- Что: Blank broken sign board hanging crooked above the entrance, no text. Worn, dusty, clearly broken or missing, but not scary.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 832:200.
-
-## zones/R08_fixed.png — 832×200
+## items/A04.png — 256×256
 
 - Почему: новая картинка
-- Что: Repaired sign board lit with warm string lights, still no text. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
-- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 832:200.
-- Приложи как основу для правки: public/sprites/zones/R08_broken.png
+- Что: An engine block: a small rebuilt car engine with dark red valve cover, hoses and a belt, sitting on a wooden pallet piece.
+- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
+
+## items/A05.png — 256×256
+
+- Почему: новая картинка
+- Что: A vehicle repair kit: a big dark red metal crate with an engine part, wheel, belts and tools neatly packed — the top car parts item.
+- Кадр: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.
+
+## generators/G_AUTO.png — 256×256
+
+- Почему: новая картинка
+- Что: A tall garage parts rack: a dark red metal shelf unit with car parts, tyres, belts and boxes of bolts, a hanging work lamp. A source of car parts; larger and more furniture-like than regular items.
+- Кадр: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.
+
+## portraits/SAVVA.png — 512×512
+
+- Почему: новая картинка
+- Что: Savva, a weathered caravan driver in his 50s, short grey beard, flat cap, leather jacket with patches, driving goggles around his neck, a road map in his hand, calm friendly smile.
+- Кадр: Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text.
+
+## shop/building.webp — 1600×1000
+
+- Почему: переделать: Глава 2 (гараж): гараж нарисован закрытой ролетой во всю стену, а теперь ворота — отдельный спрайт zones/R09. Нарисовать гараж открытым пустым помещением (бетонный пол, стены, без ролеты, машины, ямы и подъёмника) и оставить пустым левый верх убежища под люк R13 — по обновлённой разметке art/guides/building_layout.png. Остальное здание сохранить как есть: приложить текущий shop/building.webp как образец.
+- Что: Cross-section front view of a small two-level post-apocalyptic corner shop building at a city crossroads, like a dollhouse with the front wall removed. Top: grey sky and the facade roof line with an empty sign bracket above the entrance. Ground floor, left to right: an open empty garage bay with a concrete floor and bare walls (no shutter, no vehicle — those are separate sprites); a storeroom with bare concrete walls; the main shop floor with patched wallpaper, an entrance doorway on its left side; a workshop corner with pegboard wall; an outdoor yard with cracked asphalt and a fence. Below ground: a dark underground shelter level, barely visible and mysterious; its top-left corner stays empty for the service hatch sprite. Rooms are EMPTY: no furniture, no counter, no shelves, no racks, no workbench, no lamps, no water tank, no sign — those are separate sprites. No people.
+- Кадр: Wide 16:10 scene, NOT transparent. Follow the attached layout guide exactly: walls, floors and room borders where the guide boxes are; hatched red areas must stay empty background; do not draw the guide lines, labels or colors. Also attach art/reference/shop_mood.webp as the mood reference: same materials, palette and light, but as a cross-section of the whole building.
+- Приложи как основу для правки: art/guides/building_layout.png
+
+## zones/R09_broken.png — 448×240
+
+- Почему: новая картинка
+- Что: A rusty garage roller shutter jammed half-open, bent slats hanging down. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:240.
+
+## zones/R09_fixed.png — 448×240
+
+- Почему: новая картинка
+- Что: A repaired garage roller shutter rolled up neatly under the ceiling. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:240.
+- Приложи как основу для правки: public/sprites/zones/R09_broken.png
+
+## zones/R10_broken.png — 384×96
+
+- Почему: новая картинка
+- Что: An inspection pit in the floor filled with rubble and broken boards. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:96.
+
+## zones/R10_fixed.png — 384×96
+
+- Почему: новая картинка
+- Что: A clean inspection pit with a steel rim and a small ladder. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:96.
+- Приложи как основу для правки: public/sprites/zones/R10_broken.png
+
+## zones/R11_broken.png — 144×544
+
+- Почему: новая картинка
+- Что: A toppled rusty two-post car lift, one post leaning. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 144:544.
+
+## zones/R11_fixed.png — 144×544
+
+- Почему: новая картинка
+- Что: An upright two-post car lift, freshly painted, arms folded. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 144:544.
+- Приложи как основу для правки: public/sprites/zones/R11_broken.png
+
+## zones/R12_broken.png — 320×400
+
+- Почему: новая картинка
+- Что: A small caravan van with a flat tyre, open hood and missing headlight, side view facing right. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 320:400.
+
+## zones/R12_fixed.png — 320×400
+
+- Почему: новая картинка
+- Что: The same small caravan van repaired, headlights on, roof rack with tied cargo, side view facing right. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 320:400.
+- Приложи как основу для правки: public/sprites/zones/R12_broken.png
+
+## zones/R13_broken.png — 384×200
+
+- Почему: новая картинка
+- Что: A heavy floor hatch buried under concrete debris and a fallen beam. Worn, dusty, clearly broken or missing, but not scary.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:200.
+
+## zones/R13_fixed.png — 384×200
+
+- Почему: новая картинка
+- Что: An open heavy service hatch with a ladder going down and warm light below. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.
+- Кадр: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:200.
+- Приложи как основу для правки: public/sprites/zones/R13_broken.png
+
+## characters/SAVVA.png — 320×640
+
+- Почему: новая картинка
+- Что: Savva, a weathered caravan driver in his 50s, short grey beard, flat cap, leather jacket with patches, driving goggles around his neck, cargo trousers, heavy boots, a road map in his hand.
+- Кадр: Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.
+- Приложи как основу для правки: public/sprites/portraits/SAVVA.png
 
 ## chests/CH_WORN.png — 256×256
 
@@ -175,3 +244,9 @@
 - Почему: новая картинка
 - Что: Dusty white cobweb overlay for a square game board tile: thin strands anchored in the corners and along the edges, the center mostly clear so an item underneath stays visible.
 - Кадр: Overlay only: transparent background, semi-transparent white strands, no object, no frame, no text, fills the whole square.
+
+## ui/finger.png — 128×128
+
+- Почему: новая картинка
+- Что: A cartoon hand with the index finger pointing straight UP, sleeve cuff at the bottom, friendly tutorial pointer for a mobile game, slightly worn work-glove look matching the post-apocalyptic style.
+- Кадр: Single hand, fingertip at the top center of the frame, fills about 85% of the frame, transparent background, no text, no shadow on the ground.
