@@ -217,6 +217,11 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         deps.toast('boxHint');
         return;
       }
+      // как в «Отеле Мечты»: первое нажатие выбирает ящик (рамка-уголки), повторное по выбранному — выдаёт предмет
+      if (content?.kind === 'generator' && loc.area === 'board' && !(selected?.area === 'board' && selected.index === loc.index)) {
+        select(loc);
+        return;
+      }
       if (content?.kind === 'generator' && loc.area === 'board') {
         const r = spawnFromGenerator(state, loc.index);
         if (!r.ok) {

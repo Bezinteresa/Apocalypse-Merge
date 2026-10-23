@@ -35,7 +35,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   },
   {
     id: 'spawn_tools',
-    hint: { ru: 'Нажмите на ящик инструментов два раза', en: 'Tap the toolbox twice' },
+    hint: { ru: 'Выберите ящик инструментов и нажмите на него ещё два раза', en: 'Select the toolbox, then tap it twice more' },
     targets: [{ kind: 'generator', generatorId: 'G_TOOL' }],
     done: (s) => has(s, 'T01', 2) || has(s, 'T02') || orderDone(s, 'O01'),
   },
