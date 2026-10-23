@@ -216,6 +216,83 @@
       "h": 10,
       "broken": "a heavy floor hatch buried under concrete debris and a fallen beam",
       "fixed": "an open heavy service hatch with a ladder going down and warm light below"
+    },
+    {
+      "project": "C01",
+      "room": "HALL",
+      "x": 47,
+      "y": 48,
+      "w": 12,
+      "h": 13,
+      "rubble": true,
+      "broken": "a heap of broken bricks, planks and torn cardboard",
+      "fixed": ""
+    },
+    {
+      "project": "C02",
+      "room": "STORAGE",
+      "x": 17,
+      "y": 48,
+      "w": 13,
+      "h": 13,
+      "rubble": true,
+      "broken": "a heap of crushed boxes, rags and bent metal",
+      "fixed": ""
+    },
+    {
+      "project": "C03",
+      "room": "WORKSHOP",
+      "x": 67,
+      "y": 48,
+      "w": 13,
+      "h": 13,
+      "rubble": true,
+      "broken": "a heap of scrap metal, old tyres and broken tools",
+      "fixed": ""
+    },
+    {
+      "project": "C04",
+      "room": "YARD",
+      "x": 86,
+      "y": 48,
+      "w": 12,
+      "h": 13,
+      "rubble": true,
+      "broken": "a heap of trash bags, broken pallets and a rusty barrel",
+      "fixed": ""
+    },
+    {
+      "project": "C05",
+      "room": "GARAGE",
+      "x": 1.5,
+      "y": 44,
+      "w": 13.5,
+      "h": 17,
+      "rubble": true,
+      "broken": "a big pile of car junk: doors, bumpers, tyres and bricks",
+      "fixed": ""
+    },
+    {
+      "project": "C06",
+      "room": "GARAGE",
+      "x": 8,
+      "y": 48,
+      "w": 7.5,
+      "h": 13,
+      "rubble": true,
+      "broken": "a heap of concrete chunks and twisted rebar",
+      "fixed": ""
+    },
+    {
+      "project": "C07",
+      "room": "SHELTER",
+      "x": 2.5,
+      "y": 66,
+      "w": 13,
+      "h": 12,
+      "rubble": true,
+      "broken": "a heap of concrete slabs, a fallen beam and dust",
+      "fixed": ""
     }
   ],
   "spots": [

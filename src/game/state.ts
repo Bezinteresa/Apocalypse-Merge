@@ -4,7 +4,7 @@ import { ENERGY_START } from './energy';
 import { initialCollections, type ChestResult, type SetProgress } from './collections';
 import { emptyAdRewards, type AdRewardState } from './ads';
 
-export const SCHEMA_VERSION = 10;
+export const SCHEMA_VERSION = 11;
 
 export interface ItemInstance {
   uid: number;

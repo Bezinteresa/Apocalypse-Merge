@@ -1,5 +1,5 @@
 import { CHAINS, GENERATORS, GENERATOR_ACTIVE_LEVEL, GENERATOR_MAX_LEVEL, ITEMS, generatorDrops, generatorLevelName, getItem, parseGeneratorToken } from '../content/items';
-import { PROJECTS, VISITORS, chapterEndedBy, type ProjectDef, type Requirement } from '../content/orders';
+import { CHAPTERS, PROJECTS, VISITORS, chapterEndedBy, type ProjectDef, type Requirement } from '../content/orders';
 import { t, tx, type StringKey } from '../i18n';
 import {
   availableOrders,
@@ -32,7 +32,7 @@ import { AD_REWARD_ENERGY, AD_REWARD_LIMIT, adCooldownLeft, adRewardsAt, canShow
 import { createAlbum } from './albumView';
 import { Finger } from './finger';
 import { currentHint, markFlag } from '../game/hints';
-import { hasSprite, portraitSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
+import { BUILDING_SPRITE, hasSprite, portraitSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
 import { POOF_MS, playPoof, renderShopScene } from './shopScene';
 import { VISITOR_COLOR } from '../content/shopLayout';
 import { CHESTS } from '../content/collections';
@@ -64,6 +64,8 @@ export interface GameScreen {
 export function createGameScreen(app: HTMLElement, initial: GameState, deps: GameScreenDeps): GameScreen {
   let state = initial;
   let selected: Loc | null = null;
+  // фон экрана поля — размытая сцена магазина; адрес абсолютный, чтобы url() из переменной не считался от папки стилей
+  if (hasSprite(BUILDING_SPRITE)) document.documentElement.style.setProperty('--field-bg-img', `url("${new URL(spriteUrl(BUILDING_SPRITE), location.href).href}")`);
   let sellArmed = false;
 
   app.innerHTML = `
@@ -86,9 +88,11 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     </footer>
     <section class="shop" hidden>
       <header class="shop-head"><h2></h2><button class="btn small back-btn"></button></header>
-      <div class="scene-wrap"><div class="scene"></div></div>
-      <div class="project-card"></div>
-      <ol class="zones"></ol>
+      <div class="scene-wrap">
+        <div class="scene-scroll"><div class="scene"></div></div>
+        <div class="chapter-progress"><span class="chapter-label"></span><div class="chapter-bar"><i></i></div></div>
+        <div class="project-card"></div>
+      </div>
     </section>
     <section class="shop album" hidden>
       <header class="shop-head"><h2></h2><button class="btn small back-btn album-back"></button></header>
@@ -646,7 +650,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     strip.hidden = false;
     const ready = canCompleteProject(state, project);
     strip.classList.toggle('ready', ready);
-    strip.textContent = `${t('project')} ${project.id}: ${tx(project.name)} — ${ready ? t('projectReady') : `${t('money')}: ${state.money}/${project.cost}`}`;
+    strip.textContent = `${project.kind === 'rubble' ? '🧹' : '🔨'} ${tx(project.name)} — ${ready ? t(project.kind === 'rubble' ? 'rubbleReady' : 'projectReady') : `💰 ${state.money}/${project.cost}`}`;
   }
 
   function renderShop(): void {
@@ -669,19 +673,16 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         openShop(false);
       },
     });
-    const zones = $('.zones');
-    zones.replaceChildren();
+    // на телефоне сцена шире экрана и прокручивается: показываем место текущей задачи
+    const scroller = $('.scene-scroll');
+    const spot = scroller.querySelector<HTMLElement>('.zone-spot.current');
+    if (spot && scroller.scrollWidth > scroller.clientWidth) scroller.scrollLeft = spot.offsetLeft + spot.offsetWidth / 2 - scroller.clientWidth / 2;
+    // как в «Отеле Мечты»: вместо списка всех ремонтов — прогресс главы и одна текущая задача
     const current = currentProject(state);
-    for (const p of PROJECTS) {
-      const li = document.createElement('li');
-      const done = state.completedProjects.includes(p.id);
-      li.className = done ? 'zone done' : p.id === current?.id ? 'zone current' : 'zone';
-      const status = done ? `✓ ${tx(p.result)}` : p.id === current?.id ? t('project') : t('notYet');
-      li.innerHTML = '<b></b><span></span>';
-      li.querySelector('b')!.textContent = `${p.id} · ${tx(p.name)}`;
-      li.querySelector('span')!.textContent = status;
-      zones.appendChild(li);
-    }
+    const chapter = chapterTasks(current?.id ?? PROJECTS[PROJECTS.length - 1].id);
+    const doneInChapter = chapter.tasks.filter((p) => state.completedProjects.includes(p.id)).length;
+    $('.chapter-label').textContent = `${t('chapterLabel')} ${chapter.id} · ${doneInChapter}/${chapter.tasks.length}`;
+    $<HTMLElement>('.chapter-bar i').style.width = `${Math.round((doneInChapter / chapter.tasks.length) * 100)}%`;
     const card = $('.project-card');
     card.replaceChildren();
     if (!current) {
@@ -690,18 +691,25 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       card.appendChild(p);
       return;
     }
+    const rubble = current.kind === 'rubble';
+    card.classList.toggle('rubble', rubble);
     const title = document.createElement('h3');
-    title.textContent = `${current.id} · ${tx(current.name)}`;
-    const cost = document.createElement('p');
-    cost.className = state.money >= current.cost ? 'cost ok' : 'cost';
-    cost.textContent = `${t('money')}: ${state.money} / ${current.cost}`;
+    title.textContent = `${rubble ? '🧹' : '🔨'} ${tx(current.name)}`;
     const btn = document.createElement('button');
-    btn.className = 'btn';
-    btn.textContent = t('restore');
+    btn.className = 'btn task-btn';
+    btn.innerHTML = '<span></span><b></b>';
+    btn.querySelector('span')!.textContent = rubble ? t('clearRubble') : t('restore');
+    // цена на кнопке: красная, пока монет не хватает
+    const price = btn.querySelector('b')!;
+    const coin = spriteImg(uiSprite('coin'), 'ui-icon');
+    if (coin) price.append(coin, ` ${current.cost}`);
+    else price.textContent = `💰 ${current.cost}`;
+    price.classList.toggle('short', state.money < current.cost);
     btn.classList.toggle('dim', !canCompleteProject(state, current));
     btn.classList.toggle('tut', currentTutorialStep(state)?.targets.some((x) => x.kind === 'project') ?? false);
     btn.onclick = () => finishProject(current);
-    card.append(title, requirementChips(current.requires), cost);
+    card.append(title);
+    if (current.requires.length) card.append(requirementChips(current.requires));
     if (current.requiresGenerator && !state.cells.some((c) => c?.kind === 'generator' && c.generatorId === current.requiresGenerator)) {
       const need = document.createElement('p');
       need.className = 'cost';
@@ -711,6 +719,18 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     card.appendChild(btn);
   }
 
+  /** Задачи главы, в которую входит проект: от конца прошлой главы до её последнего проекта. */
+  function chapterTasks(projectId: string): { id: number; tasks: ProjectDef[] } {
+    const index = PROJECTS.findIndex((p) => p.id === projectId);
+    let start = 0;
+    for (const c of CHAPTERS) {
+      const end = PROJECTS.findIndex((p) => p.id === c.lastProject);
+      if (index <= end) return { id: c.id, tasks: PROJECTS.slice(start, end + 1) };
+      start = end + 1;
+    }
+    return { id: CHAPTERS.length, tasks: PROJECTS.slice(start) };
+  }
+
   function finishProject(project: ProjectDef): void {
     if (effectPlaying) return;
     const r = completeProject(state, project.id);
@@ -718,6 +738,16 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       if (r.reason === 'no_money') deps.toast('noMoney', `${state.money}/${project.cost}`);
       else if (r.reason === 'generator_missing') deps.toast('placeFirst', project.requiresGenerator ? tx(GENERATORS[project.requiresGenerator].name) : '');
       else deps.toast('missingItems', missingList(project.requires));
+      return;
+    }
+    if (project.kind === 'rubble') {
+      // расчистка — короткое действие: облачко и всплывающая строка, без окна итога и рекламы
+      tel.goal('rubble_cleared', project.id);
+      commit(r.state, true);
+      select(null);
+      playPoof($('.scene'), project.id);
+      deps.toast('rubbleCleared', `— ${tx(project.name)}`);
+      finger.show(currentHint(state), !currentTutorialStep(state));
       return;
     }
     // окно итога открывается до принятия состояния, чтобы сцена после ремонта шла следом за ним
@@ -747,8 +777,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   }
 
   function openShop(open: boolean): void {
-    if (open) renderShop();
     shopEl.hidden = !open;
+    // рисуем после показа: прокрутка сцены к текущей задаче считается по видимым размерам
+    if (open) renderShop();
     shopEl.classList.toggle('enter', open);
   }
 

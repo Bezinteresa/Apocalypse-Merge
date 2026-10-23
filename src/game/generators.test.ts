@@ -75,7 +75,7 @@ describe('generator levels', () => {
       nextUid: 3,
       money: 25,
       completedOrders: ['O01'],
-      completedProjects: ['R01'],
+      completedProjects: ['R01', 'C01'],
     };
     const r = completeProject(s, 'R02');
     if (!r.ok) throw new Error(r.reason);

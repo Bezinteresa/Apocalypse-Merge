@@ -132,7 +132,7 @@ export class Telemetry {
   }
 
   /** Сдача заказа или ремонта: фиксирует, сколько выдач понадобилось с прошлой цели. */
-  goal(name: 'order_delivered' | 'project_completed', id: string): void {
+  goal(name: 'order_delivered' | 'project_completed' | 'rubble_cleared', id: string): void {
     const spawns = this.log.spawnsSinceGoal;
     this.log.spawnsSinceGoal = 0;
     this.track(name, { id, spawns, spawns_total: this.log.spawnsTotal, active_sec: this.activeSec() });

@@ -18,7 +18,8 @@ describe('art specification', () => {
       ...Object.keys(GENERATORS).flatMap((g) => [1, 2, 3, 4, 5, 6].map((l) => generatorSprite(g, l))),
       ...Object.keys(VISITORS).filter((v) => v !== 'RADIO').map(portraitSprite),
       BUILDING_SPRITE,
-      ...ZONES.flatMap((z) => [zoneSprite(z.project, false), zoneSprite(z.project, true)]),
+      // гора мусора исчезает после расчистки — у неё только картинка «до»
+      ...ZONES.flatMap((z) => (z.rubble ? [zoneSprite(z.project, false)] : [zoneSprite(z.project, false), zoneSprite(z.project, true)])),
       ...SPOTS.map((s) => characterSprite(s.visitor)),
       ...Object.keys(CHESTS).map(chestSprite),
       ...CARDS.map((c) => cardSprite(c.id)),

@@ -28,6 +28,8 @@ export interface ZoneDef extends Rect {
   room: string;
   broken: string;
   fixed: string;
+  /** Гора мусора: после расчистки исчезает, картинки «починено» нет. */
+  rubble?: boolean;
 }
 
 export interface SpotDef {

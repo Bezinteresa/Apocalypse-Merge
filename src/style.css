@@ -1,7 +1,7 @@
 :root {
   --bg: #1d1b18;
   --panel: #2a2622;
-  --cell: #35302a;
+  --cell: #f1e3c4;
   --cell-locked: #1a1815;
   --text: #ece4d6;
   --muted: #a89c8a;
@@ -225,6 +225,11 @@ body {
   grid-auto-rows: var(--cell-size);
   gap: 3px;
   touch-action: none;
+  /* поле — светлая доска в рамке, как в «Отеле Мечты»: предметы на ней читаются лучше, чем на сером */
+  padding: 6px;
+  border-radius: 14px;
+  background: #d8bf8f;
+  box-shadow: 0 6px 18px #0006, inset 0 0 0 2px #fff3;
 }
 
 .cell {
@@ -403,40 +408,6 @@ body {
   font-size: 20px;
 }
 
-.zones {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.zone {
-  background: var(--cell-locked);
-  border: 1px solid #3a342d;
-  border-radius: 8px;
-  padding: 8px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  color: var(--muted);
-}
-
-.zone span {
-  font-size: 13px;
-}
-
-.zone.current {
-  border: 2px solid var(--accent);
-  color: var(--text);
-}
-
-.zone.done {
-  background: #2f3a28;
-  color: var(--text);
-}
-
 .project-card {
   background: var(--panel);
   border-radius: 10px;
@@ -449,6 +420,117 @@ body {
 .project-card h3,
 .project-card p {
   margin: 0;
+}
+
+/* текущая задача: название, предметы и кнопка с ценой */
+.project-card {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.project-card h3 {
+  flex: 1 1 100%;
+  font-size: 17px;
+}
+
+.project-card .task-btn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  padding: 10px 16px;
+}
+
+.task-btn b {
+  background: #0003;
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.task-btn b.short {
+  color: #ffd0c0;
+  background: #a0302080;
+}
+
+.chapter-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.chapter-bar {
+  flex: 1;
+  height: 10px;
+  background: #0006;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.chapter-bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #f3c86a);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* гора мусора без картинки: невысокая условная куча у пола */
+.zone-spot.rubble.broken:not(.has-art) {
+  background: radial-gradient(ellipse 50% 45% at 50% 100%, #8a7358e6 0 80%, transparent 82%);
+  border: none;
+  font-size: clamp(10px, 2.4cqw, 18px);
+  align-items: flex-end;
+  padding-bottom: 2%;
+}
+
+.scene-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scene-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 10px;
+  scrollbar-width: none;
+}
+
+/* на узком экране сцена крупнее и прокручивается по горизонтали, чтобы этажи и места ремонта были видны */
+@media (max-width: 719px) {
+  .scene-scroll .scene {
+    width: 180%;
+  }
+}
+
+/* на широком экране задача — карточка поверх сцены в правом нижнем углу, прогресс главы — сверху */
+@media (min-width: 720px) {
+  .scene-wrap .chapter-progress {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(360px, 50%);
+    z-index: 6;
+    background: #1d1b18cc;
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+
+  .scene-wrap .project-card {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 6;
+    width: min(340px, 45%);
+    background: #2a2622ee;
+    box-shadow: 0 6px 20px #0008;
+  }
 }
 
 .cost {
@@ -1832,4 +1914,20 @@ body {
 
 .piece.generator .badge {
   font-size: calc(var(--cell-size) * 0.2);
+}
+
+/* фон экрана поля — размытая сцена магазина вместо ровного серого */
+body {
+  /* фон страницы держит html: так размытая сцена (#app::before) видна над ним */
+  background: transparent;
+}
+
+#app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--field-bg-img, linear-gradient(#5a4a3a, #2e261f)) center / cover;
+  filter: blur(10px) brightness(0.55) saturate(1.15);
+  transform: scale(1.08);
 }

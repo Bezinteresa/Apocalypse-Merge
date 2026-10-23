@@ -73,7 +73,7 @@ describe('energy', () => {
       nextUid: 3,
       money: 25,
       completedOrders: ['O01'],
-      completedProjects: ['R01'],
+      completedProjects: ['R01', 'C01'],
     };
     const r = completeProject(s, 'R02');
     expect(r.ok && r.state.energy).toBe(150);

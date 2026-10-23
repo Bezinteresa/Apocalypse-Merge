@@ -75,10 +75,13 @@ export function renderShopScene(root: HTMLElement, state: GameState, handlers: S
     const room = ROOMS.find((r) => r.id === zone.room);
     const roomLocked = !!room?.locked && !(room.unlockAfter && state.completedProjects.includes(room.unlockAfter));
     if (roomLocked && !done && !isCurrent) continue;
+    // расчищенная гора мусора исчезает
+    if (zone.rubble && done) continue;
     const project = PROJECTS.find((p) => p.id === zone.project)!;
     const el = document.createElement('button');
     el.className = 'zone-spot';
     el.classList.add(done ? 'fixed' : 'broken');
+    el.classList.toggle('rubble', !!zone.rubble);
     el.classList.toggle('current', isCurrent);
     el.dataset.project = zone.project;
     el.title = `${zone.project} · ${tx(project.name)}`;
@@ -89,13 +92,13 @@ export function renderShopScene(root: HTMLElement, state: GameState, handlers: S
       el.appendChild(img);
     } else {
       const label = document.createElement('span');
-      label.textContent = `${done ? '✓' : '✕'} ${zone.project}`;
+      label.textContent = zone.rubble ? '🗑' : `${done ? '✓' : '✕'} ${zone.project}`;
       el.appendChild(label);
     }
     if (isCurrent) {
       const badge = document.createElement('span');
       badge.className = 'zone-badge';
-      badge.textContent = '🔨';
+      badge.textContent = zone.rubble ? '🧹' : '🔨';
       el.appendChild(badge);
     }
     el.onclick = () => handlers.onZone(zone.project);
@@ -145,17 +148,24 @@ export const POOF_MS = 900;
  * Состояние к этому моменту уже принято и сохранено; эффект только показывает смену.
  */
 export function playPoof(sceneRoot: HTMLElement, projectId: string): boolean {
+  if (sceneRoot.offsetParent === null) return false;
   const zone = sceneRoot.querySelector<HTMLElement>(`.zone-spot[data-project="${projectId}"]`);
-  if (!zone || zone.offsetParent === null) return false;
-  zone.classList.remove('appear');
-  void zone.offsetWidth;
-  zone.classList.add('appear');
+  // расчищенной горы мусора на сцене уже нет — облачко встаёт на её место по плану здания
+  const rect = ZONES.find((z) => z.project === projectId);
+  if (!zone && !rect) return false;
+  if (zone) {
+    zone.classList.remove('appear');
+    void zone.offsetWidth;
+    zone.classList.add('appear');
+  }
   const poof = document.createElement('div');
   poof.className = 'poof';
-  poof.style.left = zone.style.left;
-  poof.style.top = zone.style.top;
-  poof.style.width = zone.style.width;
-  poof.style.height = zone.style.height;
+  if (zone) {
+    poof.style.left = zone.style.left;
+    poof.style.top = zone.style.top;
+    poof.style.width = zone.style.width;
+    poof.style.height = zone.style.height;
+  } else place(poof, rect!);
   const cloud = hasSprite(uiSprite('poof')) ? `url("${spriteUrl(uiSprite('poof'))}")` : '';
   for (let i = 0; i < 9; i++) {
     const puff = document.createElement('span');

@@ -42,21 +42,30 @@ function putStorage(state: GameState, index: number, itemId: string): GameState 
 /** Шаги прохождения: заказы, открытые прошлым ремонтом, затем сам ремонт — CONTENT_CATALOG, разделы 6.3 и 10. */
 const STEPS: [string[], string][] = [
   [['O01', 'O02'], 'R01'],
+  // горы мусора (C..) расчищаются сразу после ремонта, за которым стоят, на остаток монет
+  [[], 'C01'],
   [['O03'], 'R02'],
   [['O04', 'O05'], 'R03'],
+  [[], 'C02'],
   [['O06', 'O07', 'O08'], 'R04'],
+  [[], 'C03'],
   [['O09', 'O10', 'O11'], 'R05'],
   [['O12', 'O13', 'O14'], 'R06'],
+  [[], 'C04'],
   [['O15', 'O16'], 'R07'],
   [['O17', 'O18'], 'R08'],
   // глава 2 (гараж): сначала ворота, потом заказы каждой ступени
+  [[], 'C05'],
   [[], 'R09'],
   [['O19', 'O20', 'O21'], 'R10'],
+  [[], 'C06'],
   [['O22', 'O23', 'O24'], 'R11'],
   [['O25', 'O26', 'O27'], 'R12'],
+  [[], 'C07'],
   [['O28', 'O29', 'O30'], 'R13'],
 ];
 const CHAPTER_2 = ['R09', 'R10', 'R11', 'R12', 'R13'];
+const CHAPTER_2_TASKS = [...CHAPTER_2, 'C05', 'C06', 'C07'];
 
 const project = (id: string) => PROJECTS.find((p) => p.id === id)!;
 const stepItems = ([orders, proj]: [string[], string]) => [...orders.flatMap((id) => ORDERS.find((o) => o.id === id)!.requires), ...project(proj).requires];
@@ -107,7 +116,7 @@ function expectedCurve(): { project: string; spawns: number }[] {
 }
 
 const chapterSum = (curve: { project: string; spawns: number }[], second: boolean) =>
-  curve.filter((c) => CHAPTER_2.includes(c.project) === second).reduce((a, c) => a + c.spawns, 0);
+  curve.filter((c) => CHAPTER_2_TASKS.includes(c.project) === second).reduce((a, c) => a + c.spawns, 0);
 
 /** Изготовить предмет: выдачи из лучшего ящика цепочки и объединение пар этой цепочки ниже нужного уровня. */
 function craft(state: GameState, itemId: string, stats: { spawns: number }): GameState {
@@ -250,7 +259,8 @@ describe('projects', () => {
     if (!r.ok) return;
     expect(r.state.money).toBe(0);
     expect(r.state.cells[0]).toBeNull();
-    expect(currentProject(r.state)?.id).toBe('R02');
+    // после R01 — первая гора мусора, затем R02
+    expect(currentProject(r.state)?.id).toBe('C01');
     expect(completeProject(r.state, 'R01')).toEqual({ ok: false, reason: 'not_current' });
     expect(availableOrders(r.state).map((o) => o.id)).toEqual(['O02', 'O03']);
   });
@@ -273,17 +283,20 @@ describe('projects', () => {
       s = mergeCrates(s);
     };
     // деньги после каждого ремонта — CONTENT_CATALOG, разделы 6.3 и 10
-    const money: Record<string, number> = { R01: 24, R02: 24, R03: 64, R04: 100, R05: 186, R06: 231, R07: 276, R08: 326, R09: 226, R10: 241, R11: 241, R12: 261, R13: 311 };
+    const money: Record<string, number> = {
+      R01: 24, C01: 14, R02: 14, R03: 54, C02: 34, R04: 70, C03: 40, R05: 126, R06: 171, C04: 141, R07: 186, R08: 236,
+      C05: 196, R09: 96, R10: 111, C06: 61, R11: 61, R12: 81, C07: 21, R13: 71,
+    };
     for (const step of STEPS) {
       const before = stats.spawns;
       step[0].forEach(deliver);
       repair(step[1]);
-      spawns[CHAPTER_2.includes(step[1]) ? 1 : 0] += stats.spawns - before;
+      spawns[CHAPTER_2_TASKS.includes(step[1]) ? 1 : 0] += stats.spawns - before;
       expect(s.money, step[1]).toBe(money[step[1]]);
       if (step[1] === 'R08') {
         expect(s.energy).toBe(ENERGY_START + 3 * 50 - spawns[0]);
         expect(isChapterComplete(s)).toBe(false);
-        expect(currentProject(s)?.id).toBe('R09');
+        expect(currentProject(s)?.id).toBe('C05');
       }
     }
     // выдачи этого прохождения (сид 1) близки к модели ожидаемых значений
@@ -308,7 +321,7 @@ describe('projects', () => {
   });
 
   it('R03 places the provision crate; without space it waits in incoming', () => {
-    const base = { ...put(put(openBoard(), 0, 'T03'), 1, 'M03'), money: 35, completedOrders: ['O01'], completedProjects: ['R01', 'R02'] };
+    const base = { ...put(put(openBoard(), 0, 'T03'), 1, 'M03'), money: 35, completedOrders: ['O01'], completedProjects: ['R01', 'C01', 'R02'] };
     const placed = completeProject(base, 'R03');
     expect(placed.ok && placed.placedCell).not.toBeNull();
     if (!placed.ok) return;
@@ -331,7 +344,7 @@ describe('projects', () => {
   });
 
   it('R04 requires the provision crate on the board', () => {
-    const s = { ...put(put(openBoard(), 0, 'T03'), 1, 'M04'), money: 50, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'], incoming: ['G_PROVISION'] };
+    const s = { ...put(put(openBoard(), 0, 'T03'), 1, 'M04'), money: 50, completedOrders: ['O01'], completedProjects: ['R01', 'C01', 'R02', 'R03', 'C02'], incoming: ['G_PROVISION'] };
     expect(completeProject(s, 'R04')).toEqual({ ok: false, reason: 'generator_missing' });
     const placed = placeIncoming(s);
     if (!placed.ok) throw new Error();
@@ -358,7 +371,7 @@ describe('difficulty curve', () => {
     const [ch1, ch2] = [chapterSum(curve, false), chapterSum(curve, true)];
     expect(Math.round(ch1)).toBe(197);
     expect(Math.round(ch2)).toBe(293);
-    const energy = (second: boolean) => PROJECTS.filter((p) => CHAPTER_2.includes(p.id) === second).reduce((a, p) => a + p.energyReward, 0);
+    const energy = (second: boolean) => PROJECTS.filter((p) => CHAPTER_2_TASKS.includes(p.id) === second).reduce((a, p) => a + p.energyReward, 0);
     expect(ENERGY_START + energy(false) - ch1).toBeGreaterThan(0.1 * ch1);
     expect(ENERGY_START + energy(false) + energy(true) - ch1 - ch2).toBeGreaterThan(0.1 * ch2);
   });

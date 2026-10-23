@@ -38,6 +38,8 @@ export interface ProjectDef {
   requiresGenerator?: string;
   /** Новая вместимость склада после проекта. */
   storageCapacity?: number;
+  /** Расчистка горы мусора: промежуточная задача между ремонтами, только за монеты (решение пользователя от 23.10.2026). */
+  kind?: 'rubble';
 }
 
 export const VISITORS: Record<string, VisitorDef> = {
@@ -90,18 +92,25 @@ export const ORDERS: OrderDef[] = [
 
 export const PROJECTS: ProjectDef[] = [
   { id: 'R01', name: { ru: 'Расчистить и закрепить вход', en: 'Clear and secure the entrance' }, result: { ru: 'Завал убран, проход безопасен', en: 'Rubble cleared, the way in is safe' }, requires: [r('M02')], cost: 10, energyReward: 0, generatorReward: null },
+  { id: 'C01', kind: 'rubble', name: { ru: 'Разобрать завал у прилавка', en: 'Clear the rubble by the counter' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 10, energyReward: 0, generatorReward: null },
   { id: 'R02', name: { ru: 'Восстановить прилавок', en: 'Restore the counter' }, result: { ru: 'Появился рабочий прилавок', en: 'A working counter' }, requires: [r('T02'), r('M03')], cost: 25, energyReward: 50, generatorReward: null , generatorUpgrade: 'G_TOOL:4' },
   { id: 'R03', name: { ru: 'Установить полку припасов', en: 'Install the supply shelf' }, result: { ru: 'На полке появились запасы; получен ящик припасов, приходит Ника', en: 'Supplies on the shelf; provision crate received, Nika arrives' }, requires: [r('T03'), r('M03')], cost: 35, energyReward: 0, generatorReward: 'G_PROVISION' },
+  { id: 'C02', kind: 'rubble', name: { ru: 'Вынести хлам со склада', en: 'Haul the junk out of the storeroom' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 20, energyReward: 0, generatorReward: null },
   { id: 'R04', name: { ru: 'Привести в порядок склад', en: 'Tidy up the storeroom' }, result: { ru: 'Ящики и стеллажи; склад 6 → 10', en: 'Crates and racks; storage 6 → 10' }, requires: [r('T03'), r('M04')], cost: 50, energyReward: 50, generatorReward: null, storageCapacity: STORAGE_CAPACITY_EXPANDED, requiresGenerator: 'G_PROVISION' , generatorUpgrade: 'G_MATERIAL:4' },
+  { id: 'C03', kind: 'rubble', name: { ru: 'Расчистить угол мастерской', en: 'Clear the workshop corner' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 30, energyReward: 0, generatorReward: null },
   { id: 'R05', name: { ru: 'Оборудовать мастерскую', en: 'Equip the workshop' }, result: { ru: 'Верстак и место ремонта; получен стол радиодеталей, приходит Марта', en: 'Workbench and repair spot; radio parts bench received, Marta arrives' }, requires: [r('T04'), r('M04')], cost: 70, energyReward: 0, generatorReward: 'G_ELECTRIC' },
   { id: 'R06', name: { ru: 'Вернуть электричество', en: 'Bring back the power' }, result: { ru: 'Загорелись лампы', en: 'Lamps are on' }, requires: [r('E04'), r('T03')], cost: 70, energyReward: 50, generatorReward: null, requiresGenerator: 'G_ELECTRIC' , generatorUpgrade: 'G_TOOL:5' },
+  { id: 'C04', kind: 'rubble', name: { ru: 'Убрать мусорную кучу во дворе', en: 'Clear the junk heap in the yard' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 30, energyReward: 0, generatorReward: null },
   { id: 'R07', name: { ru: 'Запустить точку чистой воды', en: 'Start the clean water point' }, result: { ru: 'Бак, насос и место выдачи воды', en: 'Tank, pump and water tap' }, requires: [r('P03'), r('E03')], cost: 50, energyReward: 0, generatorReward: null , generatorUpgrade: 'G_PROVISION:4' },
   { id: 'R08', name: { ru: 'Открыть «Перекрёсток»', en: 'Open the "Crossroads"' }, result: { ru: 'Светится вывеска, во дворе посетители', en: 'The sign is lit and visitors fill the yard' }, requires: [r('P04'), r('M04'), r('E04')], cost: 100, energyReward: 0, generatorReward: null , generatorUpgrade: 'G_MATERIAL:5' },
+  { id: 'C05', kind: 'rubble', name: { ru: 'Разгрести гору хлама у ворот гаража', en: 'Dig through the junk pile at the garage door' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 40, energyReward: 0, generatorReward: null },
   // глава 2: гараж (PROTOTYPE_PLAN, этап 7)
   { id: 'R09', name: { ru: 'Открыть ворота гаража', en: 'Open the garage door' }, result: { ru: 'Ворота подняты; получен гаражный стеллаж', en: 'The door is up; garage parts rack received' }, requires: [r('T05'), r('M04')], cost: 100, energyReward: 70, generatorReward: 'G_AUTO' },
   { id: 'R10', name: { ru: 'Расчистить смотровую яму', en: 'Clear the inspection pit' }, result: { ru: 'Яма укреплена; приезжает водитель каравана Савва', en: 'The pit is reinforced; caravan driver Savva arrives' }, requires: [r('A03'), r('M05')], cost: 110, energyReward: 70, generatorReward: null, requiresGenerator: 'G_AUTO' , generatorUpgrade: 'G_ELECTRIC:4' },
+  { id: 'C06', kind: 'rubble', name: { ru: 'Вывезти обломки из гаража', en: 'Haul the debris out of the garage' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 50, energyReward: 0, generatorReward: null },
   { id: 'R11', name: { ru: 'Поставить подъёмник', en: 'Install the car lift' }, result: { ru: 'Подъёмник работает', en: 'The lift works' }, requires: [r('A04'), r('E05'), r('T05')], cost: 140, energyReward: 70, generatorReward: null },
   { id: 'R12', name: { ru: 'Починить фургон каравана', en: 'Repair the caravan van' }, result: { ru: 'Фургон на ходу — караван готов к первому рейсу', en: 'The van runs — the caravan is ready for its first run' }, requires: [r('A05'), r('P05'), r('M05')], cost: 180, energyReward: 70, generatorReward: null , generatorUpgrade: 'G_AUTO:4' },
+  { id: 'C07', kind: 'rubble', name: { ru: 'Разобрать завал над люком', en: 'Clear the debris over the hatch' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 60, energyReward: 0, generatorReward: null },
   { id: 'R13', name: { ru: 'Расчистить служебный спуск', en: 'Clear the service descent' }, result: { ru: 'Под гаражом открылся люк вниз', en: 'A hatch leading down opened under the garage' }, requires: [r('M05'), r('T05'), r('E05'), r('A04')], cost: 250, energyReward: 0, generatorReward: null },
 ];
 

@@ -58,7 +58,8 @@ export function grantAdReward(state: GameState, now: number): GameState | null {
 
 /** Можно ли сейчас запросить межстраничную рекламу; время сеанса не сохраняется. */
 export function canShowInterstitial(state: GameState, sessionStart: number, lastShownAt: number | null, now: number): boolean {
-  if (state.completedProjects.length < INTERSTITIAL_MIN_PROJECTS) return false;
+  // считаются только ремонты: расчистка горы мусора — короткое действие
+  if (state.completedProjects.filter((id) => !id.startsWith('C')).length < INTERSTITIAL_MIN_PROJECTS) return false;
   if (now - sessionStart < INTERSTITIAL_FIRST_DELAY_MS) return false;
   return lastShownAt === null || now - lastShownAt >= INTERSTITIAL_INTERVAL_MS;
 }

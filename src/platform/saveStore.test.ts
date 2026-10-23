@@ -79,7 +79,7 @@ describe('SaveStore', () => {
     b.data[SAVE_KEY] = v1;
     const r = await new SaveStore(b).load();
     expect(r.source).toBe('main');
-    expect(r.state.schemaVersion).toBe(10);
+    expect(r.state.schemaVersion).toBe(11);
     expect(r.state.incoming).toEqual([]);
     expect(r.state.energy).toBe(100);
     expect(r.state.chests).toEqual([]);
@@ -94,12 +94,21 @@ describe('SaveStore', () => {
     const { incoming: _i, energy: _e, energyUpdatedAt: _eu, energyUnlimited: _el, collections: _c, tokens: _t, chests: _ch, rng: _r, lastChest: _lc, adRewards: _ad, ...v3 } = { ...openBoard(), schemaVersion: 3, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'] };
     b.data[SAVE_KEY] = v3;
     const r = await new SaveStore(b).load();
-    expect(r.state.schemaVersion).toBe(10);
+    expect(r.state.schemaVersion).toBe(11);
     expect(r.state.incoming).toEqual(['G_PROVISION']);
     // сундуки задним числом: R01, R02, R03
     expect(r.state.chests).toEqual(['CH_WORN', 'CH_WORN', 'CH_WORN']);
     // стартовые 100 + 50 за уже завершённый R02
     expect(r.state.energy).toBe(150);
+  });
+
+  it('v10 → v11 marks rubble piles before finished repairs as cleared', async () => {
+    const b = new MemoryBackend();
+    b.data[SAVE_KEY] = { ...openBoard(), schemaVersion: 10, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'] };
+    const r = await new SaveStore(b).load();
+    expect(r.state.schemaVersion).toBe(11);
+    // C01 стоит перед R02 — уже пройден; C02 идёт после R03 — теперь текущая задача
+    expect(r.state.completedProjects).toEqual(['R01', 'R02', 'R03', 'C01']);
   });
 
   it('refuses saves from a newer schema', async () => {
