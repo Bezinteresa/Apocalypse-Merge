@@ -92,7 +92,10 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     <section class="shop" hidden>
       <header class="shop-head"><h2></h2><button class="btn small back-btn"></button></header>
       <div class="scene-wrap">
-        <div class="scene-scroll"><div class="scene"></div></div>
+        <div class="scene-frame">
+          <div class="scene-scroll"><div class="scene"></div></div>
+          <button class="scene-nav prev" type="button" hidden>‹</button><button class="scene-nav next" type="button" hidden>›</button>
+        </div>
         <div class="chapter-progress"><span class="chapter-label"></span><div class="chapter-bar"><i></i></div></div>
         <div class="project-card"></div>
       </div>
@@ -286,6 +289,48 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     storageSheet.hidden = !storageSheet.hidden;
     storageBtn.classList.toggle('open', !storageSheet.hidden);
   };
+
+  // сцена шире экрана (телефон): её можно тянуть пальцем или мышью и листать стрелками по краям
+  const sceneScroll = $('.scene-scroll');
+  const navPrev = $<HTMLButtonElement>('.scene-nav.prev');
+  const navNext = $<HTMLButtonElement>('.scene-nav.next');
+  const updateSceneNav = () => {
+    const max = sceneScroll.scrollWidth - sceneScroll.clientWidth;
+    navPrev.hidden = max <= 1 || sceneScroll.scrollLeft <= 1;
+    navNext.hidden = max <= 1 || sceneScroll.scrollLeft >= max - 1;
+  };
+  sceneScroll.addEventListener('scroll', updateSceneNav);
+  window.addEventListener('resize', updateSceneNav);
+  navPrev.onclick = () => sceneScroll.scrollBy({ left: -sceneScroll.clientWidth * 0.6, behavior: 'smooth' });
+  navNext.onclick = () => sceneScroll.scrollBy({ left: sceneScroll.clientWidth * 0.6, behavior: 'smooth' });
+  let pan: { id: number; x: number; left: number; moved: boolean } | null = null;
+  sceneScroll.addEventListener('pointerdown', (e) => {
+    if (e.button > 0) return;
+    pan = { id: e.pointerId, x: e.clientX, left: sceneScroll.scrollLeft, moved: false };
+  });
+  sceneScroll.addEventListener('pointermove', (e) => {
+    if (!pan || e.pointerId !== pan.id) return;
+    const dx = e.clientX - pan.x;
+    // порог: короткое касание остаётся нажатием на место ремонта или реплику
+    if (!pan.moved && Math.abs(dx) < 8) return;
+    if (!pan.moved) {
+      pan.moved = true;
+      sceneScroll.setPointerCapture(e.pointerId);
+      sceneScroll.classList.add('panning');
+    }
+    sceneScroll.scrollLeft = pan.left - dx;
+  });
+  const endPan = (e: PointerEvent) => {
+    if (!pan || e.pointerId !== pan.id) return;
+    if (pan.moved) {
+      // после перетаскивания нажатие не срабатывает
+      sceneScroll.addEventListener('click', (c) => c.stopPropagation(), { capture: true, once: true });
+      setTimeout(() => sceneScroll.classList.remove('panning'), 0);
+    }
+    pan = null;
+  };
+  sceneScroll.addEventListener('pointerup', endPan);
+  sceneScroll.addEventListener('pointercancel', endPan);
 
   shopBtn.onclick = () => openShop(true);
   $('.project-strip').onclick = () => {
@@ -725,6 +770,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     const scroller = $('.scene-scroll');
     const spot = scroller.querySelector<HTMLElement>('.zone-spot.current');
     if (spot && scroller.scrollWidth > scroller.clientWidth) scroller.scrollLeft = spot.offsetLeft + spot.offsetWidth / 2 - scroller.clientWidth / 2;
+    updateSceneNav();
     // как в «Отеле Мечты»: вместо списка всех ремонтов — прогресс главы и одна текущая задача
     const current = currentProject(state);
     const chapter = chapterTasks(current?.id ?? PROJECTS[PROJECTS.length - 1].id);

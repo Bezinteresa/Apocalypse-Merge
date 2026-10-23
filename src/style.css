@@ -518,6 +518,47 @@ body {
   overflow-y: hidden;
   border-radius: 10px;
   scrollbar-width: none;
+  /* по горизонтали сцену двигает сам экран (перетаскивание), по вертикали — обычная прокрутка страницы */
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.scene-scroll.panning {
+  cursor: grabbing;
+}
+
+.scene-scroll.panning .scene {
+  pointer-events: none;
+}
+
+.scene-frame {
+  position: relative;
+}
+
+.scene-nav {
+  position: absolute;
+  top: calc(50% - 22px);
+  z-index: 7;
+  width: 34px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: #1d1b18b3;
+  color: #fff;
+  font: 700 26px/1 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.scene-nav.prev {
+  left: 4px;
+}
+
+.scene-nav.next {
+  right: 4px;
+}
+
+.scene-nav[hidden] {
+  display: none;
 }
 
 /* на узком экране сцена крупнее и прокручивается по горизонтали, чтобы этажи и места ремонта были видны */
