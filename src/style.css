@@ -2542,3 +2542,16 @@ body {
 .board .cell.web .piece {
   filter: saturate(0.6) brightness(0.9);
 }
+
+/* готовый заказ: вся карточка — кнопка «Сдать» */
+.order.tappable {
+  cursor: pointer;
+  animation: order-ready 1.4s ease-in-out infinite;
+}
+
+@keyframes order-ready {
+  50% {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 3px #59b85c88, 0 6px 12px #0005;
+  }
+}

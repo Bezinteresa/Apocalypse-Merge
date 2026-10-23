@@ -757,6 +757,19 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         deps.toast('delivered', gotChest ? `+${r.reward} · ${t('chestReceived')}` : `+${r.reward}`);
         select(null);
       };
+      // готовый заказ сдаётся нажатием в любое место карточки, а не только по маленькой кнопке;
+      // перехват в фазе погружения: нажатие по иконке предмета тоже сдаёт, а не открывает цепочку
+      if (ready) {
+        card.classList.add('tappable');
+        card.addEventListener(
+          'click',
+          (e) => {
+            e.stopPropagation();
+            btn.onclick?.(e);
+          },
+          { capture: true },
+        );
+      }
       card.append(head, text, requirementChips(order.requires), btn);
       box.appendChild(card);
     }
