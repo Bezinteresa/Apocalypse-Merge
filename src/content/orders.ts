@@ -74,18 +74,18 @@ export const ORDERS: OrderDef[] = [
   { id: 'O17', visitor: 'MARTA', text: { ru: 'Проверить дальнюю линию связи', en: 'Check the long-range line' }, requires: [r('E04'), r('P03')], reward: 70, after: 'R07' },
   { id: 'O18', visitor: 'LEV', text: { ru: 'Подготовить первую общую поставку', en: 'Prepare the first shared supply' }, requires: [r('T04'), r('P04')], reward: 80, after: 'R07' },
   // глава 2: гараж
-  { id: 'O19', visitor: 'MARTA', text: { ru: 'Перебрать старый мотоцикл', en: 'Overhaul an old motorbike' }, requires: [r('A02')], reward: 30, after: 'R09' },
-  { id: 'O20', visitor: 'MARTA', text: { ru: 'Собрать ремонтный набор для гаража', en: 'Put together a garage repair set' }, requires: [r('A02'), r('T03')], reward: 45, after: 'R09' },
-  { id: 'O21', visitor: 'LEV', text: { ru: 'Укрепить тележку для дальних рейсов', en: 'Reinforce a cart for long runs' }, requires: [r('M04'), r('A02')], reward: 55, after: 'R09' },
-  { id: 'O22', visitor: 'SAVVA', text: { ru: 'Запасная трансмиссия в дорогу', en: 'Spare transmission for the road' }, requires: [r('A03')], reward: 50, after: 'R10' },
-  { id: 'O23', visitor: 'NIKA', text: { ru: 'Паёк и запчасти для санитарной машины', en: 'Rations and parts for the ambulance' }, requires: [r('P04'), r('A02')], reward: 60, after: 'R10' },
-  { id: 'O24', visitor: 'SAVVA', text: { ru: 'Проводка для фар фургона', en: 'Wiring for the van headlights' }, requires: [r('A03'), r('E03')], reward: 65, after: 'R10' },
-  { id: 'O25', visitor: 'MARTA', text: { ru: 'Двигатель для генератора квартала', en: 'An engine for the district generator' }, requires: [r('A04')], reward: 70, after: 'R11' },
-  { id: 'O26', visitor: 'SAVVA', text: { ru: 'Обед для водителей каравана', en: 'Lunch for the caravan drivers' }, requires: [r('A03'), r('P03')], reward: 60, after: 'R11' },
-  { id: 'O27', visitor: 'LEV', text: { ru: 'Починить ворота на объездной', en: 'Fix the bypass gate' }, requires: [r('T04'), r('A03')], reward: 75, after: 'R11' },
-  { id: 'O28', visitor: 'SAVVA', text: { ru: 'Запасной двигатель с блоком управления', en: 'Spare engine with a control board' }, requires: [r('A04'), r('E04')], reward: 95, after: 'R12' },
-  { id: 'O29', visitor: 'NIKA', text: { ru: 'Аптечный груз для каравана', en: 'Medical cargo for the caravan' }, requires: [r('P04'), r('E03')], reward: 70, after: 'R12' },
-  { id: 'O30', visitor: 'SAVVA', text: { ru: 'Первая поставка каравана', en: 'The first caravan delivery' }, requires: [r('A04'), r('M04')], reward: 95, after: 'R12' },
+  { id: 'O19', visitor: 'MARTA', text: { ru: 'Перебрать старый мотоцикл', en: 'Overhaul an old motorbike' }, requires: [r('A02')], reward: 25, after: 'R09' },
+  { id: 'O20', visitor: 'MARTA', text: { ru: 'Собрать ремонтный набор для гаража', en: 'Put together a garage repair set' }, requires: [r('A02'), r('T04')], reward: 40, after: 'R09' },
+  { id: 'O21', visitor: 'LEV', text: { ru: 'Укрепить тележку для дальних рейсов', en: 'Reinforce a cart for long runs' }, requires: [r('M05'), r('A02')], reward: 60, after: 'R09' },
+  { id: 'O22', visitor: 'SAVVA', text: { ru: 'Запасная трансмиссия в дорогу', en: 'Spare transmission for the road' }, requires: [r('A03')], reward: 30, after: 'R10' },
+  { id: 'O23', visitor: 'NIKA', text: { ru: 'Паёк и запчасти для санитарной машины', en: 'Rations and parts for the ambulance' }, requires: [r('P04'), r('A03')], reward: 55, after: 'R10' },
+  { id: 'O24', visitor: 'SAVVA', text: { ru: 'Проводка для фар фургона', en: 'Wiring for the van headlights' }, requires: [r('A03'), r('E04')], reward: 55, after: 'R10' },
+  { id: 'O25', visitor: 'MARTA', text: { ru: 'Двигатель для генератора квартала', en: 'An engine for the district generator' }, requires: [r('A04')], reward: 45, after: 'R11' },
+  { id: 'O26', visitor: 'SAVVA', text: { ru: 'Двигатель и паёк для разведчиков каравана', en: 'An engine and rations for the caravan scouts' }, requires: [r('P04'), r('A04')], reward: 70, after: 'R11' },
+  { id: 'O27', visitor: 'LEV', text: { ru: 'Починить ворота на объездной', en: 'Fix the bypass gate' }, requires: [r('T05'), r('A04')], reward: 85, after: 'R11' },
+  { id: 'O28', visitor: 'SAVVA', text: { ru: 'Ремонтный комплект и проводка в дальний рейс', en: 'A repair kit and wiring for the long run' }, requires: [r('A05'), r('E04')], reward: 95, after: 'R12' },
+  { id: 'O29', visitor: 'NIKA', text: { ru: 'Аптечный груз для каравана', en: 'Medical cargo for the caravan' }, requires: [r('P05'), r('E04')], reward: 95, after: 'R12' },
+  { id: 'O30', visitor: 'SAVVA', text: { ru: 'Первая поставка каравана', en: 'The first caravan delivery' }, requires: [r('A05'), r('M05')], reward: 110, after: 'R12' },
 ];
 
 export const PROJECTS: ProjectDef[] = [
@@ -98,11 +98,11 @@ export const PROJECTS: ProjectDef[] = [
   { id: 'R07', name: { ru: 'Запустить точку чистой воды', en: 'Start the clean water point' }, result: { ru: 'Бак, насос и место выдачи воды', en: 'Tank, pump and water tap' }, requires: [r('P03'), r('E03')], cost: 50, energyReward: 0, generatorReward: null , generatorUpgrade: 'G_PROVISION:4' },
   { id: 'R08', name: { ru: 'Открыть «Перекрёсток»', en: 'Open the "Crossroads"' }, result: { ru: 'Светится вывеска, во дворе посетители', en: 'The sign is lit and visitors fill the yard' }, requires: [r('P04'), r('M04'), r('E04')], cost: 100, energyReward: 0, generatorReward: null , generatorUpgrade: 'G_MATERIAL:5' },
   // глава 2: гараж (PROTOTYPE_PLAN, этап 7)
-  { id: 'R09', name: { ru: 'Открыть ворота гаража', en: 'Open the garage door' }, result: { ru: 'Ворота подняты; получен гаражный стеллаж', en: 'The door is up; garage parts rack received' }, requires: [r('T04'), r('M04')], cost: 80, energyReward: 50, generatorReward: 'G_AUTO' },
-  { id: 'R10', name: { ru: 'Расчистить смотровую яму', en: 'Clear the inspection pit' }, result: { ru: 'Яма укреплена; приезжает водитель каравана Савва', en: 'The pit is reinforced; caravan driver Savva arrives' }, requires: [r('A02'), r('M04')], cost: 90, energyReward: 50, generatorReward: null, requiresGenerator: 'G_AUTO' , generatorUpgrade: 'G_ELECTRIC:4' },
-  { id: 'R11', name: { ru: 'Поставить подъёмник', en: 'Install the car lift' }, result: { ru: 'Подъёмник работает', en: 'The lift works' }, requires: [r('A03'), r('E04'), r('T04')], cost: 110, energyReward: 50, generatorReward: null },
-  { id: 'R12', name: { ru: 'Починить фургон каравана', en: 'Repair the caravan van' }, result: { ru: 'Фургон на ходу — караван готов к первому рейсу', en: 'The van runs — the caravan is ready for its first run' }, requires: [r('A04'), r('P04'), r('M04')], cost: 130, energyReward: 50, generatorReward: null , generatorUpgrade: 'G_AUTO:4' },
-  { id: 'R13', name: { ru: 'Расчистить служебный спуск', en: 'Clear the service descent' }, result: { ru: 'Под гаражом открылся люк вниз', en: 'A hatch leading down opened under the garage' }, requires: [r('M04'), r('T04'), r('E04')], cost: 150, energyReward: 0, generatorReward: null },
+  { id: 'R09', name: { ru: 'Открыть ворота гаража', en: 'Open the garage door' }, result: { ru: 'Ворота подняты; получен гаражный стеллаж', en: 'The door is up; garage parts rack received' }, requires: [r('T05'), r('M04')], cost: 100, energyReward: 70, generatorReward: 'G_AUTO' },
+  { id: 'R10', name: { ru: 'Расчистить смотровую яму', en: 'Clear the inspection pit' }, result: { ru: 'Яма укреплена; приезжает водитель каравана Савва', en: 'The pit is reinforced; caravan driver Savva arrives' }, requires: [r('A03'), r('M05')], cost: 110, energyReward: 70, generatorReward: null, requiresGenerator: 'G_AUTO' , generatorUpgrade: 'G_ELECTRIC:4' },
+  { id: 'R11', name: { ru: 'Поставить подъёмник', en: 'Install the car lift' }, result: { ru: 'Подъёмник работает', en: 'The lift works' }, requires: [r('A04'), r('E05'), r('T05')], cost: 140, energyReward: 70, generatorReward: null },
+  { id: 'R12', name: { ru: 'Починить фургон каравана', en: 'Repair the caravan van' }, result: { ru: 'Фургон на ходу — караван готов к первому рейсу', en: 'The van runs — the caravan is ready for its first run' }, requires: [r('A05'), r('P05'), r('M05')], cost: 180, energyReward: 70, generatorReward: null , generatorUpgrade: 'G_AUTO:4' },
+  { id: 'R13', name: { ru: 'Расчистить служебный спуск', en: 'Clear the service descent' }, result: { ru: 'Под гаражом открылся люк вниз', en: 'A hatch leading down opened under the garage' }, requires: [r('M05'), r('T05'), r('E05'), r('A04')], cost: 250, energyReward: 0, generatorReward: null },
 ];
 
 /** Главы: последний проект главы завершает её. */

@@ -43,7 +43,8 @@ describe('content reachability', () => {
       for (const r of o.requires) {
         expect(ITEMS[r.itemId], o.id).toBeDefined();
         expect(chainsAfter(idx).has(getItem(r.itemId).chain), `${o.id} ${r.itemId}`).toBe(true);
-        expect(getItem(r.itemId).level, o.id).toBeLessThanOrEqual(4);
+        // первая глава — до 4-го уровня, вторая (после R08) — до 5-го
+        expect(getItem(r.itemId).level, o.id).toBeLessThanOrEqual(idx > PROJECTS.findIndex((p) => p.id === 'R08') ? 5 : 4);
       }
     }
     PROJECTS.forEach((p, i) => {

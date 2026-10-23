@@ -1,8 +1,9 @@
 import { openBoard } from './testUtils';
 import { describe, expect, it } from 'vitest';
 import { START_GENERATORS } from '../content/board';
-import { GENERATORS, getItem } from '../content/items';
+import { GENERATORS, GENERATOR_ACTIVE_LEVEL, GENERATOR_MAX_LEVEL, GENERATOR_ODDS, getItem, parseGeneratorToken } from '../content/items';
 import { ORDERS, PROJECTS } from '../content/orders';
+import { ENERGY_START } from './energy';
 import {
   availableOrders,
   board,
@@ -20,6 +21,7 @@ import {
   placeIncoming,
   whereToGet,
   ingredientCells,
+  moveContent,
 } from './rules';
 import type { GameState } from './state';
 
@@ -37,28 +39,115 @@ function putStorage(state: GameState, index: number, itemId: string): GameState 
   return { ...state, storage, nextUid: state.nextUid + 1 };
 }
 
-/** Изготовить предмет с нуля: выдачи из генератора и объединение пар той же цепочки. */
-function craft(state: GameState, itemId: string): GameState {
+/** Шаги прохождения: заказы, открытые прошлым ремонтом, затем сам ремонт — CONTENT_CATALOG, разделы 6.3 и 10. */
+const STEPS: [string[], string][] = [
+  [['O01', 'O02'], 'R01'],
+  [['O03'], 'R02'],
+  [['O04', 'O05'], 'R03'],
+  [['O06', 'O07', 'O08'], 'R04'],
+  [['O09', 'O10', 'O11'], 'R05'],
+  [['O12', 'O13', 'O14'], 'R06'],
+  [['O15', 'O16'], 'R07'],
+  [['O17', 'O18'], 'R08'],
+  // глава 2 (гараж): сначала ворота, потом заказы каждой ступени
+  [[], 'R09'],
+  [['O19', 'O20', 'O21'], 'R10'],
+  [['O22', 'O23', 'O24'], 'R11'],
+  [['O25', 'O26', 'O27'], 'R12'],
+  [['O28', 'O29', 'O30'], 'R13'],
+];
+const CHAPTER_2 = ['R09', 'R10', 'R11', 'R12', 'R13'];
+
+const project = (id: string) => PROJECTS.find((p) => p.id === id)!;
+const stepItems = ([orders, proj]: [string[], string]) => [...orders.flatMap((id) => ORDERS.find((o) => o.id === id)!.requires), ...project(proj).requires];
+const chainCrate = (chain: string) => Object.keys(GENERATORS).find((g) => GENERATORS[g].output.startsWith(chain))!;
+
+/** Средняя «базовая ценность» одной выдачи ящика: предмет уровня k стоит 2^(k−1) предметов первого уровня. */
+const spawnValue = (level: number) => GENERATOR_ODDS[level].reduce((sum, chance, i) => sum + (chance / 100) * 2 ** i, 0);
+
+/** Лучший уровень ящика каждой цепочки после ремонтов: игрок объединяет одинаковые ящики, как подсказывает игра. */
+function crateLevels(done: string[]): Record<string, number> {
+  const crates: Record<string, number[]> = {};
+  const add = (token: string) => {
+    const { generatorId, level } = parseGeneratorToken(token);
+    (crates[generatorId] ??= []).push(level);
+  };
+  // после обучения стартовые ящики рабочие; ящик в коробке не считаем — его находят не сразу
+  START_GENERATORS.forEach((g) => add(`${g.generatorId}:${GENERATOR_ACTIVE_LEVEL}`));
+  for (const id of done) {
+    const p = project(id);
+    if (p.generatorReward) add(p.generatorReward);
+    if (p.generatorUpgrade) add(p.generatorUpgrade);
+  }
+  const best: Record<string, number> = {};
+  for (const [id, levels] of Object.entries(crates)) {
+    for (let l = 1; l < GENERATOR_MAX_LEVEL; l++) {
+      while (levels.filter((x) => x === l).length >= 2) {
+        levels.splice(levels.indexOf(l), 1);
+        levels.splice(levels.indexOf(l), 1, l + 1);
+      }
+    }
+    best[id] = Math.max(...levels);
+  }
+  return best;
+}
+
+/** Ожидаемое число выдач на каждую ступень с учётом уровней ящиков к её началу. */
+function expectedCurve(): { project: string; spawns: number }[] {
+  const done: string[] = [];
+  return STEPS.map((step) => {
+    const levels = crateLevels(done);
+    const spawns = stepItems(step).reduce((sum, req) => {
+      const def = getItem(req.itemId);
+      return sum + (req.count * 2 ** (def.level - 1)) / spawnValue(levels[chainCrate(def.chain)]);
+    }, 0);
+    done.push(step[1]);
+    return { project: step[1], spawns };
+  });
+}
+
+const chapterSum = (curve: { project: string; spawns: number }[], second: boolean) =>
+  curve.filter((c) => CHAPTER_2.includes(c.project) === second).reduce((a, c) => a + c.spawns, 0);
+
+/** Изготовить предмет: выдачи из лучшего ящика цепочки и объединение пар этой цепочки ниже нужного уровня. */
+function craft(state: GameState, itemId: string, stats: { spawns: number }): GameState {
   const def = getItem(itemId);
   let s = state;
-  for (let i = 0; i < 2 ** (def.level - 1); i++) {
-    const gen = s.cells.findIndex((c) => c?.kind === 'generator' && GENERATORS[c.generatorId].output.startsWith(def.chain));
+  for (;;) {
+    if (s.cells.some((c) => c?.kind === 'item' && c.itemId === itemId)) return s;
+    const lower = s.cells.flatMap((c, i) => (c?.kind === 'item' && c.itemId.startsWith(def.chain) && getItem(c.itemId).level < def.level ? [{ i, id: c.itemId }] : []));
+    const a = lower.find((x) => lower.some((y) => y.i !== x.i && y.id === x.id));
+    if (a) {
+      const b = lower.find((y) => y.i !== a.i && y.id === a.id)!;
+      const m = moveItem(s, board(b.i), board(a.i));
+      if (!m.ok) throw new Error(m.reason);
+      s = m.state;
+      continue;
+    }
+    let gen = -1;
+    let best = 0;
+    s.cells.forEach((c, i) => {
+      if (c?.kind === 'generator' && GENERATORS[c.generatorId].output.startsWith(def.chain) && c.level > best) [gen, best] = [i, c.level];
+    });
     const r = spawnFromGenerator(s, gen);
     if (!r.ok) throw new Error(r.reason);
     s = r.state;
-    for (;;) {
-      const idx = s.cells.findIndex(
-        (c, a) => c?.kind === 'item' && c.itemId.startsWith(def.chain) && s.cells.some((d, b) => b !== a && d?.kind === 'item' && d.itemId === c.itemId),
-      );
-      if (idx < 0 || getItem((s.cells[idx] as { itemId: string }).itemId).level >= def.level) break;
-      const id = (s.cells[idx] as { itemId: string }).itemId;
-      const other = s.cells.findIndex((d, b) => b !== idx && d?.kind === 'item' && d.itemId === id);
-      const m = moveItem(s, board(idx), board(other));
-      if (!m.ok) throw new Error(m.reason);
-      s = m.state;
-    }
+    stats.spawns++;
   }
-  return s;
+}
+
+/** Объединить одинаковые ящики на поле — так поступает игрок по подсказке «Объедините одинаковые ящики». */
+function mergeCrates(state: GameState): GameState {
+  let s = state;
+  for (;;) {
+    const gens = s.cells.flatMap((c, i) => (c?.kind === 'generator' && c.level < GENERATOR_MAX_LEVEL ? [{ i, c }] : []));
+    const same = (x: (typeof gens)[number], y: (typeof gens)[number]) => y.i !== x.i && y.c.generatorId === x.c.generatorId && y.c.level === x.c.level;
+    const a = gens.find((x) => gens.some((y) => same(x, y)));
+    if (!a) return s;
+    const m = moveContent(s, gens.find((y) => same(a, y))!.i, a.i);
+    if (!m.ok) throw new Error(m.reason);
+    s = m.state;
+  }
 }
 
 describe('storage', () => {
@@ -168,48 +257,44 @@ describe('projects', () => {
 
   it('plays both chapters with money and energy matching the plan', () => {
     let s = openBoard();
+    const stats = { spawns: 0 };
+    const spawns = [0, 0];
     const run = (r: { ok: true; state: GameState } | { ok: false; reason: string }) => {
       if (!r.ok) throw new Error(r.reason);
       s = r.state;
     };
-    const order = (id: string) => {
-      for (const req of ORDERS.find((o) => o.id === id)!.requires) s = craft(s, req.itemId);
+    const deliver = (id: string) => {
+      for (const req of ORDERS.find((o) => o.id === id)!.requires) s = craft(s, req.itemId, stats);
       run(deliverOrder(s, id));
     };
-    const project = (id: string) => {
-      for (const req of PROJECTS.find((p) => p.id === id)!.requires) s = craft(s, req.itemId);
+    const repair = (id: string) => {
+      for (const req of project(id).requires) s = craft(s, req.itemId, stats);
       run(completeProject(s, id));
+      s = mergeCrates(s);
     };
-    // порядок и суммы — CONTENT_CATALOG, раздел 6.3
-    const plan: [string[], string, number][] = [
-      [['O01', 'O02'], 'R01', 24],
-      [['O03'], 'R02', 24],
-      [['O04', 'O05'], 'R03', 64],
-      [['O06', 'O07', 'O08'], 'R04', 100],
-      [['O09', 'O10', 'O11'], 'R05', 186],
-      [['O12', 'O13', 'O14'], 'R06', 231],
-      [['O15', 'O16'], 'R07', 276],
-      [['O17', 'O18'], 'R08', 326],
-      // глава 2 (гараж): сначала ворота, потом заказы каждой ступени — CONTENT_CATALOG, раздел 10
-      [[], 'R09', 246],
-      [['O19', 'O20', 'O21'], 'R10', 286],
-      [['O22', 'O23', 'O24'], 'R11', 351],
-      [['O25', 'O26', 'O27'], 'R12', 426],
-      [['O28', 'O29', 'O30'], 'R13', 536],
-    ];
-    for (const [orders, proj, money] of plan) {
-      orders.forEach(order);
-      project(proj);
-      expect(s.money, proj).toBe(money);
-      if (proj === 'R08') {
-        // каталог 6.2: 100 стартовой + 3 × 50 = 250 энергии покрывают 216 обязательных выдач главы 1 с запасом 34
-        expect(s.energy).toBe(34);
+    // деньги после каждого ремонта — CONTENT_CATALOG, разделы 6.3 и 10
+    const money: Record<string, number> = { R01: 24, R02: 24, R03: 64, R04: 100, R05: 186, R06: 231, R07: 276, R08: 326, R09: 226, R10: 241, R11: 241, R12: 261, R13: 311 };
+    for (const step of STEPS) {
+      const before = stats.spawns;
+      step[0].forEach(deliver);
+      repair(step[1]);
+      spawns[CHAPTER_2.includes(step[1]) ? 1 : 0] += stats.spawns - before;
+      expect(s.money, step[1]).toBe(money[step[1]]);
+      if (step[1] === 'R08') {
+        expect(s.energy).toBe(ENERGY_START + 3 * 50 - spawns[0]);
         expect(isChapterComplete(s)).toBe(false);
         expect(currentProject(s)?.id).toBe('R09');
       }
     }
-    // глава 2: 206 обязательных выдач против 34 + 4 × 50 энергии — запас 28 без восстановления
-    expect(s.energy).toBe(28);
+    // выдачи этого прохождения (сид 1) близки к модели ожидаемых значений
+    const curve = expectedCurve();
+    for (const ch of [0, 1]) {
+      const model = chapterSum(curve, ch === 1);
+      expect(Math.abs(spawns[ch] - model) / model, `chapter ${ch + 1}: ${spawns[ch]} vs ${model.toFixed(0)}`).toBeLessThan(0.2);
+    }
+    // энергии хватает без восстановления и рекламы: 100 + 3 × 50 на первую главу, 4 × 70 на вторую
+    expect(s.energy).toBe(ENERGY_START + 3 * 50 + 4 * 70 - stats.spawns);
+    expect(s.energy).toBeGreaterThan(0);
     // каждый проект и каждый третий заказ дают потёртый сундук: 13 + 10
     expect(s.chests).toHaveLength(23);
     expect(isChapterComplete(s)).toBe(true);
@@ -252,6 +337,30 @@ describe('projects', () => {
     if (!placed.ok) throw new Error();
     const r = completeProject(placed.state, 'R04');
     expect(r.ok && r.state.storage).toHaveLength(10);
+  });
+});
+
+describe('difficulty curve', () => {
+  // ожидаемые выдачи на ступень (заказы + ремонт) с учётом уровней ящиков — CONTENT_CATALOG, раздел 10
+  const curve = expectedCurve();
+  const at = (id: string) => curve.find((c) => c.project === id)!.spawns;
+
+  it('chapter 2 asks for level 5 in every repair and grows step by step to the finale', () => {
+    for (const id of CHAPTER_2) expect(Math.max(...project(id).requires.map((r) => getItem(r.itemId).level)), id).toBe(5);
+    // ворота гаража — передышка после «Перекрёстка», дальше каждая ступень заметно тяжелее прошлой
+    expect(at('R09')).toBeLessThan(at('R08'));
+    for (let i = 1; i < CHAPTER_2.length; i++) expect(at(CHAPTER_2[i]), CHAPTER_2[i]).toBeGreaterThan(at(CHAPTER_2[i - 1]) * 1.2);
+    expect(at('R11')).toBeGreaterThan(at('R08'));
+    expect(Math.max(...curve.map((c) => c.spawns))).toBe(at('R13'));
+  });
+
+  it('matches the catalog totals and leaves an energy reserve in both chapters', () => {
+    const [ch1, ch2] = [chapterSum(curve, false), chapterSum(curve, true)];
+    expect(Math.round(ch1)).toBe(197);
+    expect(Math.round(ch2)).toBe(293);
+    const energy = (second: boolean) => PROJECTS.filter((p) => CHAPTER_2.includes(p.id) === second).reduce((a, p) => a + p.energyReward, 0);
+    expect(ENERGY_START + energy(false) - ch1).toBeGreaterThan(0.1 * ch1);
+    expect(ENERGY_START + energy(false) + energy(true) - ch1 - ch2).toBeGreaterThan(0.1 * ch2);
   });
 });
 
