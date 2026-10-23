@@ -59,7 +59,7 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   },
   {
     id: 'restore_r01',
-    hint: { ru: 'Откройте ремонт и восстановите вход', en: 'Open the repair and restore the entrance' },
+    hint: { ru: 'Нажмите «Магазин» и восстановите вход', en: 'Tap "Shop" and restore the entrance' },
     targets: [{ kind: 'project' }],
     done: (s) => projectDone(s, 'R01'),
   },

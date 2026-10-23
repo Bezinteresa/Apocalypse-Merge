@@ -112,6 +112,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       <button class="btn small ghost debug-btn" hidden>DBG</button>
       <button class="btn small album-btn"></button>
       <button class="btn small shop-btn"></button>
+      <button class="btn small ghost settings-btn" type="button" aria-label="Settings">⚙</button>
     </header>
     <section class="orders"></section>
     <button class="project-strip"></button>
@@ -161,6 +162,12 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       <button class="btn energy-ad"></button>
       <p class="energy-ad-note"></p>
       <button class="btn small ghost energy-close"></button>
+    </div></div>
+    <div class="modal settings-modal" hidden><div class="modal-box settings-box">
+      <h3 class="settings-title"></h3>
+      <button class="btn danger settings-reset"></button>
+      <p class="settings-note"></p>
+      <button class="btn small ghost settings-close"></button>
     </div></div>
     <div class="modal debug-modal" hidden><div class="modal-box">
       <h3>Debug</h3>
@@ -349,10 +356,37 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   // заказы: если заказчиков больше, чем влезает, ряд карточек листается свайпом
   dragScroll($('.orders'));
 
+  // настройки: сброс прогресса с подтверждением вторым нажатием; лимит наград за рекламу сброс не обнуляет
+  const settingsModal = $('.settings-modal');
+  const settingsReset = $<HTMLButtonElement>('.settings-reset');
+  let settingsArmed = false;
+  $('.settings-title').textContent = t('settings');
+  $('.settings-note').textContent = t('resetNote');
+  $('.settings-close').textContent = t('close');
+  $('.settings-btn').onclick = () => {
+    settingsArmed = false;
+    settingsReset.disabled = false;
+    settingsReset.textContent = t('resetProgress');
+    settingsModal.hidden = false;
+  };
+  $('.settings-close').onclick = () => (settingsModal.hidden = true);
+  settingsModal.onclick = (e) => {
+    if (e.target === settingsModal) settingsModal.hidden = true;
+  };
+  settingsReset.onclick = () => {
+    if (!settingsArmed) {
+      settingsArmed = true;
+      settingsReset.textContent = t('resetConfirm');
+      return;
+    }
+    settingsReset.disabled = true;
+    void deps.resetProgress();
+  };
+
   shopBtn.onclick = () => openShop(true);
   $('.project-strip').onclick = () => {
-    // в полосе обучение или подсказка — она не ведёт в магазин
-    if (currentProject(state) && !$('.project-strip').classList.contains('tutorial')) openShop(true);
+    // одноразовая подсказка в полосе в магазин не ведёт; обучение и строка ремонта — ведут
+    if (currentProject(state) && !$('.project-strip').classList.contains('tip')) openShop(true);
   };
   $('.back-btn').onclick = () => openShop(false);
   $('.modal-close').onclick = () => {
@@ -780,6 +814,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     const project = currentProject(state);
     const step = currentTutorialStep(state);
     strip.classList.toggle('tutorial', !!step);
+    strip.classList.remove('tip');
+    // шаг «откройте ремонт» — подсвечиваем понятную кнопку «Магазин» в шапке
+    shopBtn.classList.toggle('tut', step?.targets.some((x) => x.kind === 'project') ?? false);
     strip.classList.toggle('tut', step?.targets.some((x) => x.kind === 'project') ?? false);
     if (step) {
       strip.hidden = false;
@@ -791,7 +828,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     const hint = currentHint(state);
     if (hint) {
       strip.hidden = false;
-      strip.classList.add('tutorial');
+      strip.classList.add('tutorial', 'tip');
       strip.classList.remove('ready');
       strip.textContent = `💡 ${tx(hint.text)}`;
       return;
@@ -1007,7 +1044,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         return onField ? pick('.incoming-btn') : null;
       case 'project':
         if (!shopEl.hidden) return pick('.project-card .btn');
-        return onField ? pick('.project-strip') : null;
+        return onField ? pick('.shop-btn') : null;
       case 'chest':
         if (!albumEl.hidden) return pick('.chest-row .btn');
         return onField ? pick('.album-btn') : null;

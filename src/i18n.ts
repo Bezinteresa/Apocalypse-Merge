@@ -105,6 +105,8 @@ const STRINGS = {
   boxHint: { ru: 'Коробка откроется, когда освободится соседняя клетка', en: 'The box opens when a neighbouring cell is freed' },
   webHint: { ru: 'Под паутиной. Перетащите сюда такой же предмет — объединятся, и клетка освободится', en: 'Under cobwebs. Drop the same item here to merge and free the cell' },
   cellFreed: { ru: 'Клетка освобождена!', en: 'Cell freed!' },
+  settings: { ru: 'Настройки', en: 'Settings' },
+  resetNote: { ru: 'Сброс удалит весь прогресс: поле, монеты, ремонты и альбом. Отменить нельзя.', en: 'Reset deletes all progress: board, coins, repairs and album. This cannot be undone.' },
   resetProgress: { ru: 'Сбросить прогресс', en: 'Reset progress' },
   resetConfirm: { ru: 'Точно сбросить? Нажмите ещё раз', en: 'Sure? Tap again' },
   tapToSkip: { ru: 'Нажмите, чтобы показать всё сразу', en: 'Tap to reveal everything' },
