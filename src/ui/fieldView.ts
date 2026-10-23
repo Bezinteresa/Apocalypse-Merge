@@ -287,6 +287,23 @@ export class FieldView {
   };
 }
 
+/** Крупная картинка выбранного предмета или ящика для нижней панели; без графики — цветной кружок с уровнем. */
+export function renderContentIcon(content: CellContent | null): HTMLElement | null {
+  if (!content) return null;
+  const isItem = content.kind === 'item';
+  const def = getItem(isItem ? content.itemId : GENERATORS[content.generatorId].output);
+  const el = document.createElement('div');
+  el.className = 'info-icon';
+  el.style.setProperty('--chain', CHAINS[def.chain].color);
+  // у ящика без картинки своего уровня — картинка 4-го
+  const img = isItem ? spriteImg(itemSprite(content.itemId), 'info-img') : (spriteImg(generatorSprite(content.generatorId, content.level), 'info-img') ?? spriteImg(generatorSprite(content.generatorId), 'info-img'));
+  if (img) el.appendChild(img);
+  const level = document.createElement('b');
+  level.textContent = String(isItem ? def.level : content.level);
+  el.appendChild(level);
+  return el;
+}
+
 export function renderItemChip(itemId: string): HTMLElement {
   const def = getItem(itemId);
   const el = document.createElement('span');

@@ -25,7 +25,7 @@ import { ENERGY_CAP, addEnergy, msToNextEnergy, regenerate, setUnlimited } from 
 import type { GameState, Loc } from '../game/state';
 import { currentTutorialStep, markDialogSeen, pendingDialog } from '../game/tutorial';
 import type { DialogDef } from '../content/dialogs';
-import { FieldView, describeContent, renderItemChip } from './fieldView';
+import { FieldView, describeContent, renderContentIcon, renderItemChip } from './fieldView';
 import type { Telemetry } from '../platform/telemetry';
 import type { AdService } from '../platform/ads';
 import { AD_REWARD_ENERGY, AD_REWARD_LIMIT, adCooldownLeft, adRewardsAt, canShowInterstitial, canWatchRewardAd, grantAdReward } from '../game/ads';
@@ -82,6 +82,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     <main class="board-wrap"><div id="board"></div></main>
     <section class="storage-wrap"><span class="storage-label"></span><div id="storage"></div><button class="btn small incoming-btn" hidden></button></section>
     <footer class="info">
+      <div class="info-icon-slot"></div>
       <button class="info-btn where-btn" hidden>i</button>
       <div class="info-text"><div class="info-title"></div><div class="info-detail"></div></div>
       <div class="info-actions"><button class="btn small undo-btn"></button><button class="btn small sell-btn"></button></div>
@@ -542,6 +543,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   function renderInfo(): void {
     const content = selected ? getAt(state, selected) : null;
     const info = describeContent(content);
+    const icon = renderContentIcon(content);
+    $('.info-icon-slot').replaceChildren(...(icon ? [icon] : []));
     $('.info-title').textContent = info?.title ?? '';
     let detail = info?.detail ?? t('hintIdle');
     if (content?.kind === 'item') {
@@ -596,19 +599,30 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     }
     for (const order of orders) {
       const ready = canDeliver(state, order);
+      // карточка как в «Отеле Мечты»: портрет заказчика над карточкой, награда, крупные иконки предметов
       const card = document.createElement('div');
       card.className = 'order';
       card.classList.toggle('ready', ready);
+      card.style.setProperty('--visitor', VISITOR_COLOR[order.visitor] ?? '#999');
+      card.title = `${tx(VISITORS[order.visitor].name)}: ${tx(order.text)}`;
       const head = document.createElement('div');
       head.className = 'order-head';
-      head.textContent = `${tx(VISITORS[order.visitor].name)} · ${order.id}`;
+      const face = spriteImg(portraitSprite(order.visitor), 'order-face');
+      const avatar = document.createElement('div');
+      avatar.className = 'order-avatar';
+      if (face) avatar.appendChild(face);
+      else avatar.textContent = tx(VISITORS[order.visitor].name).slice(0, 1);
+      const name = document.createElement('span');
+      name.className = 'order-name';
+      name.textContent = tx(VISITORS[order.visitor].name);
+      head.append(avatar, name);
       const text = document.createElement('div');
       text.className = 'order-text';
       text.textContent = tx(order.text);
       const btn = document.createElement('button');
-      btn.className = 'btn small';
+      btn.className = 'btn small order-btn';
       btn.dataset.order = order.id;
-      btn.textContent = `${t('deliver')} +${order.reward}`;
+      btn.textContent = ready ? `${t('deliver')} +${order.reward}` : `+${order.reward}`;
       // кнопка не блокируется: нажатие на неготовый заказ объясняет, чего не хватает
       btn.classList.toggle('dim', !ready);
       btn.classList.toggle('tut', currentTutorialStep(state)?.targets.some((x) => x.kind === 'order' && x.orderId === order.id) ?? false);

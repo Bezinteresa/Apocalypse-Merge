@@ -1931,3 +1931,211 @@ body {
   filter: blur(10px) brightness(0.55) saturate(1.15);
   transform: scale(1.08);
 }
+
+/* ---------- телефон: поле во всю ширину, заказы карточками, крупная иконка внизу (по образцу «Отеля Мечты») ---------- */
+
+/* заказы — ряд карточек; портрет заказчика выступает над карточкой */
+.orders {
+  padding-top: 20px;
+  min-height: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  justify-content: safe center;
+}
+
+.order {
+  position: relative;
+  flex: 1 0 104px;
+  max-width: 180px;
+  background: #fbf3e2;
+  color: #3a2a1c;
+  border: 2px solid #e2cfa8;
+  padding: 14px 6px 4px;
+  align-items: center;
+  box-shadow: 0 3px 8px #0005;
+}
+
+.order.ready {
+  border-color: #59b85c;
+  background: #eef8e4;
+}
+
+.order-head {
+  position: absolute;
+  top: -20px;
+  left: 6px;
+  right: 6px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 1px 2px #000;
+  pointer-events: none;
+}
+
+.order-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 auto;
+  background: var(--visitor);
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px #0006;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.order-face {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.order-name {
+  font-size: 11px;
+  padding-bottom: 2px;
+  color: #6b5238;
+  text-shadow: none;
+}
+
+/* текст повода — в подсказке карточки; на карточке только предметы и награда */
+.order .order-text {
+  display: none;
+}
+
+.order .reqs {
+  justify-content: center;
+  flex: 1;
+  align-items: center;
+}
+
+.order .chip {
+  flex-direction: column;
+  padding: 2px;
+  background: #fff8;
+  border: 1px solid #0001;
+  position: relative;
+}
+
+.order .chip > span {
+  display: none;
+}
+
+.order .chip-img {
+  width: 36px;
+  height: 36px;
+}
+
+.order .chip b {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  font-size: 10px;
+}
+
+.order .chip.have {
+  background: #b9e6a8;
+  box-shadow: 0 0 0 2px #59b85c;
+}
+
+/* награда — плашка в правом верхнем углу; у готового заказа она же кнопка «Сдать» */
+.order .order-btn {
+  position: absolute;
+  top: -12px;
+  right: 4px;
+  padding: 3px 8px;
+  font-size: 12px;
+  border-radius: 999px;
+  z-index: 1;
+}
+
+.order.ready .order-btn {
+  background: #59b85c;
+  color: #fff;
+}
+
+/* нижняя панель: крупная иконка выбранного предмета в кружке */
+.info-icon-slot:empty {
+  display: none;
+}
+
+.info-icon {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, #fbf3e2, #d8bf8f);
+  border: 3px solid var(--chain);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.info-img {
+  width: 82%;
+  height: 82%;
+  object-fit: contain;
+}
+
+.info-icon b {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--chain);
+  color: #111;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #1d1b18;
+}
+
+/* портрет: поле во всю ширину экрана, узкие щели между клетками */
+@media (max-aspect-ratio: 5/4) {
+  :root {
+    --cell-size: min(calc((100vw - 32px) / 7), calc((100dvh - 290px) / 9), 76px);
+  }
+
+  .top {
+    padding: 4px 0;
+  }
+
+  .project-strip {
+    margin-top: 4px;
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .storage-wrap {
+    margin-bottom: 4px;
+  }
+
+  .info {
+    min-height: 56px;
+    padding: 4px 10px;
+    margin-bottom: 4px;
+  }
+
+  #app {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .board {
+    gap: 2px;
+    padding: 4px;
+  }
+
+  .board-wrap {
+    padding: 4px 0;
+  }
+}
