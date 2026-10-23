@@ -32,7 +32,7 @@ import { AD_REWARD_ENERGY, AD_REWARD_LIMIT, adCooldownLeft, adRewardsAt, canShow
 import { createAlbum } from './albumView';
 import { Finger } from './finger';
 import { currentHint, markFlag } from '../game/hints';
-import { BUILDING_SPRITE, hasSprite, portraitSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
+import { BUILDING_SPRITE, generatorSprite, hasSprite, itemSprite, portraitSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
 import { POOF_MS, playPoof, renderShopScene } from './shopScene';
 import { VISITOR_COLOR } from '../content/shopLayout';
 import { CHESTS } from '../content/collections';
@@ -147,8 +147,14 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     </div></div>
     <div class="modal" hidden><div class="modal-box"><h3></h3><p></p><button class="btn modal-close"></button></div></div>
     <div class="modal chain-modal" hidden><div class="modal-box chain-box">
-      <header class="chain-head"><h3></h3><button class="btn small ghost chain-close">✕</button></header>
-      <div class="chain-levels"></div><p class="chain-source"></p><button class="btn chain-show" hidden></button>
+      <header class="chain-head"><h3></h3><button class="chain-close" type="button">✕</button></header>
+      <div class="chain-body">
+        <div class="chain-levels"></div>
+        <h4 class="chain-sub"></h4>
+        <div class="chain-source"></div>
+        <p class="chain-note"></p>
+        <button class="btn chain-show" hidden></button>
+      </div>
     </div></div>
     <div class="modal energy-modal" hidden><div class="modal-box">
       <h3></h3><p class="energy-info"></p>
@@ -551,25 +557,38 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   function openChain(itemId: string): void {
     if (!state.flags.includes('chain_opened')) commit(markFlag(state, 'chain_opened'));
     const def = getItem(itemId);
-    $('.chain-head h3').textContent = `${tx(CHAINS[def.chain].name)}: ${tx(def.name)}`;
+    // как в «Отеле Мечты»: уровни цепочки картинками со стрелками, ниже — «Где найти»: ящик → предмет
+    $('.chain-head h3').textContent = tx(def.name);
     const levels = $('.chain-levels');
-    levels.replaceChildren();
-    for (const item of Object.values(ITEMS).filter((i) => i.chain === def.chain)) {
-      const known = item.id === itemId || state.discovered.includes(item.id);
-      const chip = known ? renderItemChip(item.id) : unknownChip(item.level);
-      chip.classList.toggle('target', item.id === itemId);
-      chip.classList.toggle('have', countItem(state, item.id) > 0);
-      levels.appendChild(chip);
-    }
+    levels.replaceChildren(
+      ...Object.values(ITEMS)
+        .filter((i) => i.chain === def.chain)
+        .map((item) => {
+          const known = item.id === itemId || state.discovered.includes(item.id);
+          const tile = chainTile(known ? itemSprite(item.id) : null, item.level, known ? tx(item.name) : '?', CHAINS[def.chain].color);
+          tile.classList.toggle('target', item.id === itemId);
+          tile.classList.toggle('have', countItem(state, item.id) > 0);
+          return tile;
+        }),
+    );
     const src = whereToGet(state, itemId);
-    const genName = tx(GENERATORS[src.generatorId].name);
     const showBtn = $<HTMLButtonElement>('.chain-show');
-    let text = `${t('whereFrom')}: ${genName}`;
-    if (src.status === 'incoming') text += ` — ${t('generatorWaiting').toLowerCase()}`;
-    if (src.status === 'locked') text += ` — ${t('opensAfter')} ${src.unlockProject ?? ''}`;
+    $('.chain-sub').textContent = `${t('whereFrom')}:`;
+    const onBoard = src.status === 'on_board' ? state.cells[src.cell] : null;
+    const genLevel = onBoard?.kind === 'generator' ? onBoard.level : GENERATOR_ACTIVE_LEVEL;
+    const genTile = chainTile(generatorSprite(src.generatorId, genLevel), null, tx(GENERATORS[src.generatorId].name), CHAINS[def.chain].color, generatorSprite(src.generatorId));
+    genTile.classList.toggle('dim', src.status === 'locked');
+    const arrow = document.createElement('span');
+    arrow.className = 'chain-arrow';
+    const result = chainTile(itemSprite(itemId), null, tx(def.name), CHAINS[def.chain].color);
+    result.classList.add('plain');
+    $('.chain-source').replaceChildren(genTile, arrow, result);
+    const notes: string[] = [];
+    if (src.status === 'incoming') notes.push(`${tx(GENERATORS[src.generatorId].name)}: ${t('generatorWaiting').toLowerCase()}`);
+    if (src.status === 'locked') notes.push(`${tx(GENERATORS[src.generatorId].name)} ${t('opensAfter')} ${src.unlockProject ?? ''}`);
     const prev = Object.values(ITEMS).find((i) => i.nextId === itemId);
-    if (prev) text += `. ${t('mergeFrom')}: 2 × ${tx(prev.name)}`;
-    $('.chain-source').textContent = text;
+    if (prev) notes.push(`${t('mergeFrom')}: 2 × ${tx(prev.name)}`);
+    $('.chain-note').textContent = notes.join(' · ');
     showBtn.hidden = src.status !== 'on_board';
     showBtn.onclick = () => {
       chainModal.hidden = true;
@@ -581,35 +600,54 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     chainModal.hidden = false;
   }
 
-  function unknownChip(level: number): HTMLElement {
-    const el = document.createElement('span');
-    el.className = 'chip unknown';
-    el.innerHTML = '<b></b><span>?</span>';
-    el.querySelector('b')!.textContent = String(level);
-    return el;
+  /** Плитка окна цепочки: картинка (или «?»), номер уровня под ней. Без картинки — название текстом. */
+  function chainTile(file: string | null, level: number | null, name: string, color: string, fallback?: string): HTMLElement {
+    const tile = document.createElement('div');
+    tile.className = 'ctile';
+    tile.style.setProperty('--chain', color);
+    tile.title = name;
+    const face = document.createElement('div');
+    face.className = 'ctile-face';
+    const img = file ? (spriteImg(file, 'ctile-img') ?? (fallback ? spriteImg(fallback, 'ctile-img') : null)) : null;
+    if (img) face.appendChild(img);
+    else face.textContent = file ? name : '?';
+    if (!file) tile.classList.add('unknown');
+    tile.appendChild(face);
+    if (level !== null) {
+      const num = document.createElement('b');
+      num.textContent = String(level);
+      tile.appendChild(num);
+    }
+    return tile;
   }
 
   /** Окно ящика: уровни (ещё не виденные — «?») и что он создаёт на текущем уровне, с шансами. */
   function openGeneratorInfo(generatorId: string, level: number): void {
     if (!state.flags.includes('chain_opened')) commit(markFlag(state, 'chain_opened'));
     $('.chain-head h3').textContent = tx(GENERATORS[generatorId].name);
+    const color = CHAINS[getItem(GENERATORS[generatorId].output).chain].color;
     const levels = $('.chain-levels');
     levels.replaceChildren();
     for (let l = 1; l <= GENERATOR_MAX_LEVEL; l++) {
       const known = l <= level || state.flags.includes(`gen:${generatorId}:${l}`);
-      const chip = document.createElement('span');
-      chip.className = known ? 'chip' : 'chip unknown';
-      chip.style.setProperty('--chain', CHAINS[getItem(GENERATORS[generatorId].output).chain].color);
-      chip.innerHTML = '<b></b><span></span>';
-      chip.querySelector('b')!.textContent = String(l);
-      chip.querySelector('span')!.textContent = known ? tx(generatorLevelName(generatorId, l)) : '?';
-      chip.classList.toggle('target', l === level);
-      levels.appendChild(chip);
+      const tile = chainTile(known ? generatorSprite(generatorId, l) : null, l, known ? tx(generatorLevelName(generatorId, l)) : '?', color);
+      tile.classList.toggle('target', l === level);
+      levels.appendChild(tile);
     }
+    // «Создаёт»: предметы текущего уровня ящика с шансом под каждым
     const drops = level >= GENERATOR_ACTIVE_LEVEL ? generatorDrops(generatorId, level) : [];
-    $('.chain-source').textContent = drops.length
-      ? `${t('generatorCreates')}: ${drops.map((d) => `${tx(getItem(d.itemId).name)} — ${d.chance}%`).join(', ')}`
-      : t('generatorWorksFrom');
+    $('.chain-sub').textContent = `${t('generatorCreates')}:`;
+    $('.chain-source').replaceChildren(
+      ...drops.map((d) => {
+        const tile = chainTile(itemSprite(d.itemId), null, tx(getItem(d.itemId).name), color);
+        tile.classList.add('plain');
+        const chance = document.createElement('small');
+        chance.textContent = `${d.chance}%`;
+        tile.appendChild(chance);
+        return tile;
+      }),
+    );
+    $('.chain-note').textContent = drops.length ? '' : t('generatorWorksFrom');
     $<HTMLButtonElement>('.chain-show').hidden = true;
     chainModal.hidden = false;
   }
