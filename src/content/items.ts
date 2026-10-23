@@ -109,6 +109,39 @@ export const GENERATORS: Record<string, GeneratorDef> = {
   G_AUTO: { id: 'G_AUTO', name: { ru: 'Гаражный стеллаж', en: 'Garage parts rack' }, output: 'A01' },
 };
 
+/**
+ * Уровни генераторов (решение пользователя от 23.10.2026, по образцу «Отеля Мечты» и Merge Mansion):
+ * генератор — сам цепочка мерджа. Уровни 1–3 — детали, они ничего не выдают; с 4-го ящик работает.
+ * Чем выше уровень, тем шире выдача по уровням своей цепочки, но первый уровень всегда самый частый.
+ * Проценты — предложение для теста.
+ */
+export const GENERATOR_MAX_LEVEL = 6;
+export const GENERATOR_ACTIVE_LEVEL = 4;
+/** Шанс уровня предмета (1, 2, 3 …) на одну выдачу, в процентах, по уровню генератора. */
+export const GENERATOR_ODDS: Record<number, number[]> = {
+  4: [100],
+  5: [80, 20],
+  6: [65, 25, 10],
+};
+
+export function generatorDrops(generatorId: string, level: number): { itemId: string; chance: number }[] {
+  const odds = GENERATOR_ODDS[level] ?? [];
+  const chain = getItem(GENERATORS[generatorId].output).chain;
+  return odds.map((chance, i) => ({ itemId: `${chain}${String(i + 1).padStart(2, '0')}`, chance }));
+}
+
+/** Запись генератора в наградах и входящем хранилище: «G_TOOL» (4-й уровень) или «G_TOOL:5». */
+export function parseGeneratorToken(token: string): { generatorId: string; level: number } {
+  const [generatorId, level] = token.split(':');
+  return { generatorId, level: level ? Number(level) : GENERATOR_ACTIVE_LEVEL };
+}
+
+export function generatorLevelName(generatorId: string, level: number): LangText {
+  const name = GENERATORS[generatorId].name;
+  if (level < GENERATOR_ACTIVE_LEVEL) return { ru: `Детали: ${name.ru} (${level}/${GENERATOR_ACTIVE_LEVEL - 1})`, en: `Parts: ${name.en} (${level}/${GENERATOR_ACTIVE_LEVEL - 1})` };
+  return name;
+}
+
 export function getItem(id: string): ItemDef {
   const def = ITEMS[id];
   if (!def) throw new Error(`Unknown item id: ${id}`);

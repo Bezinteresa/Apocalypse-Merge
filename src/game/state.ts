@@ -4,7 +4,7 @@ import { ENERGY_START } from './energy';
 import { initialCollections, type ChestResult, type SetProgress } from './collections';
 import { emptyAdRewards, type AdRewardState } from './ads';
 
-export const SCHEMA_VERSION = 9;
+export const SCHEMA_VERSION = 10;
 
 export interface ItemInstance {
   uid: number;
@@ -13,7 +13,7 @@ export interface ItemInstance {
 
 export type CellContent =
   | ({ kind: 'item' } & ItemInstance)
-  | { kind: 'generator'; generatorId: string };
+  | { kind: 'generator'; generatorId: string; level: number };
 
 /** Положение на поле или на складе. */
 export type Loc = { area: 'board'; index: number } | { area: 'storage'; index: number };
@@ -42,7 +42,7 @@ export interface GameState {
   lastSale: LastSale | null;
   /** Просмотренные или пропущенные сюжетные сцены. */
   seenDialogs: string[];
-  /** Входящее хранилище: полученные генераторы, ожидающие места на поле. */
+  /** Входящее хранилище: полученные генераторы («G_TOOL» — 4-й уровень, «G_TOOL:5»), ожидающие места на поле. */
   incoming: string[];
   /** Текущий запас энергии; может быть выше лимита после наград. */
   energy: number;
@@ -70,7 +70,7 @@ export function createInitialState(seed: number = (Math.random() * 2 ** 32) >>> 
   const layout = parseLayout();
   let nextUid = 1;
   const cells: (CellContent | null)[] = layout.map((c) => {
-    if (c.generatorId) return { kind: 'generator', generatorId: c.generatorId };
+    if (c.generatorId) return { kind: 'generator', generatorId: c.generatorId, level: c.level };
     if (c.itemId) return { kind: 'item', uid: nextUid++, itemId: c.itemId };
     return null;
   });

@@ -1,9 +1,9 @@
 import { BOARD_COLS, BOARD_SIZE, cellIndex, neighbors } from '../content/board';
-import { GENERATORS, ITEMS, getItem, type ChainId } from '../content/items';
+import { GENERATORS, GENERATOR_ACTIVE_LEVEL, GENERATOR_MAX_LEVEL, ITEMS, generatorDrops, getItem, parseGeneratorToken, type ChainId } from '../content/items';
 import { ORDERS, PROJECTS, getOrder, getProject, type OrderDef, type ProjectDef, type Requirement } from '../content/orders';
 import type { CellContent, GameState, ItemInstance, Loc } from './state';
 import { addEnergy, hasEnergyForSpawn, regenerate, spendSpawnEnergy } from './energy';
-import { grantChestFor } from './collections';
+import { grantChestFor, nextRandom } from './collections';
 import { CARDS, CHESTS, SETS } from '../content/collections';
 
 // Правила игры. Функции не меняют входное состояние и возвращают новое вместе с результатом,
@@ -12,7 +12,7 @@ import { CARDS, CHESTS, SETS } from '../content/collections';
 
 export type SpawnResult =
   | { ok: true; state: GameState; cell: number; itemId: string }
-  | { ok: false; reason: 'not_generator' | 'board_full' | 'no_energy' };
+  | { ok: false; reason: 'not_generator' | 'board_full' | 'no_energy' | 'inactive' };
 
 export type MoveResult =
   | { ok: true; state: GameState; action: 'move' | 'swap' | 'merge'; to: Loc; itemId?: string; freed?: boolean }
@@ -32,7 +32,7 @@ export type ProjectResult =
   | { ok: true; state: GameState; project: ProjectDef; placedCell: number | null }
   | { ok: false; reason: 'unknown' | 'not_current' | 'no_money' | 'missing_items' | 'generator_missing' };
 
-export type PlaceResult = { ok: true; state: GameState; cell: number; generatorId: string } | { ok: false; reason: 'empty' | 'board_full' };
+export type PlaceResult = { ok: true; state: GameState; cell: number; generatorId: string; level: number } | { ok: false; reason: 'empty' | 'board_full' };
 
 function clone(state: GameState): GameState {
   return {
@@ -138,14 +138,16 @@ export function findFreeCellNear(state: GameState, origin: number): number | nul
 /** Нажатие на генератор: выдача первого уровня в свободную клетку. Без места ничего не расходуется. */
 export function spawnFromGenerator(state: GameState, generatorCell: number, now: number = Date.now()): SpawnResult {
   const content = inBounds(generatorCell) ? state.cells[generatorCell] : null;
-  if (!content || content.kind !== 'generator') return { ok: false, reason: 'not_generator' };
+  if (!content || content.kind !== 'generator' || isLocked(state, generatorCell)) return { ok: false, reason: 'not_generator' };
+  // детали генератора (уровни 1–3) ничего не выдают: их нужно собрать до рабочего уровня
+  if (content.level < GENERATOR_ACTIVE_LEVEL) return { ok: false, reason: 'inactive' };
   // место проверяется до энергии: на заполненном поле выдача ничего не тратит
   const target = findFreeCellNear(state, generatorCell);
   if (target === null) return { ok: false, reason: 'board_full' };
   const charged = regenerate(state, now);
   if (!hasEnergyForSpawn(charged)) return { ok: false, reason: 'no_energy' };
-  const itemId = GENERATORS[content.generatorId].output;
   const next = clone(spendSpawnEnergy(charged));
+  const itemId = rollDrop(next, content.generatorId, content.level);
   next.cells[target] = { kind: 'item', uid: next.nextUid, itemId };
   next.nextUid += 1;
   discover(next, itemId);
@@ -153,8 +155,25 @@ export function spawnFromGenerator(state: GameState, generatorCell: number, now:
   return { ok: true, state: next, cell: target, itemId };
 }
 
+/** Выбор выдачи по шансам уровня генератора; случайность — сохраняемый генератор (как у сундуков). */
+function rollDrop(state: GameState, generatorId: string, level: number): string {
+  const drops = generatorDrops(generatorId, level);
+  if (drops.length === 1) return drops[0].itemId;
+  const [roll, rng] = nextRandom(state.rng);
+  state.rng = rng;
+  let acc = 0;
+  for (const d of drops) {
+    acc += d.chance;
+    if (roll * 100 < acc) return d.itemId;
+  }
+  return drops[drops.length - 1].itemId;
+}
+
 export function canMerge(a: CellContent | null, b: CellContent | null): boolean {
-  if (!a || !b || a.kind !== 'item' || b.kind !== 'item') return false;
+  if (!a || !b) return false;
+  // два одинаковых генератора одного уровня дают следующий уровень генератора
+  if (a.kind === 'generator' && b.kind === 'generator') return a.generatorId === b.generatorId && a.level === b.level && a.level < GENERATOR_MAX_LEVEL;
+  if (a.kind !== 'item' || b.kind !== 'item') return false;
   return a.itemId === b.itemId && getItem(a.itemId).nextId !== null;
 }
 
@@ -173,6 +192,19 @@ export function moveItem(state: GameState, from: Loc, to: Loc): MoveResult {
   const toWeb = to.area === 'board' && isWeb(state, to.index);
   // на предмет под паутиной можно только объединить такой же; коробку не трогаем
   if (to.area === 'board' && isLocked(state, to.index) && !(toWeb && canMerge(source, target))) return { ok: false, reason: 'locked' };
+
+  if (source.kind === 'generator' && target?.kind === 'generator' && canMerge(source, target)) {
+    const next = clone(state);
+    setAt(next, from, null);
+    setAt(next, to, { kind: 'generator', generatorId: source.generatorId, level: source.level + 1 });
+    addFlag(next, `gen:${source.generatorId}:${source.level + 1}`);
+    addFlag(next, 'gen_merged');
+    if (toWeb) {
+      openCell(next, to.index);
+      addFlag(next, 'web_freed');
+    }
+    return { ok: true, state: next, action: 'merge', to, freed: toWeb };
+  }
 
   if (canMerge(source, target)) {
     const nextId = getItem((source as ItemInstance).itemId).nextId!;
@@ -234,7 +266,7 @@ export function undoSale(state: GameState): UndoResult {
 // ---------- Заказы и проекты ----------
 
 export function isChainAvailable(state: GameState, chain: ChainId): boolean {
-  return state.cells.some((c) => c?.kind === 'generator' && getItem(GENERATORS[c.generatorId].output).chain === chain);
+  return state.cells.some((c, i) => c?.kind === 'generator' && c.level >= GENERATOR_ACTIVE_LEVEL && !isLocked(state, i) && getItem(GENERATORS[c.generatorId].output).chain === chain);
 }
 
 function isProjectDone(state: GameState, id: string | null): boolean {
@@ -275,7 +307,7 @@ export function areAllOrdersDone(state: GameState): boolean {
 }
 
 function hasGeneratorOnBoard(state: GameState, generatorId: string): boolean {
-  return state.cells.some((c) => c?.kind === 'generator' && c.generatorId === generatorId);
+  return state.cells.some((c, i) => c?.kind === 'generator' && c.generatorId === generatorId && c.level >= GENERATOR_ACTIVE_LEVEL && !isLocked(state, i));
 }
 
 /** Точка, от которой ищется место для полученного генератора: центр поля. */
@@ -283,14 +315,16 @@ const INCOMING_ORIGIN = cellIndex(3, 4);
 
 /** Разместить первый генератор из входящего хранилища в свободную клетку. Без места он остаётся ждать. */
 export function placeIncoming(state: GameState): PlaceResult {
-  const generatorId = state.incoming[0];
-  if (!generatorId) return { ok: false, reason: 'empty' };
+  const token = state.incoming[0];
+  if (!token) return { ok: false, reason: 'empty' };
+  const { generatorId, level } = parseGeneratorToken(token);
   const cell = findFreeCellNear(state, INCOMING_ORIGIN);
   if (cell === null) return { ok: false, reason: 'board_full' };
   const next = clone(state);
   next.incoming.shift();
-  next.cells[cell] = { kind: 'generator', generatorId };
-  return { ok: true, state: next, cell, generatorId };
+  next.cells[cell] = { kind: 'generator', generatorId, level };
+  addFlag(next, `gen:${generatorId}:${level}`);
+  return { ok: true, state: next, cell, generatorId, level };
 }
 
 export function countItem(state: GameState, itemId: string): number {
@@ -363,13 +397,14 @@ export function completeProject(state: GameState, projectId: string): ProjectRes
   }
   let placedCell: number | null = null;
   let result = grantChestFor(addEnergy(next, project.energyReward), project.id);
-  if (project.generatorReward) {
-    result.incoming.push(project.generatorReward);
+  // новый генератор открывает цепочку — он первый в очереди; улучшение (ещё один ящик для мерджа) — за ним
+  if (project.generatorReward) result.incoming.push(project.generatorReward);
+  if (project.generatorUpgrade) result.incoming.push(project.generatorUpgrade);
+  while (result.incoming.length) {
     const placed = placeIncoming(result);
-    if (placed.ok) {
-      result = placed.state;
-      placedCell = placed.cell;
-    }
+    if (!placed.ok) break;
+    if (placedCell === null) placedCell = placed.cell;
+    result = placed.state;
   }
   return { ok: true, state: result, project, placedCell };
 }
@@ -385,9 +420,9 @@ export type ItemSource =
 export function whereToGet(state: GameState, itemId: string): ItemSource {
   const chain = getItem(itemId).chain;
   const generatorId = Object.values(GENERATORS).find((g) => getItem(g.output).chain === chain)!.id;
-  const cell = state.cells.findIndex((c) => c?.kind === 'generator' && c.generatorId === generatorId);
+  const cell = state.cells.findIndex((c, i) => c?.kind === 'generator' && c.generatorId === generatorId && !isLocked(state, i));
   if (cell >= 0) return { status: 'on_board', generatorId, cell };
-  if (state.incoming.includes(generatorId)) return { status: 'incoming', generatorId };
+  if (state.incoming.some((t) => parseGeneratorToken(t).generatorId === generatorId)) return { status: 'incoming', generatorId };
   return { status: 'locked', generatorId, unlockProject: PROJECTS.find((p) => p.generatorReward === generatorId)?.id ?? null };
 }
 
@@ -448,7 +483,7 @@ export function validateState(raw: unknown): raw is GameState {
   if (!Array.isArray(s.completedOrders) || !s.completedOrders.every((id) => ORDERS.some((o) => o.id === id))) return false;
   if (!Array.isArray(s.completedProjects) || !s.completedProjects.every((id) => PROJECTS.some((p) => p.id === id))) return false;
   if (!Array.isArray(s.seenDialogs) || !s.seenDialogs.every((id) => typeof id === 'string')) return false;
-  if (!Array.isArray(s.incoming) || !s.incoming.every((id) => !!GENERATORS[id])) return false;
+  if (!Array.isArray(s.incoming) || !s.incoming.every((t) => !!GENERATORS[parseGeneratorToken(t).generatorId])) return false;
   if (typeof s.energy !== 'number' || !Number.isFinite(s.energy) || s.energy < 0) return false;
   if (typeof s.energyUpdatedAt !== 'number' || !Number.isFinite(s.energyUpdatedAt)) return false;
   if (typeof s.energyUnlimited !== 'boolean') return false;
@@ -462,7 +497,7 @@ export function validateState(raw: unknown): raw is GameState {
     if (c.kind === 'item') {
       if (!validItem(c, s.nextUid, uids)) return false;
     } else if (c.kind === 'generator') {
-      if (!GENERATORS[c.generatorId]) return false;
+      if (!GENERATORS[c.generatorId] || !Number.isInteger(c.level) || c.level < 1 || c.level > GENERATOR_MAX_LEVEL) return false;
     } else {
       return false;
     }

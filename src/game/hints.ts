@@ -1,4 +1,5 @@
 import { getItem, type LangText } from '../content/items';
+import { START_GENERATORS } from '../content/board';
 import { RARITY, cardsOf, SETS } from '../content/collections';
 import { availableOrders, canMerge, countItem } from './rules';
 import { currentTutorialStep } from './tutorial';
@@ -9,7 +10,7 @@ import type { GameState } from './state';
 // и исчезает, как только действие выполнено; выполненные однократные действия хранятся во flags.
 
 /** Однократные действия, которые не выводятся из состояния поля; `spawn:<генератор>` — из генератора уже доставали. */
-export type HintFlag = 'web_freed' | 'storage_used' | 'chain_opened' | `spawn:${string}`;
+export type HintFlag = 'web_freed' | 'storage_used' | 'chain_opened' | 'gen_merged' | `spawn:${string}`;
 
 /** Куда показывает палец. Клетки поля задаются индексом, элементы интерфейса — именованными якорями. */
 export type HintTarget =
@@ -37,9 +38,19 @@ function openPair(s: GameState, itemId: string): [number, number] | null {
 function tutorialHint(s: GameState): Hint | null {
   const step = currentTutorialStep(s);
   if (!step) return null;
-  const tool = generatorCell(s, 'G_TOOL');
+  // основное место ящика — стартовая клетка; пока там деталь, рядом может лежать вторая
+  const home = START_GENERATORS.find((g) => g.generatorId === 'G_TOOL')!.cell;
+  const homeCell = s.cells[home];
+  const tool = homeCell?.kind === 'generator' && homeCell.generatorId === 'G_TOOL' ? home : generatorCell(s, 'G_TOOL');
   const mat = generatorCell(s, 'G_MATERIAL');
   switch (step.id) {
+    case 'build_toolbox': {
+      // деталь тянется к основному месту ящика (стартовая клетка), если она там стоит
+      const parts = s.cells.flatMap((c, i) => (c?.kind === 'generator' && c.generatorId === 'G_TOOL' && !s.fog[i] ? [{ i, level: c.level }] : []));
+      const a = parts.find((p) => p.i === tool) ?? parts.find((p) => parts.some((q) => q.i !== p.i && q.level === p.level));
+      const b = a && parts.find((q) => q.i !== a.i && q.level === a.level);
+      return a && b ? { id: step.id, text: step.hint, target: { kind: 'drag', from: b.i, to: a.i } } : null;
+    }
     case 'spawn_tools':
       return { id: step.id, text: step.hint, target: { kind: 'tap', cell: tool } };
     case 'merge_t02': {
@@ -67,6 +78,7 @@ const TEXT = {
   assemble: { ru: 'Осколков хватает — соберите карту', en: 'Enough shards — assemble the card' },
   storage: { ru: 'Поле тесное — уберите предмет на склад', en: 'The board is crowded — move an item to storage' },
   where: { ru: 'Не знаете, где взять предмет? Нажмите на него', en: "Don't know where to get an item? Tap it" },
+  mergeGenerators: { ru: 'Объедините одинаковые ящики — улучшенный ящик выдаёт и предметы выше уровнем', en: 'Merge identical crates — an upgraded crate also gives higher-level items' },
 } satisfies Record<string, LangText>;
 
 /** Текущая подсказка; null — новых действий для показа нет. Приоритет: обучение, затем по порядку списка. */
@@ -80,6 +92,15 @@ export function currentHint(s: GameState): Hint | null {
   // новый генератор на поле, из которого ещё ничего не доставали
   const fresh = s.cells.findIndex((c) => c?.kind === 'generator' && !flags.includes(`spawn:${c.generatorId}`));
   if (fresh >= 0) return { id: 'new_generator', text: TEXT.newGenerator, target: { kind: 'tap', cell: fresh } };
+
+  // два одинаковых ящика одного уровня на поле — объединить, чтобы ящик выдавал больше
+  if (!flags.includes('gen_merged')) {
+    const gens = s.cells.flatMap((c, i) => (c?.kind === 'generator' && !s.fog[i] ? [{ i, c }] : []));
+    for (const g of gens) {
+      const pair = gens.find((o) => o.i !== g.i && canMerge(g.c, o.c));
+      if (pair) return { id: 'merge_generators', text: TEXT.mergeGenerators, target: { kind: 'drag', from: pair.i, to: g.i } };
+    }
+  }
 
   if (!flags.includes('web_freed')) {
     for (const x of openItems(s)) {

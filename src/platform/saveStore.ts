@@ -112,6 +112,14 @@ export function migrate(raw: unknown): GameState | null {
     });
     data = { ...data, schemaVersion: 9, flags: progressed ? [...spawned, 'web_freed', 'storage_used'] : [] };
   }
+  if (data.schemaVersion === 9) {
+    // v10: уровни генераторов. Все имеющиеся генераторы — рабочего 4-го уровня, ничего не теряется.
+    const cells = ((data.cells as unknown[]) ?? []).map((c) => {
+      const g = c as { kind?: string } | null;
+      return g?.kind === 'generator' ? { ...(g as object), level: 4 } : c;
+    });
+    data = { ...data, schemaVersion: 10, cells };
+  }
   return data.schemaVersion === SCHEMA_VERSION && validateState(data) ? data : null;
 }
 

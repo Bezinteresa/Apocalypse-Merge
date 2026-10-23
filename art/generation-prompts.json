@@ -229,6 +229,206 @@
       "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text."
     },
     {
+      "file": "generators/G_TOOL_1.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 1 of 6: not working yet, looks incomplete. A broken orange toolbox handle and a few loose screws.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_TOOL.png"
+    },
+    {
+      "file": "generators/G_TOOL_2.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 2 of 6: not working yet, looks incomplete. A dented orange toolbox lid with a broken latch.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_TOOL.png"
+    },
+    {
+      "file": "generators/G_TOOL_3.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 3 of 6: not working yet, looks incomplete. An empty battered orange toolbox, lid half open.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_TOOL.png"
+    },
+    {
+      "file": "generators/G_TOOL_5.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 5 of 6: clearly bigger and richer than level 4, same family and colors. A sturdier orange toolbox with a tray full of tools and a padlock.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_TOOL.png"
+    },
+    {
+      "file": "generators/G_TOOL_6.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 6 of 6: clearly bigger and richer than level 4, same family and colors. A big two-tier orange workshop tool cabinet on wheels, drawers bursting with tools, warm glint.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_TOOL.png"
+    },
+    {
+      "file": "generators/G_MATERIAL_1.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 1 of 6: not working yet, looks incomplete. A rusty container door hinge and a bent bolt.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_MATERIAL.png"
+    },
+    {
+      "file": "generators/G_MATERIAL_2.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 2 of 6: not working yet, looks incomplete. A single rusty steel-blue container wall panel.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_MATERIAL.png"
+    },
+    {
+      "file": "generators/G_MATERIAL_3.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 3 of 6: not working yet, looks incomplete. An empty rusty steel-blue cargo crate with an open side.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_MATERIAL.png"
+    },
+    {
+      "file": "generators/G_MATERIAL_5.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 5 of 6: clearly bigger and richer than level 4, same family and colors. A steel-blue cargo container with neatly stacked pipes and sheets, chained doors.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_MATERIAL.png"
+    },
+    {
+      "file": "generators/G_MATERIAL_6.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 6 of 6: clearly bigger and richer than level 4, same family and colors. A large reinforced steel-blue cargo container with a small crane hook and stacked building materials.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_MATERIAL.png"
+    },
+    {
+      "file": "generators/G_PROVISION_1.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 1 of 6: not working yet, looks incomplete. A torn olive-green tarp scrap and a loose crate board.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_PROVISION.png"
+    },
+    {
+      "file": "generators/G_PROVISION_2.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 2 of 6: not working yet, looks incomplete. Two crate boards tied with twine and a tin can.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_PROVISION.png"
+    },
+    {
+      "file": "generators/G_PROVISION_3.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 3 of 6: not working yet, looks incomplete. An empty wooden supply crate with an olive-green tarp.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_PROVISION.png"
+    },
+    {
+      "file": "generators/G_PROVISION_5.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 5 of 6: clearly bigger and richer than level 4, same family and colors. A full wooden supply crate with cans, bread and jars under an olive tarp, a hand-painted leaf mark.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_PROVISION.png"
+    },
+    {
+      "file": "generators/G_PROVISION_6.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 6 of 6: clearly bigger and richer than level 4, same family and colors. A big wooden pantry crate stack with shelves of cans, sacks and jars, olive tarp roof.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_PROVISION.png"
+    },
+    {
+      "file": "generators/G_ELECTRIC_1.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 1 of 6: not working yet, looks incomplete. A cracked yellow desk lamp shade and a wire.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_ELECTRIC.png"
+    },
+    {
+      "file": "generators/G_ELECTRIC_2.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 2 of 6: not working yet, looks incomplete. A broken radio casing with loose knobs.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_ELECTRIC.png"
+    },
+    {
+      "file": "generators/G_ELECTRIC_3.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 3 of 6: not working yet, looks incomplete. An empty small workbench frame with a dead yellow lamp.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_ELECTRIC.png"
+    },
+    {
+      "file": "generators/G_ELECTRIC_5.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 5 of 6: clearly bigger and richer than level 4, same family and colors. A workbench with a glowing yellow lamp, radio, soldering iron and parts drawers.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_ELECTRIC.png"
+    },
+    {
+      "file": "generators/G_ELECTRIC_6.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 6 of 6: clearly bigger and richer than level 4, same family and colors. A large electronics workstation with two lamps, oscilloscope screen, radio and parts cabinets.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_ELECTRIC.png"
+    },
+    {
+      "file": "generators/G_AUTO_1.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 1 of 6: not working yet, looks incomplete. A single rusty car bolt and a broken rack bracket.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_AUTO.png"
+    },
+    {
+      "file": "generators/G_AUTO_2.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 2 of 6: not working yet, looks incomplete. A rack shelf board with a worn tyre.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_AUTO.png"
+    },
+    {
+      "file": "generators/G_AUTO_3.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Generator PART, level 3 of 6: not working yet, looks incomplete. An empty tall dark red metal parts rack.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_AUTO.png"
+    },
+    {
+      "file": "generators/G_AUTO_5.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 5 of 6: clearly bigger and richer than level 4, same family and colors. A dark red parts rack full of car parts, tyres, belts and boxes of bolts.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_AUTO.png"
+    },
+    {
+      "file": "generators/G_AUTO_6.png",
+      "w": 256,
+      "h": 256,
+      "subject": "Upgraded generator, level 6 of 6: clearly bigger and richer than level 4, same family and colors. A large dark red garage parts wall with tyres, an engine hoist and labeled bins.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.",
+      "guide": "public/sprites/generators/G_AUTO.png"
+    },
+    {
       "file": "portraits/LEV.png",
       "w": 512,
       "h": 512,
@@ -262,8 +462,7 @@
       "h": 1000,
       "guide": "art/guides/building_layout.png",
       "subject": "Cross-section front view of a small two-level post-apocalyptic corner shop building at a city crossroads, like a dollhouse with the front wall removed. Top: grey sky and the facade roof line with an empty sign bracket above the entrance. Ground floor, left to right: an open empty garage bay with a concrete floor and bare walls (no shutter, no vehicle — those are separate sprites); a storeroom with bare concrete walls; the main shop floor with patched wallpaper, an entrance doorway on its left side; a workshop corner with pegboard wall; an outdoor yard with cracked asphalt and a fence. Below ground: a dark underground shelter level, barely visible and mysterious; its top-left corner stays empty for the service hatch sprite. Rooms are EMPTY: no furniture, no counter, no shelves, no racks, no workbench, no lamps, no water tank, no sign — those are separate sprites. No people.",
-      "extra": "Wide 16:10 scene, NOT transparent. Follow the attached layout guide exactly: walls, floors and room borders where the guide boxes are; hatched red areas must stay empty background; do not draw the guide lines, labels or colors. Also attach art/reference/shop_mood.webp as the mood reference: same materials, palette and light, but as a cross-section of the whole building.",
-      "redo": "Глава 2 (гараж): гараж нарисован закрытой ролетой во всю стену, а теперь ворота — отдельный спрайт zones/R09. Нарисовать гараж открытым пустым помещением (бетонный пол, стены, без ролеты, машины, ямы и подъёмника) и оставить пустым левый верх убежища под люк R13 — по обновлённой разметке art/guides/building_layout.png. Остальное здание сохранить как есть: приложить текущий shop/building.webp как образец."
+      "extra": "Wide 16:10 scene, NOT transparent. Follow the attached layout guide exactly: walls, floors and room borders where the guide boxes are; hatched red areas must stay empty background; do not draw the guide lines, labels or colors. Also attach art/reference/shop_mood.webp as the mood reference: same materials, palette and light, but as a cross-section of the whole building."
     },
     {
       "file": "zones/R01_broken.png",

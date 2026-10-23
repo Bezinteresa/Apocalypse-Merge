@@ -1,5 +1,5 @@
 import { BOARD_COLS, BOARD_SIZE, type Fog } from '../content/board';
-import { CHAINS, GENERATORS, getItem } from '../content/items';
+import { CHAINS, GENERATORS, GENERATOR_ACTIVE_LEVEL, generatorDrops, generatorLevelName, getItem } from '../content/items';
 import { t, tx } from '../i18n';
 import { canMerge, getAt } from '../game/rules';
 import type { CellContent, GameState, Loc } from '../game/state';
@@ -304,11 +304,14 @@ function renderContent(content: CellContent): HTMLElement {
     const def = GENERATORS[content.generatorId];
     const out = getItem(def.output);
     el.className = 'piece generator';
+    el.classList.toggle('inactive', content.level < GENERATOR_ACTIVE_LEVEL);
     el.style.setProperty('--chain', CHAINS[out.chain].color);
-    el.innerHTML = `<span class="badge">⟳</span><span class="label"></span>`;
-    // в клетке — короткая подпись цепочки, полное название генератора выводится в панели информации
+    el.innerHTML = `<span class="badge"></span><span class="label"></span>`;
+    // в клетке — короткая подпись цепочки и уровень ящика; полное название — в панели информации
+    el.querySelector('.badge')!.textContent = content.level < GENERATOR_ACTIVE_LEVEL ? `⚙${content.level}` : `⟳${content.level}`;
     el.querySelector('.label')!.textContent = tx(CHAINS[out.chain].name);
-    withArt(el, generatorSprite(def.id));
+    // пока картинки уровня нет, рабочие уровни показывают картинку 4-го
+    withArt(el, generatorSprite(def.id, content.level), content.level >= GENERATOR_ACTIVE_LEVEL ? generatorSprite(def.id) : undefined);
     return el;
   }
   const def = getItem(content.itemId);
@@ -323,8 +326,8 @@ function renderContent(content: CellContent): HTMLElement {
 }
 
 /** Если для слота есть картинка, плашка показывает её; номер уровня остаётся маленьким значком. */
-function withArt(el: HTMLElement, file: string): void {
-  const img = spriteImg(file, 'piece-img');
+function withArt(el: HTMLElement, file: string, fallback?: string): void {
+  const img = spriteImg(file, 'piece-img') ?? (fallback ? spriteImg(fallback, 'piece-img') : null);
   if (!img) return;
   el.classList.add('has-art');
   el.prepend(img);
@@ -333,8 +336,12 @@ function withArt(el: HTMLElement, file: string): void {
 export function describeContent(content: CellContent | null): { title: string; detail: string } | null {
   if (!content) return null;
   if (content.kind === 'generator') {
-    const def = GENERATORS[content.generatorId];
-    return { title: tx(def.name), detail: `${t('generatorHint')}: ${tx(getItem(def.output).name)}` };
+    const title = `${tx(generatorLevelName(content.generatorId, content.level))} · ${t('level')} ${content.level}`;
+    if (content.level < GENERATOR_ACTIVE_LEVEL) return { title, detail: t('generatorParts') };
+    const drops = generatorDrops(content.generatorId, content.level)
+      .map((d) => `${tx(getItem(d.itemId).name)} ${d.chance}%`)
+      .join(', ');
+    return { title, detail: `${t('generatorHint')}: ${drops}` };
   }
   const def = getItem(content.itemId);
   const next = def.nextId ? `${t('next')}: ${tx(getItem(def.nextId).name)}` : t('maxLevel');

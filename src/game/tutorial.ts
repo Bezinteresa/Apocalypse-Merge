@@ -24,7 +24,15 @@ const has = (state: GameState, itemId: string, n = 1) => countItem(state, itemId
 const orderDone = (state: GameState, id: string) => state.completedOrders.includes(id);
 const projectDone = (state: GameState, id: string) => state.completedProjects.includes(id);
 
+const toolboxReady = (s: GameState) => s.cells.some((c, i) => c?.kind === 'generator' && c.generatorId === 'G_TOOL' && c.level >= 4 && !s.fog[i]);
+
 export const TUTORIAL_STEPS: TutorialStep[] = [
+  {
+    id: 'build_toolbox',
+    hint: { ru: 'Соедините детали ящика инструментов — он заработает', en: 'Merge the toolbox parts — it will start working' },
+    targets: [{ kind: 'generator', generatorId: 'G_TOOL' }],
+    done: (s) => toolboxReady(s) || orderDone(s, 'O01'),
+  },
   {
     id: 'spawn_tools',
     hint: { ru: 'Нажмите на ящик инструментов два раза', en: 'Tap the toolbox twice' },

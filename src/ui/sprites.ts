@@ -26,7 +26,8 @@ export function spriteImg(file: string, className = 'sprite'): HTMLImageElement 
 }
 
 export const itemSprite = (itemId: string) => `items/${itemId}.png`;
-export const generatorSprite = (generatorId: string) => `generators/${generatorId}.png`;
+/** Генератор по уровню: 4-й (рабочий) — прежний файл `<id>.png`, остальные — `<id>_<уровень>.png`. */
+export const generatorSprite = (generatorId: string, level = 4) => (level === 4 ? `generators/${generatorId}.png` : `generators/${generatorId}_${level}.png`);
 export const portraitSprite = (visitorId: string) => `portraits/${visitorId}.png`;
 export const chestSprite = (chestId: string) => `chests/${chestId}.png`;
 export const cardSprite = (cardId: string) => `cards/${cardId}.webp`;

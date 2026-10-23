@@ -1,4 +1,4 @@
-import { CHAINS, GENERATORS, ITEMS, getItem } from '../content/items';
+import { CHAINS, GENERATORS, GENERATOR_ACTIVE_LEVEL, GENERATOR_MAX_LEVEL, ITEMS, generatorDrops, generatorLevelName, getItem, parseGeneratorToken } from '../content/items';
 import { PROJECTS, VISITORS, chapterEndedBy, type ProjectDef, type Requirement } from '../content/orders';
 import { t, tx, type StringKey } from '../i18n';
 import {
@@ -215,7 +215,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         if (!r.ok) {
           view.flash(loc, 'shake');
           tel.refused(r.reason);
-          if (r.reason === 'no_energy') {
+          if (r.reason === 'inactive') {
+            deps.toast('generatorInactive');
+          } else if (r.reason === 'no_energy') {
             const ms = msToNextEnergy(state, Date.now());
             deps.toast('noEnergy', ms !== null ? `+1 ⚡ ${formatMs(ms)}` : '');
             if (ads.isRewardedSupported && canWatchRewardAd(state, Date.now())) openEnergy();
@@ -286,6 +288,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   whereBtn.onclick = () => {
     const content = selected ? getAt(state, selected) : null;
     if (content?.kind === 'item') openChain(content.itemId);
+    if (content?.kind === 'generator') openGeneratorInfo(content.generatorId, content.level);
   };
   $('.chain-close').onclick = () => (chainModal.hidden = true);
   chainModal.onclick = (e) => {
@@ -500,6 +503,31 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     return el;
   }
 
+  /** Окно ящика: уровни (ещё не виденные — «?») и что он создаёт на текущем уровне, с шансами. */
+  function openGeneratorInfo(generatorId: string, level: number): void {
+    if (!state.flags.includes('chain_opened')) commit(markFlag(state, 'chain_opened'));
+    $('.chain-head h3').textContent = tx(GENERATORS[generatorId].name);
+    const levels = $('.chain-levels');
+    levels.replaceChildren();
+    for (let l = 1; l <= GENERATOR_MAX_LEVEL; l++) {
+      const known = l <= level || state.flags.includes(`gen:${generatorId}:${l}`);
+      const chip = document.createElement('span');
+      chip.className = known ? 'chip' : 'chip unknown';
+      chip.style.setProperty('--chain', CHAINS[getItem(GENERATORS[generatorId].output).chain].color);
+      chip.innerHTML = '<b></b><span></span>';
+      chip.querySelector('b')!.textContent = String(l);
+      chip.querySelector('span')!.textContent = known ? tx(generatorLevelName(generatorId, l)) : '?';
+      chip.classList.toggle('target', l === level);
+      levels.appendChild(chip);
+    }
+    const drops = level >= GENERATOR_ACTIVE_LEVEL ? generatorDrops(generatorId, level) : [];
+    $('.chain-source').textContent = drops.length
+      ? `${t('generatorCreates')}: ${drops.map((d) => `${tx(getItem(d.itemId).name)} — ${d.chance}%`).join(', ')}`
+      : t('generatorWorksFrom');
+    $<HTMLButtonElement>('.chain-show').hidden = true;
+    chainModal.hidden = false;
+  }
+
   function select(loc: Loc | null): void {
     selected = loc;
     sellArmed = false;
@@ -523,7 +551,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     if (underWeb) detail = t('webHint');
     const sellable = content?.kind === 'item' && !underWeb;
     sellBtn.hidden = !sellable;
-    whereBtn.hidden = content?.kind !== 'item';
+    whereBtn.hidden = !content;
     if (sellable) sellBtn.textContent = sellArmed ? t('sellConfirm') : `${t('sell')} +${getItem(content.itemId).sellPrice}`;
     sellBtn.classList.toggle('danger', sellArmed);
     undoBtn.hidden = !state.lastSale;
@@ -696,6 +724,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     $('.modal h3').textContent = `${t('restored')}: ${tx(project.name)}`;
     const parts = [tx(project.result)];
     if (project.generatorReward) parts.push(r.placedCell !== null ? `${t('generatorPlaced')}: ${tx(GENERATORS[project.generatorReward].name)}` : `${t('generatorWaiting')}: ${tx(GENERATORS[project.generatorReward].name)}`);
+    if (project.generatorUpgrade) parts.push(`${t('extraCrate')}: ${tx(GENERATORS[parseGeneratorToken(project.generatorUpgrade).generatorId].name)}`);
     if (r.state.chests.length > state.chests.length) parts.push(`${t('chestReceived')}: ${tx(CHESTS[r.state.chests[r.state.chests.length - 1]].name)}`);
     const chapter = chapterEndedBy(project.id);
     if (chapter === 1) parts.push(t('chapterEnd1'));
@@ -741,7 +770,10 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     renderProjectStrip();
     const incomingBtn = $<HTMLButtonElement>('.incoming-btn');
     incomingBtn.hidden = state.incoming.length === 0;
-    if (state.incoming.length) incomingBtn.textContent = `${t('incoming')}: ${tx(GENERATORS[state.incoming[0]].name)}`;
+    if (state.incoming.length) {
+      const next = parseGeneratorToken(state.incoming[0]);
+      incomingBtn.textContent = `${t('incoming')}: ${tx(GENERATORS[next.generatorId].name)} · ${next.level}`;
+    }
     renderInfo();
     if (!shopEl.hidden) renderShop();
     if (!albumEl.hidden) album.render();

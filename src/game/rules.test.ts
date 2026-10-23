@@ -54,10 +54,14 @@ describe('content reachability', () => {
 });
 
 describe('initial state', () => {
-  it('starts with 13 free cells and 2 generators, a ring of 16 cobwebs and 32 boxes', () => {
+  it('starts with toolbox parts, a working materials container, a ring of 16 cobwebs and 32 boxes', () => {
     const s = createInitialState(1);
-    expect(s.cells.filter((c) => c?.kind === 'generator')).toHaveLength(2);
-    expect(s.cells.filter((c, i) => c === null && !s.fog[i]).length).toBe(13);
+    const open = (i: number) => !s.fog[i];
+    const gens = s.cells.flatMap((c, i) => (c?.kind === 'generator' && open(i) ? [c] : []));
+    // две детали ящика 3-го уровня и рабочий контейнер; ещё один контейнер спрятан в коробке
+    expect(gens.map((g) => `${g.generatorId}:${g.level}`).sort()).toEqual(['G_MATERIAL:4', 'G_TOOL:3', 'G_TOOL:3']);
+    expect(s.cells.filter((c, i) => c?.kind === 'generator' && !open(i))).toHaveLength(1);
+    expect(s.cells.filter((c, i) => c === null && open(i)).length).toBe(12);
     expect(s.fog.filter((f) => f === 'web')).toHaveLength(16);
     expect(s.fog.filter((f) => f === 'box')).toHaveLength(32);
     expect(s.money).toBe(0);
@@ -69,7 +73,7 @@ describe('initial state', () => {
     s.fog.forEach((f, i) => {
       if (f === 'web') expect(s.cells[i]?.kind, `web ${i}`).toBe('item');
       if (f === 'box') for (const n of neighbors(i)) expect(s.fog[n], `box ${i} next to open ${n}`).not.toBeNull();
-      if (s.cells[i]?.kind === 'generator') expect(f).toBeNull();
+      if (s.cells[i]?.kind === 'generator' && START_GENERATORS.some((g) => g.cell === i)) expect(f).toBeNull();
     });
     // видимые под паутиной предметы считаются найденными, скрытые в коробках — нет
     expect(s.discovered).toContain('T01');

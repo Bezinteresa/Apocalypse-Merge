@@ -15,7 +15,7 @@ describe('art specification', () => {
   it('has a slot for every game entity that shows a picture', () => {
     const expected = [
       ...Object.keys(ITEMS).map(itemSprite),
-      ...Object.keys(GENERATORS).map(generatorSprite),
+      ...Object.keys(GENERATORS).flatMap((g) => [1, 2, 3, 4, 5, 6].map((l) => generatorSprite(g, l))),
       ...Object.keys(VISITORS).filter((v) => v !== 'RADIO').map(portraitSprite),
       BUILDING_SPRITE,
       ...ZONES.flatMap((z) => [zoneSprite(z.project, false), zoneSprite(z.project, true)]),

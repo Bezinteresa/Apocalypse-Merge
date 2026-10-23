@@ -16,12 +16,19 @@ function spawn(s: GameState, cell: number): GameState {
 
 /** Состояние после обучения: R01 сделан, оба стартовых генератора уже использованы. */
 function afterTutorial(base: GameState = openBoard()): GameState {
-  return { ...base, completedOrders: ['O01'], completedProjects: ['R01'], flags: ['spawn:G_TOOL', 'spawn:G_MATERIAL'] };
+  return { ...base, completedOrders: ['O01'], completedProjects: ['R01'], flags: ['spawn:G_TOOL', 'spawn:G_MATERIAL', 'gen_merged'] };
 }
 
 describe('hints', () => {
-  it('guides the tutorial: tap the toolbox, then drag one screwdriver onto the other', () => {
+  it('guides the tutorial: merge the toolbox parts, tap the toolbox, drag one screwdriver onto the other', () => {
     let s = createInitialState(1);
+    const first = currentHint(s);
+    expect(first).toMatchObject({ id: 'build_toolbox', target: { kind: 'drag', to: TOOL } });
+    if (first?.target.kind !== 'drag') return;
+    const merged = moveContent(s, first.target.from, TOOL);
+    expect(merged.ok && merged.state.cells[TOOL]).toMatchObject({ kind: 'generator', generatorId: 'G_TOOL', level: 4 });
+    if (!merged.ok) return;
+    s = merged.state;
     expect(currentHint(s)).toMatchObject({ id: 'spawn_tools', target: { kind: 'tap', cell: TOOL } });
     s = spawn(spawn(s, TOOL), TOOL);
     const h = currentHint(s);
@@ -43,7 +50,7 @@ describe('hints', () => {
 
   it('points at a new generator until something is taken from it', () => {
     let s = afterTutorial();
-    s = { ...s, cells: s.cells.map((c, i) => (i === 0 ? { kind: 'generator' as const, generatorId: 'G_PROVISION' } : c)) };
+    s = { ...s, cells: s.cells.map((c, i) => (i === 0 ? { kind: 'generator' as const, generatorId: 'G_PROVISION', level: 4 } : c)) };
     expect(currentHint(s)).toMatchObject({ id: 'new_generator', target: { kind: 'tap', cell: 0 } });
     s = spawn(s, 0);
     expect(currentHint(s)?.id).not.toBe('new_generator');

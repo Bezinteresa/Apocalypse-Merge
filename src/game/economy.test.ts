@@ -217,7 +217,8 @@ describe('projects', () => {
     expect(currentProject(s)).toBeNull();
     expect(s.storage).toHaveLength(10);
     expect(s.incoming).toEqual([]);
-    expect(s.cells.filter((c) => c?.kind === 'generator')).toHaveLength(5);
+    // пять цепочек — пять видов генераторов; ящики-улучшения из ремонтов стоят рядом, их объединяет игрок
+    expect(new Set(s.cells.flatMap((c) => (c?.kind === 'generator' ? [c.generatorId] : []))).size).toBe(5);
     expect(validateState(s)).toBe(true);
   });
 
