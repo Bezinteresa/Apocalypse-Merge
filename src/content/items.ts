@@ -1,6 +1,6 @@
 // Определения контента по docs/CONTENT_CATALOG.md. ID постоянные: на них ссылаются сохранения, заказы и проекты.
 
-export type ChainId = 'T' | 'M' | 'P' | 'E';
+export type ChainId = 'T' | 'M' | 'P' | 'E' | 'A';
 export type LangText = { ru: string; en: string };
 
 export interface ItemDef {
@@ -29,6 +29,7 @@ export const CHAINS: Record<ChainId, ChainDef> = {
   M: { id: 'M', name: { ru: 'Материалы', en: 'Materials' }, color: '#7f8c96' },
   P: { id: 'P', name: { ru: 'Припасы', en: 'Provisions' }, color: '#6f9a4a' },
   E: { id: 'E', name: { ru: 'Электрика', en: 'Electrics' }, color: '#d1b832' },
+  A: { id: 'A', name: { ru: 'Автодетали', en: 'Car parts' }, color: '#b5533c' },
 };
 
 const CHAIN_NAMES: Record<ChainId, LangText[]> = {
@@ -61,6 +62,14 @@ const CHAIN_NAMES: Record<ChainId, LangText[]> = {
     { ru: 'Ремонтная плата', en: 'Repair board' },
     { ru: 'Блок питания', en: 'Power unit' },
     { ru: 'Панель управления', en: 'Control panel' },
+  ],
+  // глава 2 (гараж): CONTENT_CATALOG, раздел 8 — «крепёж → ремонтный узел → узел трансмиссии → агрегат → комплект ремонта машины»
+  A: [
+    { ru: 'Автокрепёж', en: 'Car fasteners' },
+    { ru: 'Ремонтный узел', en: 'Repair assembly' },
+    { ru: 'Узел трансмиссии', en: 'Transmission unit' },
+    { ru: 'Двигатель в сборе', en: 'Engine block' },
+    { ru: 'Комплект ремонта машины', en: 'Vehicle repair kit' },
   ],
 };
 
@@ -97,6 +106,7 @@ export const GENERATORS: Record<string, GeneratorDef> = {
   G_MATERIAL: { id: 'G_MATERIAL', name: { ru: 'Контейнер со стройматериалами', en: 'Materials container' }, output: 'M01' },
   G_PROVISION: { id: 'G_PROVISION', name: { ru: 'Ящик припасов', en: 'Provision crate' }, output: 'P01' },
   G_ELECTRIC: { id: 'G_ELECTRIC', name: { ru: 'Стол радиодеталей', en: 'Radio parts bench' }, output: 'E01' },
+  G_AUTO: { id: 'G_AUTO', name: { ru: 'Гаражный стеллаж', en: 'Garage parts rack' }, output: 'A01' },
 };
 
 export function getItem(id: string): ItemDef {

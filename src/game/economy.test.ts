@@ -166,7 +166,7 @@ describe('projects', () => {
     expect(availableOrders(r.state).map((o) => o.id)).toEqual(['O02', 'O03']);
   });
 
-  it('plays the whole chapter with money matching the catalog table', () => {
+  it('plays both chapters with money and energy matching the plan', () => {
     let s = openBoard();
     const run = (r: { ok: true; state: GameState } | { ok: false; reason: string }) => {
       if (!r.ok) throw new Error(r.reason);
@@ -190,22 +190,34 @@ describe('projects', () => {
       [['O12', 'O13', 'O14'], 'R06', 231],
       [['O15', 'O16'], 'R07', 276],
       [['O17', 'O18'], 'R08', 326],
+      // глава 2 (гараж): сначала ворота, потом заказы каждой ступени — CONTENT_CATALOG, раздел 10
+      [[], 'R09', 246],
+      [['O19', 'O20', 'O21'], 'R10', 286],
+      [['O22', 'O23', 'O24'], 'R11', 351],
+      [['O25', 'O26', 'O27'], 'R12', 426],
+      [['O28', 'O29', 'O30'], 'R13', 536],
     ];
     for (const [orders, proj, money] of plan) {
       orders.forEach(order);
       project(proj);
       expect(s.money, proj).toBe(money);
+      if (proj === 'R08') {
+        // каталог 6.2: 100 стартовой + 3 × 50 = 250 энергии покрывают 216 обязательных выдач главы 1 с запасом 34
+        expect(s.energy).toBe(34);
+        expect(isChapterComplete(s)).toBe(false);
+        expect(currentProject(s)?.id).toBe('R09');
+      }
     }
-    // каталог 6.2: 100 стартовой + 3 × 50 = 250 энергии покрывают 216 обязательных выдач с запасом 34
-    expect(s.energy).toBe(34);
-    // каждый проект и каждый третий заказ дают потёртый сундук: 8 + 6
-    expect(s.chests).toHaveLength(14);
+    // глава 2: 206 обязательных выдач против 34 + 4 × 50 энергии — запас 28 без восстановления
+    expect(s.energy).toBe(28);
+    // каждый проект и каждый третий заказ дают потёртый сундук: 13 + 10
+    expect(s.chests).toHaveLength(23);
     expect(isChapterComplete(s)).toBe(true);
     expect(areAllOrdersDone(s)).toBe(true);
     expect(currentProject(s)).toBeNull();
     expect(s.storage).toHaveLength(10);
     expect(s.incoming).toEqual([]);
-    expect(s.cells.filter((c) => c?.kind === 'generator')).toHaveLength(4);
+    expect(s.cells.filter((c) => c?.kind === 'generator')).toHaveLength(5);
     expect(validateState(s)).toBe(true);
   });
 

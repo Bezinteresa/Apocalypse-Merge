@@ -15,6 +15,10 @@ export interface RoomDef extends Rect {
   id: string;
   name: LangText;
   locked?: LangText;
+  /** Комната открывается после этого проекта. */
+  unlockAfter?: string;
+  /** Другая подпись закрытой комнаты после проекта (например, найден спуск). */
+  lockedAfter?: Record<string, LangText>;
   outdoor?: boolean;
 }
 
@@ -35,11 +39,11 @@ export interface SpotDef {
 }
 
 export const SCENE_SIZE = { w: layout.width, h: layout.height };
-export const ROOMS: RoomDef[] = layout.rooms;
+export const ROOMS: RoomDef[] = layout.rooms as RoomDef[];
 export const ZONES: ZoneDef[] = layout.zones;
 export const SPOTS: SpotDef[] = layout.spots;
 
 /** Когда посетитель появляется в магазине: Лев с начала, Ника после R03, Марта после R05 (GAME_DESIGN, раздел 10). */
-export const VISITOR_ARRIVAL: Record<string, string | null> = { LEV: null, NIKA: 'R03', MARTA: 'R05' };
+export const VISITOR_ARRIVAL: Record<string, string | null> = { LEV: null, NIKA: 'R03', MARTA: 'R05', SAVVA: 'R10' };
 
-export const VISITOR_COLOR: Record<string, string> = { LEV: '#c98a3a', NIKA: '#6f9a4a', MARTA: '#d1b832', RADIO: '#5aa0e0' };
+export const VISITOR_COLOR: Record<string, string> = { LEV: '#c98a3a', NIKA: '#6f9a4a', MARTA: '#d1b832', SAVVA: '#b5533c', RADIO: '#5aa0e0' };

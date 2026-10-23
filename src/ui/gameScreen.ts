@@ -1,5 +1,5 @@
 import { CHAINS, GENERATORS, ITEMS, getItem } from '../content/items';
-import { PROJECTS, VISITORS, type ProjectDef, type Requirement } from '../content/orders';
+import { PROJECTS, VISITORS, chapterEndedBy, type ProjectDef, type Requirement } from '../content/orders';
 import { t, tx, type StringKey } from '../i18n';
 import {
   availableOrders,
@@ -686,12 +686,14 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     const parts = [tx(project.result)];
     if (project.generatorReward) parts.push(r.placedCell !== null ? `${t('generatorPlaced')}: ${tx(GENERATORS[project.generatorReward].name)}` : `${t('generatorWaiting')}: ${tx(GENERATORS[project.generatorReward].name)}`);
     if (r.state.chests.length > state.chests.length) parts.push(`${t('chestReceived')}: ${tx(CHESTS[r.state.chests[r.state.chests.length - 1]].name)}`);
-    if (isChapterComplete(r.state)) parts.push(t('chapterDone'));
+    const chapter = chapterEndedBy(project.id);
+    if (chapter === 1) parts.push(t('chapterEnd1'));
+    if (chapter === 2) parts.push(t('chapterEnd2'));
     $('.modal p').textContent = parts.join('. ');
     modal.hidden = false;
     interstitialAfterModal = true;
     tel.goal('project_completed', project.id);
-    if (isChapterComplete(r.state)) tel.track('chapter_completed', { spawns_total: tel.data.spawnsTotal, active_sec: Math.round(tel.data.activeMs / 1000) });
+    if (chapter) tel.track('chapter_completed', { chapter, spawns_total: tel.data.spawnsTotal, active_sec: Math.round(tel.data.activeMs / 1000) });
     commit(r.state, true);
     select(null);
   }

@@ -16,8 +16,8 @@ function withItem(state: GameState, cell: number, itemId: string): GameState {
 }
 
 describe('content', () => {
-  it('has 22 items with valid, acyclic chains', () => {
-    expect(Object.keys(ITEMS)).toHaveLength(22);
+  it('has 27 items with valid, acyclic chains', () => {
+    expect(Object.keys(ITEMS)).toHaveLength(27);
     for (const def of Object.values(ITEMS)) {
       if (def.nextId) {
         const next = ITEMS[def.nextId];

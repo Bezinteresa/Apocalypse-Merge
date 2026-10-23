@@ -76,7 +76,7 @@ export const CHESTS: Record<string, ChestDef> = {
 };
 
 /**
- * Источники сундуков в первой главе: каждый проект и каждый третий заказ дают потёртый сундук.
+ * Источники сундуков: каждый проект и каждый третий заказ обеих глав дают потёртый сундук.
  * Сундуки торговца и архивный определены, но выдаются только из отладки до проверки открытия.
  */
 export const CHEST_SOURCES: Record<string, string> = {
@@ -94,6 +94,16 @@ export const CHEST_SOURCES: Record<string, string> = {
   O12: 'CH_WORN',
   O15: 'CH_WORN',
   O18: 'CH_WORN',
+  // глава 2
+  R09: 'CH_WORN',
+  R10: 'CH_WORN',
+  R11: 'CH_WORN',
+  R12: 'CH_WORN',
+  R13: 'CH_WORN',
+  O21: 'CH_WORN',
+  O24: 'CH_WORN',
+  O27: 'CH_WORN',
+  O30: 'CH_WORN',
 };
 
 export function getCard(id: string): CardDef {

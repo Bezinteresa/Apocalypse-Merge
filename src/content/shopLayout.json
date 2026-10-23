@@ -3,26 +3,245 @@
   "width": 1600,
   "height": 1000,
   "rooms": [
-    { "id": "GARAGE", "x": 1, "y": 22, "w": 15, "h": 40, "name": { "ru": "Гараж", "en": "Garage" }, "locked": { "ru": "Следующая глава", "en": "Next chapter" } },
-    { "id": "STORAGE", "x": 16, "y": 22, "w": 18, "h": 40, "name": { "ru": "Склад", "en": "Storeroom" } },
-    { "id": "HALL", "x": 34, "y": 22, "w": 32, "h": 40, "name": { "ru": "Торговый зал", "en": "Shop floor" } },
-    { "id": "WORKSHOP", "x": 66, "y": 22, "w": 18, "h": 40, "name": { "ru": "Мастерская", "en": "Workshop" } },
-    { "id": "YARD", "x": 84, "y": 22, "w": 15, "h": 40, "name": { "ru": "Двор", "en": "Yard" }, "outdoor": true },
-    { "id": "SHELTER", "x": 1, "y": 66, "w": 98, "h": 32, "name": { "ru": "Убежище, этаж −1", "en": "Shelter, level −1" }, "locked": { "ru": "Откроется после гаража", "en": "Opens after the garage" } }
+    {
+      "id": "GARAGE",
+      "x": 1,
+      "y": 22,
+      "w": 15,
+      "h": 40,
+      "name": {
+        "ru": "Гараж",
+        "en": "Garage"
+      },
+      "locked": {
+        "ru": "Откроется после главы 1",
+        "en": "Opens after chapter 1"
+      },
+      "unlockAfter": "R08"
+    },
+    {
+      "id": "STORAGE",
+      "x": 16,
+      "y": 22,
+      "w": 18,
+      "h": 40,
+      "name": {
+        "ru": "Склад",
+        "en": "Storeroom"
+      }
+    },
+    {
+      "id": "HALL",
+      "x": 34,
+      "y": 22,
+      "w": 32,
+      "h": 40,
+      "name": {
+        "ru": "Торговый зал",
+        "en": "Shop floor"
+      }
+    },
+    {
+      "id": "WORKSHOP",
+      "x": 66,
+      "y": 22,
+      "w": 18,
+      "h": 40,
+      "name": {
+        "ru": "Мастерская",
+        "en": "Workshop"
+      }
+    },
+    {
+      "id": "YARD",
+      "x": 84,
+      "y": 22,
+      "w": 15,
+      "h": 40,
+      "name": {
+        "ru": "Двор",
+        "en": "Yard"
+      },
+      "outdoor": true
+    },
+    {
+      "id": "SHELTER",
+      "x": 1,
+      "y": 66,
+      "w": 98,
+      "h": 32,
+      "name": {
+        "ru": "Убежище, этаж −1",
+        "en": "Shelter, level −1"
+      },
+      "locked": {
+        "ru": "Откроется после гаража",
+        "en": "Opens after the garage"
+      },
+      "lockedAfter": {
+        "R13": {
+          "ru": "Спуск открыт · следующая глава",
+          "en": "Descent open · next chapter"
+        }
+      }
+    }
   ],
   "zones": [
-    { "project": "R01", "room": "HALL", "x": 35, "y": 33, "w": 8, "h": 28, "broken": "doorway blocked by a pile of rubble and broken boards", "fixed": "cleared doorway framed with fresh wooden beams and a simple door mat" },
-    { "project": "R02", "room": "HALL", "x": 47, "y": 46, "w": 12, "h": 15, "broken": "smashed shop counter lying on its side", "fixed": "restored shop counter patched with metal sheets, clean top with a small cash box" },
-    { "project": "R03", "room": "HALL", "x": 59, "y": 27, "w": 6, "h": 33, "broken": "tall empty broken wall shelf, planks hanging", "fixed": "fixed tall wall shelf stocked with tin cans, jars and olive-green food packs" },
-    { "project": "R04", "room": "STORAGE", "x": 18, "y": 30, "w": 14, "h": 31, "broken": "fallen crates and a toppled rusty rack", "fixed": "neat new metal racks with crates stacked in order" },
-    { "project": "R05", "room": "WORKSHOP", "x": 68, "y": 40, "w": 14, "h": 21, "broken": "dusty workbench buried under junk", "fixed": "working mechanic's workbench with a vise, hanging tools and a small lamp" },
-    { "project": "R06", "room": "HALL", "x": 36, "y": 22.5, "w": 46, "h": 6, "broken": "a row of dead ceiling lamps hanging on loose wires", "fixed": "a row of ceiling lamps glowing warm yellow on tidy wires" },
-    { "project": "R07", "room": "YARD", "x": 86, "y": 30, "w": 12, "h": 31, "broken": "empty dry rusty water tank stand", "fixed": "clean blue water tank on a stand with a small pump and a tap with a bucket" },
-    { "project": "R08", "room": "FACADE", "x": 38, "y": 9, "w": 26, "h": 10, "broken": "blank broken sign board hanging crooked above the entrance, no text", "fixed": "repaired sign board lit with warm string lights, still no text" }
+    {
+      "project": "R01",
+      "room": "HALL",
+      "x": 35,
+      "y": 33,
+      "w": 8,
+      "h": 28,
+      "broken": "doorway blocked by a pile of rubble and broken boards",
+      "fixed": "cleared doorway framed with fresh wooden beams and a simple door mat"
+    },
+    {
+      "project": "R02",
+      "room": "HALL",
+      "x": 47,
+      "y": 46,
+      "w": 12,
+      "h": 15,
+      "broken": "smashed shop counter lying on its side",
+      "fixed": "restored shop counter patched with metal sheets, clean top with a small cash box"
+    },
+    {
+      "project": "R03",
+      "room": "HALL",
+      "x": 59,
+      "y": 27,
+      "w": 6,
+      "h": 33,
+      "broken": "tall empty broken wall shelf, planks hanging",
+      "fixed": "fixed tall wall shelf stocked with tin cans, jars and olive-green food packs"
+    },
+    {
+      "project": "R04",
+      "room": "STORAGE",
+      "x": 18,
+      "y": 30,
+      "w": 14,
+      "h": 31,
+      "broken": "fallen crates and a toppled rusty rack",
+      "fixed": "neat new metal racks with crates stacked in order"
+    },
+    {
+      "project": "R05",
+      "room": "WORKSHOP",
+      "x": 68,
+      "y": 40,
+      "w": 14,
+      "h": 21,
+      "broken": "dusty workbench buried under junk",
+      "fixed": "working mechanic's workbench with a vise, hanging tools and a small lamp"
+    },
+    {
+      "project": "R06",
+      "room": "HALL",
+      "x": 36,
+      "y": 22.5,
+      "w": 46,
+      "h": 6,
+      "broken": "a row of dead ceiling lamps hanging on loose wires",
+      "fixed": "a row of ceiling lamps glowing warm yellow on tidy wires"
+    },
+    {
+      "project": "R07",
+      "room": "YARD",
+      "x": 86,
+      "y": 30,
+      "w": 12,
+      "h": 31,
+      "broken": "empty dry rusty water tank stand",
+      "fixed": "clean blue water tank on a stand with a small pump and a tap with a bucket"
+    },
+    {
+      "project": "R08",
+      "room": "FACADE",
+      "x": 38,
+      "y": 9,
+      "w": 26,
+      "h": 10,
+      "broken": "blank broken sign board hanging crooked above the entrance, no text",
+      "fixed": "repaired sign board lit with warm string lights, still no text"
+    },
+    {
+      "project": "R09",
+      "room": "GARAGE",
+      "x": 1.5,
+      "y": 23,
+      "w": 14,
+      "h": 12,
+      "broken": "a rusty garage roller shutter jammed half-open, bent slats hanging down",
+      "fixed": "a repaired garage roller shutter rolled up neatly under the ceiling"
+    },
+    {
+      "project": "R10",
+      "room": "GARAGE",
+      "x": 2.5,
+      "y": 56,
+      "w": 12,
+      "h": 5,
+      "broken": "an inspection pit in the floor filled with rubble and broken boards",
+      "fixed": "a clean inspection pit with a steel rim and a small ladder"
+    },
+    {
+      "project": "R11",
+      "room": "GARAGE",
+      "x": 11,
+      "y": 34,
+      "w": 4.5,
+      "h": 27,
+      "broken": "a toppled rusty two-post car lift, one post leaning",
+      "fixed": "an upright two-post car lift, freshly painted, arms folded"
+    },
+    {
+      "project": "R12",
+      "room": "GARAGE",
+      "x": 2,
+      "y": 38,
+      "w": 10,
+      "h": 20,
+      "broken": "a small caravan van with a flat tyre, open hood and missing headlight, side view facing right",
+      "fixed": "the same small caravan van repaired, headlights on, roof rack with tied cargo, side view facing right"
+    },
+    {
+      "project": "R13",
+      "room": "SHELTER",
+      "x": 3,
+      "y": 67,
+      "w": 12,
+      "h": 10,
+      "broken": "a heavy floor hatch buried under concrete debris and a fallen beam",
+      "fixed": "an open heavy service hatch with a ladder going down and warm light below"
+    }
   ],
   "spots": [
-    { "visitor": "LEV", "x": 43, "bottom": 61, "h": 22 },
-    { "visitor": "NIKA", "x": 25, "bottom": 61, "h": 21 },
-    { "visitor": "MARTA", "x": 74, "bottom": 61, "h": 21 }
+    {
+      "visitor": "LEV",
+      "x": 43,
+      "bottom": 61,
+      "h": 22
+    },
+    {
+      "visitor": "NIKA",
+      "x": 25,
+      "bottom": 61,
+      "h": 21
+    },
+    {
+      "visitor": "MARTA",
+      "x": 74,
+      "bottom": 61,
+      "h": 21
+    },
+    {
+      "visitor": "SAVVA",
+      "x": 92,
+      "bottom": 61,
+      "h": 22
+    }
   ]
 }

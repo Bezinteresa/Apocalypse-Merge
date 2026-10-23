@@ -98,4 +98,38 @@ export const DIALOGS: DialogDef[] = [
       { speaker: 'NIKA', text: { ru: 'Под перекрёстком? Это же прямо под нами.', en: "Under the crossroads? That's right below us." } },
     ],
   },
+  // глава 2: гараж
+  {
+    id: 'D_GARAGE',
+    after: { project: 'R09' },
+    lines: [
+      { speaker: 'MARTA', text: { ru: 'Гараж живой! Стеллаж с запчастями цел — будет из чего собирать.', en: 'The garage lives! The parts rack survived — plenty to build from.' } },
+      { speaker: 'MARTA', text: { ru: 'Если поставим машину на ход, к нам потянутся караваны.', en: 'If we get a vehicle running, caravans will come our way.' } },
+    ],
+  },
+  {
+    id: 'D_SAVVA',
+    after: { project: 'R10' },
+    lines: [
+      { speaker: 'SAVVA', text: { ru: 'Здоро́во. Я Савва, вожу караван между кварталами. Фургон встал в двух улицах отсюда.', en: "Hey. I'm Savva, I drive a caravan between districts. My van broke down two streets away." } },
+      { speaker: 'SAVVA', text: { ru: 'Поможете с запчастями — буду возить вам товар со всего города.', en: "Help me with parts and I'll bring you goods from all over the city." } },
+    ],
+  },
+  {
+    id: 'D_VAN',
+    after: { project: 'R12' },
+    lines: [
+      { speaker: 'SAVVA', text: { ru: 'Заводится! Первый рейс — за вами. Соберите груз, и в путь.', en: "It starts! The first run is on you. Load the cargo and we're off." } },
+      { speaker: 'MARTA', text: { ru: 'Когда фургон съехал с ямы, под ним в полу нашёлся люк. Тот самый кабель уходит туда.', en: 'When the van rolled off the pit, there was a hatch in the floor. That cable goes down there.' } },
+    ],
+  },
+  {
+    id: 'D_DESCENT',
+    after: { project: 'R13' },
+    lines: [
+      { speaker: 'MARTA', text: { ru: 'Люк открыт. Внизу лестница и сухой воздух — там кто-то жил.', en: 'The hatch is open. A ladder and dry air below — someone lived there.' } },
+      { speaker: 'LEV', text: { ru: 'Так вот откуда радио… Убежище прямо под «Перекрёстком».', en: 'So that is where the radio came from… The shelter is right under the "Crossroads".' } },
+      { speaker: 'NIKA', text: { ru: 'Возьмём фонари и аптечку. Спустимся вместе.', en: "Let's take lamps and a first-aid kit. We go down together." } },
+    ],
+  },
 ];

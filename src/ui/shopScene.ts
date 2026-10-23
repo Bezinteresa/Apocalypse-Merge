@@ -51,15 +51,18 @@ export function renderShopScene(root: HTMLElement, state: GameState, handlers: S
 
   for (const room of ROOMS) {
     const el = document.createElement('div');
+    const locked = !!room.locked && !(room.unlockAfter && state.completedProjects.includes(room.unlockAfter));
+    // подпись закрытой комнаты может смениться после проекта (найден спуск)
+    const lockedText = Object.entries(room.lockedAfter ?? {}).find(([p]) => state.completedProjects.includes(p))?.[1] ?? room.locked;
     el.className = `room room-${room.id.toLowerCase()}`;
     el.classList.toggle('outdoor', !!room.outdoor);
-    el.classList.toggle('locked', !!room.locked);
+    el.classList.toggle('locked', locked);
     place(el, room);
     const label = document.createElement('span');
     label.className = 'room-name';
     // в узкой закрытой комнате — только название, пояснение во всплывающей подсказке
-    label.textContent = room.locked ? `🔒 ${tx(room.name)}${room.w > 40 ? ` · ${tx(room.locked)}` : ''}` : tx(room.name);
-    if (room.locked) el.title = tx(room.locked);
+    label.textContent = locked && lockedText ? `🔒 ${tx(room.name)}${room.w > 40 ? ` · ${tx(lockedText)}` : ''}` : tx(room.name);
+    if (locked && lockedText) el.title = tx(lockedText);
     el.appendChild(label);
     root.appendChild(el);
   }

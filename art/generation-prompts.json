@@ -159,6 +159,41 @@
       "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
     },
     {
+      "file": "items/A01.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A small rusty tin with car fasteners: bolts, nuts, washers and a spark plug, dark red paint chips on the tin.",
+      "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
+    },
+    {
+      "file": "items/A02.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A repair assembly: a cleaned car part bundle — a pulley, a short drive belt and a bracket tied together with wire, dark red accents.",
+      "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
+    },
+    {
+      "file": "items/A03.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A transmission unit: a compact metal gearbox with visible gears through an open cover, dark red painted housing, oily but restored.",
+      "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
+    },
+    {
+      "file": "items/A04.png",
+      "w": 256,
+      "h": 256,
+      "subject": "An engine block: a small rebuilt car engine with dark red valve cover, hoses and a belt, sitting on a wooden pallet piece.",
+      "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
+    },
+    {
+      "file": "items/A05.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A vehicle repair kit: a big dark red metal crate with an engine part, wheel, belts and tools neatly packed — the top car parts item.",
+      "extra": "One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text."
+    },
+    {
       "file": "generators/G_TOOL.png",
       "w": 256,
       "h": 256,
@@ -187,6 +222,13 @@
       "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text."
     },
     {
+      "file": "generators/G_AUTO.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A tall garage parts rack: a dark red metal shelf unit with car parts, tyres, belts and boxes of bolts, a hanging work lamp. A source of car parts; larger and more furniture-like than regular items.",
+      "extra": "One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text."
+    },
+    {
       "file": "portraits/LEV.png",
       "w": 512,
       "h": 512,
@@ -208,12 +250,20 @@
       "extra": "Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text."
     },
     {
+      "file": "portraits/SAVVA.png",
+      "w": 512,
+      "h": 512,
+      "subject": "Savva, a weathered caravan driver in his 50s, short grey beard, flat cap, leather jacket with patches, driving goggles around his neck, a road map in his hand, calm friendly smile.",
+      "extra": "Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text."
+    },
+    {
       "file": "shop/building.webp",
       "w": 1600,
       "h": 1000,
       "guide": "art/guides/building_layout.png",
-      "subject": "Cross-section front view of a small two-level post-apocalyptic corner shop building at a city crossroads, like a dollhouse with the front wall removed. Top: grey sky and the facade roof line with an empty sign bracket above the entrance. Ground floor, left to right: a closed garage with a rolled-down dented shutter (locked, dim); a storeroom with bare concrete walls; the main shop floor with patched wallpaper, an entrance doorway on its left side; a workshop corner with pegboard wall; an outdoor yard with cracked asphalt and a fence. Below ground: a dark underground shelter level, barely visible, closed off by a heavy hatch, mysterious. Rooms are EMPTY: no furniture, no counter, no shelves, no racks, no workbench, no lamps, no water tank, no sign — those are separate sprites. No people.",
-      "extra": "Wide 16:10 scene, NOT transparent. Follow the attached layout guide exactly: walls, floors and room borders where the guide boxes are; hatched red areas must stay empty background; do not draw the guide lines, labels or colors. Also attach art/reference/shop_mood.webp as the mood reference: same materials, palette and light, but as a cross-section of the whole building."
+      "subject": "Cross-section front view of a small two-level post-apocalyptic corner shop building at a city crossroads, like a dollhouse with the front wall removed. Top: grey sky and the facade roof line with an empty sign bracket above the entrance. Ground floor, left to right: an open empty garage bay with a concrete floor and bare walls (no shutter, no vehicle — those are separate sprites); a storeroom with bare concrete walls; the main shop floor with patched wallpaper, an entrance doorway on its left side; a workshop corner with pegboard wall; an outdoor yard with cracked asphalt and a fence. Below ground: a dark underground shelter level, barely visible and mysterious; its top-left corner stays empty for the service hatch sprite. Rooms are EMPTY: no furniture, no counter, no shelves, no racks, no workbench, no lamps, no water tank, no sign — those are separate sprites. No people.",
+      "extra": "Wide 16:10 scene, NOT transparent. Follow the attached layout guide exactly: walls, floors and room borders where the guide boxes are; hatched red areas must stay empty background; do not draw the guide lines, labels or colors. Also attach art/reference/shop_mood.webp as the mood reference: same materials, palette and light, but as a cross-section of the whole building.",
+      "redo": "Глава 2 (гараж): гараж нарисован закрытой ролетой во всю стену, а теперь ворота — отдельный спрайт zones/R09. Нарисовать гараж открытым пустым помещением (бетонный пол, стены, без ролеты, машины, ямы и подъёмника) и оставить пустым левый верх убежища под люк R13 — по обновлённой разметке art/guides/building_layout.png. Остальное здание сохранить как есть: приложить текущий shop/building.webp как образец."
     },
     {
       "file": "zones/R01_broken.png",
@@ -336,6 +386,81 @@
       "guide": "public/sprites/zones/R08_broken.png"
     },
     {
+      "file": "zones/R09_broken.png",
+      "w": 448,
+      "h": 240,
+      "subject": "A rusty garage roller shutter jammed half-open, bent slats hanging down. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:240."
+    },
+    {
+      "file": "zones/R09_fixed.png",
+      "w": 448,
+      "h": 240,
+      "subject": "A repaired garage roller shutter rolled up neatly under the ceiling. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:240.",
+      "guide": "public/sprites/zones/R09_broken.png"
+    },
+    {
+      "file": "zones/R10_broken.png",
+      "w": 384,
+      "h": 96,
+      "subject": "An inspection pit in the floor filled with rubble and broken boards. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:96."
+    },
+    {
+      "file": "zones/R10_fixed.png",
+      "w": 384,
+      "h": 96,
+      "subject": "A clean inspection pit with a steel rim and a small ladder. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:96.",
+      "guide": "public/sprites/zones/R10_broken.png"
+    },
+    {
+      "file": "zones/R11_broken.png",
+      "w": 144,
+      "h": 544,
+      "subject": "A toppled rusty two-post car lift, one post leaning. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 144:544."
+    },
+    {
+      "file": "zones/R11_fixed.png",
+      "w": 144,
+      "h": 544,
+      "subject": "An upright two-post car lift, freshly painted, arms folded. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 144:544.",
+      "guide": "public/sprites/zones/R11_broken.png"
+    },
+    {
+      "file": "zones/R12_broken.png",
+      "w": 320,
+      "h": 400,
+      "subject": "A small caravan van with a flat tyre, open hood and missing headlight, side view facing right. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 320:400."
+    },
+    {
+      "file": "zones/R12_fixed.png",
+      "w": 320,
+      "h": 400,
+      "subject": "The same small caravan van repaired, headlights on, roof rack with tied cargo, side view facing right. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 320:400.",
+      "guide": "public/sprites/zones/R12_broken.png"
+    },
+    {
+      "file": "zones/R13_broken.png",
+      "w": 384,
+      "h": 200,
+      "subject": "A heavy floor hatch buried under concrete debris and a fallen beam. Worn, dusty, clearly broken or missing, but not scary.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:200."
+    },
+    {
+      "file": "zones/R13_fixed.png",
+      "w": 384,
+      "h": 200,
+      "subject": "An open heavy service hatch with a ladder going down and warm light below. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.",
+      "extra": "One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:200.",
+      "guide": "public/sprites/zones/R13_broken.png"
+    },
+    {
       "file": "characters/LEV.png",
       "w": 320,
       "h": 640,
@@ -358,6 +483,14 @@
       "subject": "Marta, an experienced mechanic in her mid-40s, grey-streaked hair in a bun, welding goggles on her forehead, oil-stained overalls with rolled sleeves, heavy boots, a wrench in her hand.",
       "extra": "Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.",
       "guide": "public/sprites/portraits/MARTA.png"
+    },
+    {
+      "file": "characters/SAVVA.png",
+      "w": 320,
+      "h": 640,
+      "subject": "Savva, a weathered caravan driver in his 50s, short grey beard, flat cap, leather jacket with patches, driving goggles around his neck, cargo trousers, heavy boots, a road map in his hand.",
+      "extra": "Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.",
+      "guide": "public/sprites/portraits/SAVVA.png"
     },
     {
       "file": "chests/CH_WORN.png",
