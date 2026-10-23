@@ -33,7 +33,7 @@ import { createAlbum } from './albumView';
 import { Finger } from './finger';
 import { currentHint, markFlag } from '../game/hints';
 import { hasSprite, portraitSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
-import { renderShopScene } from './shopScene';
+import { POOF_MS, playPoof, renderShopScene } from './shopScene';
 import { VISITOR_COLOR } from '../content/shopLayout';
 import { CHESTS } from '../content/collections';
 
@@ -160,6 +160,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     }
   }
   let hintTimer: ReturnType<typeof setTimeout> | undefined;
+  /** Идёт эффект восстановления: окна и подсказки ждут его окончания. */
+  let effectPlaying = false;
   const tel = deps.telemetry;
   const ads = deps.ads;
   const sessionStart = Date.now();
@@ -376,7 +378,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   }
 
   function maybeShowDialog(): void {
-    if (dialog || !modal.hidden || ads.busy) return;
+    if (dialog || !modal.hidden || ads.busy || effectPlaying) return;
     const def = pendingDialog(state);
     if (!def) return;
     dialog = { def, line: 0 };
@@ -679,6 +681,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   }
 
   function finishProject(project: ProjectDef): void {
+    if (effectPlaying) return;
     const r = completeProject(state, project.id);
     if (!r.ok) {
       if (r.reason === 'no_money') deps.toast('noMoney', `${state.money}/${project.cost}`);
@@ -695,12 +698,20 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     if (chapter === 1) parts.push(t('chapterEnd1'));
     if (chapter === 2) parts.push(t('chapterEnd2'));
     $('.modal p').textContent = parts.join('. ');
-    modal.hidden = false;
     interstitialAfterModal = true;
     tel.goal('project_completed', project.id);
     if (chapter) tel.track('chapter_completed', { chapter, spawns_total: tel.data.spawnsTotal, active_sec: Math.round(tel.data.activeMs / 1000) });
+    // состояние принимается и сохраняется сразу; облачко «пуф» на сцене только показывает смену,
+    // окно итога открывается после него, а сцена с персонажем — после окна
+    effectPlaying = true;
     commit(r.state, true);
     select(null);
+    const shown = !shopEl.hidden && playPoof($('.scene'), project.id);
+    setTimeout(() => {
+      effectPlaying = false;
+      modal.hidden = false;
+      finger.show(currentHint(state));
+    }, shown ? POOF_MS : 0);
   }
 
   function openShop(open: boolean): void {
@@ -738,7 +749,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
 
   /** Где сейчас цель подсказки: зависит от того, открыт ли магазин, альбом или окно. */
   function resolveHint(hint: ReturnType<typeof currentHint> & object) {
-    const overlayOpen = !modal.hidden || !dialogEl.hidden || !chainModal.hidden || !energyModal.hidden;
+    const overlayOpen = effectPlaying || !modal.hidden || !dialogEl.hidden || !chainModal.hidden || !energyModal.hidden;
     if (overlayOpen) return null;
     const cell = (i: number) => app.querySelector<HTMLElement>(`#board .cell[data-index="${i}"]`);
     const target = hint.target;

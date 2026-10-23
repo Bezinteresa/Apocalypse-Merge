@@ -624,6 +624,13 @@
       "h": 128,
       "subject": "A cartoon hand with the index finger pointing straight UP, sleeve cuff at the bottom, friendly tutorial pointer for a mobile game, slightly worn work-glove look matching the post-apocalyptic style.",
       "extra": "Single hand, fingertip at the top center of the frame, fills about 85% of the frame, transparent background, no text, no shadow on the ground."
+    },
+    {
+      "file": "ui/poof.png",
+      "w": 256,
+      "h": 256,
+      "subject": "A single soft cartoon dust cloud puff, round and fluffy, cream-white with light grey shading, for a repair \"poof\" effect.",
+      "extra": "Single cloud puff centered, fills about 90% of the frame, transparent background, no text, no outline frame."
     }
   ]
 }

@@ -4,7 +4,7 @@ import { ROOMS, SPOTS, VISITOR_ARRIVAL, VISITOR_COLOR, ZONES, type Rect } from '
 import { t, tx } from '../i18n';
 import { availableOrders, canDeliver, currentProject, isChapterComplete } from '../game/rules';
 import type { GameState } from '../game/state';
-import { BUILDING_SPRITE, characterSprite, hasSprite, spriteImg, spriteUrl, zoneSprite } from './sprites';
+import { BUILDING_SPRITE, characterSprite, hasSprite, spriteImg, spriteUrl, uiSprite, zoneSprite } from './sprites';
 
 // Здание в разрезе: комнаты, места ремонта (сломано / починено / текущий ремонт) и посетители с репликами.
 // Без картинок всё рисуется условными плашками; файлы из public/sprites подменяют их по имени.
@@ -135,4 +135,50 @@ export function renderShopScene(root: HTMLElement, state: GameState, handlers: S
     }
     root.appendChild(el);
   }
+}
+
+/** Длительность облачка «пуф» после восстановления, мс. */
+export const POOF_MS = 900;
+
+/**
+ * Облачко пыли на месте ремонта: сломанный объект скрывается в облаке, из него проступает починенный.
+ * Состояние к этому моменту уже принято и сохранено; эффект только показывает смену.
+ */
+export function playPoof(sceneRoot: HTMLElement, projectId: string): boolean {
+  const zone = sceneRoot.querySelector<HTMLElement>(`.zone-spot[data-project="${projectId}"]`);
+  if (!zone || zone.offsetParent === null) return false;
+  zone.classList.remove('appear');
+  void zone.offsetWidth;
+  zone.classList.add('appear');
+  const poof = document.createElement('div');
+  poof.className = 'poof';
+  poof.style.left = zone.style.left;
+  poof.style.top = zone.style.top;
+  poof.style.width = zone.style.width;
+  poof.style.height = zone.style.height;
+  const cloud = hasSprite(uiSprite('poof')) ? `url("${spriteUrl(uiSprite('poof'))}")` : '';
+  for (let i = 0; i < 9; i++) {
+    const puff = document.createElement('span');
+    puff.className = 'puff';
+    const angle = (i / 9) * Math.PI * 2 + Math.random() * 0.5;
+    const dist = 22 + Math.random() * 26;
+    puff.style.setProperty('--px', `${Math.cos(angle) * dist}%`);
+    puff.style.setProperty('--py', `${Math.sin(angle) * dist}%`);
+    puff.style.setProperty('--ps', `${0.7 + Math.random() * 0.6}`);
+    puff.style.animationDelay = `${Math.random() * 120}ms`;
+    if (cloud) puff.style.backgroundImage = cloud;
+    poof.appendChild(puff);
+  }
+  for (let i = 0; i < 6; i++) {
+    const spark = document.createElement('span');
+    spark.className = 'spark';
+    spark.textContent = '✦';
+    spark.style.setProperty('--px', `${(Math.random() - 0.5) * 140}%`);
+    spark.style.setProperty('--py', `${(Math.random() - 0.7) * 120}%`);
+    spark.style.animationDelay = `${250 + Math.random() * 250}ms`;
+    poof.appendChild(spark);
+  }
+  sceneRoot.appendChild(poof);
+  setTimeout(() => poof.remove(), POOF_MS + 300);
+  return true;
 }
