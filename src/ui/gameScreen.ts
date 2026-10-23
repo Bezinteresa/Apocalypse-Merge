@@ -61,6 +61,42 @@ export interface GameScreen {
   drop(from: Loc, to: Loc): void;
 }
 
+/**
+ * Горизонтальная прокрутка перетаскиванием пальцем или мышью. Короткое касание остаётся нажатием
+ * (кнопка заказа, место ремонта), после перетаскивания нажатие не срабатывает.
+ */
+function dragScroll(el: HTMLElement): void {
+  el.classList.add('drag-scroll');
+  let pan: { id: number; x: number; left: number; moved: boolean } | null = null;
+  el.addEventListener('pointerdown', (e) => {
+    if (e.button > 0) return;
+    pan = { id: e.pointerId, x: e.clientX, left: el.scrollLeft, moved: false };
+  });
+  el.addEventListener('pointermove', (e) => {
+    if (!pan || e.pointerId !== pan.id) return;
+    const dx = e.clientX - pan.x;
+    // порог: короткое касание остаётся нажатием
+    if (!pan.moved && Math.abs(dx) < 8) return;
+    if (!pan.moved) {
+      if (el.scrollWidth <= el.clientWidth) return;
+      pan.moved = true;
+      el.setPointerCapture(e.pointerId);
+      el.classList.add('panning');
+    }
+    el.scrollLeft = pan.left - dx;
+  });
+  const end = (e: PointerEvent) => {
+    if (!pan || e.pointerId !== pan.id) return;
+    if (pan.moved) {
+      el.addEventListener('click', (c) => c.stopPropagation(), { capture: true, once: true });
+      setTimeout(() => el.classList.remove('panning'), 0);
+    }
+    pan = null;
+  };
+  el.addEventListener('pointerup', end);
+  el.addEventListener('pointercancel', end);
+}
+
 export function createGameScreen(app: HTMLElement, initial: GameState, deps: GameScreenDeps): GameScreen {
   let state = initial;
   let selected: Loc | null = null;
@@ -303,34 +339,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   window.addEventListener('resize', updateSceneNav);
   navPrev.onclick = () => sceneScroll.scrollBy({ left: -sceneScroll.clientWidth * 0.6, behavior: 'smooth' });
   navNext.onclick = () => sceneScroll.scrollBy({ left: sceneScroll.clientWidth * 0.6, behavior: 'smooth' });
-  let pan: { id: number; x: number; left: number; moved: boolean } | null = null;
-  sceneScroll.addEventListener('pointerdown', (e) => {
-    if (e.button > 0) return;
-    pan = { id: e.pointerId, x: e.clientX, left: sceneScroll.scrollLeft, moved: false };
-  });
-  sceneScroll.addEventListener('pointermove', (e) => {
-    if (!pan || e.pointerId !== pan.id) return;
-    const dx = e.clientX - pan.x;
-    // порог: короткое касание остаётся нажатием на место ремонта или реплику
-    if (!pan.moved && Math.abs(dx) < 8) return;
-    if (!pan.moved) {
-      pan.moved = true;
-      sceneScroll.setPointerCapture(e.pointerId);
-      sceneScroll.classList.add('panning');
-    }
-    sceneScroll.scrollLeft = pan.left - dx;
-  });
-  const endPan = (e: PointerEvent) => {
-    if (!pan || e.pointerId !== pan.id) return;
-    if (pan.moved) {
-      // после перетаскивания нажатие не срабатывает
-      sceneScroll.addEventListener('click', (c) => c.stopPropagation(), { capture: true, once: true });
-      setTimeout(() => sceneScroll.classList.remove('panning'), 0);
-    }
-    pan = null;
-  };
-  sceneScroll.addEventListener('pointerup', endPan);
-  sceneScroll.addEventListener('pointercancel', endPan);
+  dragScroll(sceneScroll);
+  // заказы: если заказчиков больше, чем влезает, ряд карточек листается свайпом
+  dragScroll($('.orders'));
 
   shopBtn.onclick = () => openShop(true);
   $('.project-strip').onclick = () => {

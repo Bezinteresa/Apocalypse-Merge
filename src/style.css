@@ -518,16 +518,19 @@ body {
   overflow-y: hidden;
   border-radius: 10px;
   scrollbar-width: none;
-  /* по горизонтали сцену двигает сам экран (перетаскивание), по вертикали — обычная прокрутка страницы */
+}
+
+/* горизонтальная прокрутка перетаскиванием (сцена магазина, ряд заказов): по вертикали — обычная прокрутка страницы */
+.drag-scroll {
   touch-action: pan-y;
   cursor: grab;
 }
 
-.scene-scroll.panning {
+.drag-scroll.panning {
   cursor: grabbing;
 }
 
-.scene-scroll.panning .scene {
+.drag-scroll.panning > * {
   pointer-events: none;
 }
 
@@ -2279,4 +2282,88 @@ body {
 
 :root {
   --slot-size: min(calc((100vw - 70px) / 6), 52px);
+}
+
+/* рабочий ящик: светящийся значок энергии в углу и искры вверх — отсюда берутся предметы */
+.piece.generator.active {
+  overflow: visible;
+}
+
+.gen-charge {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 46%;
+  height: 46%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--cell-size) * 0.3);
+  pointer-events: none;
+  filter: drop-shadow(0 0 3px #ffe066) drop-shadow(0 0 6px #ffb800);
+  animation: gen-glow 1.6s ease-in-out infinite;
+}
+
+.gen-charge-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes gen-glow {
+  50% {
+    filter: drop-shadow(0 0 6px #fff3a0) drop-shadow(0 0 10px #ffb800);
+    transform: scale(1.12);
+  }
+}
+
+.gen-sparks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.gen-sparks i {
+  position: absolute;
+  left: var(--x);
+  bottom: 35%;
+  font-style: normal;
+  font-size: calc(var(--cell-size) * 0.26);
+  color: #ffd23f;
+  text-shadow: 0 0 2px #8a5200, 0 0 6px #ffb800;
+  opacity: 0;
+  animation: gen-spark 2.2s ease-out infinite;
+}
+
+@keyframes gen-spark {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(calc(var(--cell-size) * -0.7)) scale(1);
+  }
+}
+
+.storage .gen-charge,
+.storage .gen-sparks,
+.ghost .gen-sparks {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gen-charge,
+  .gen-sparks i {
+    animation: none;
+  }
+
+  .gen-sparks {
+    display: none;
+  }
 }

@@ -344,6 +344,23 @@ function renderContent(content: CellContent): HTMLElement {
     el.querySelector('.label')!.textContent = tx(CHAINS[out.chain].name);
     // пока картинки уровня нет, рабочие уровни показывают картинку 4-го
     withArt(el, generatorSprite(def.id, content.level), content.level >= GENERATOR_ACTIVE_LEVEL ? generatorSprite(def.id) : undefined);
+    if (content.level >= GENERATOR_ACTIVE_LEVEL) {
+      // рабочий ящик видно сразу: светящийся значок энергии в углу и искры, улетающие вверх (как в «Отеле Мечты»)
+      el.classList.add('active');
+      const charge = document.createElement('span');
+      charge.className = 'gen-charge';
+      charge.appendChild(spriteImg(uiSprite('energy'), 'gen-charge-img') ?? document.createTextNode('⚡'));
+      const sparks = document.createElement('span');
+      sparks.className = 'gen-sparks';
+      for (let i = 0; i < 4; i++) {
+        const spark = document.createElement('i');
+        spark.textContent = '✦';
+        spark.style.setProperty('--x', `${18 + i * 20}%`);
+        spark.style.animationDelay = `${i * 0.55}s`;
+        sparks.appendChild(spark);
+      }
+      el.append(sparks, charge);
+    }
     return el;
   }
   const def = getItem(content.itemId);
