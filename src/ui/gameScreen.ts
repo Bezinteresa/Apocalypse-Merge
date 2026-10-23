@@ -713,7 +713,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     setTimeout(() => {
       effectPlaying = false;
       modal.hidden = false;
-      finger.show(currentHint(state));
+      finger.show(currentHint(state), !currentTutorialStep(state));
     }, shown ? POOF_MS : 0);
   }
 
@@ -747,7 +747,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     if (!albumEl.hidden) album.render();
     albumBtn.textContent = state.chests.length ? `${t('album')} · ${state.chests.length}` : t('album');
     albumBtn.classList.toggle('has-chests', state.chests.length > 0);
-    finger.show(currentHint(state));
+    // во время обучения текст шага уже в полосе над полем
+    finger.show(currentHint(state), !currentTutorialStep(state));
   }
 
   /** Где сейчас цель подсказки: зависит от того, открыт ли магазин, альбом или окно. */

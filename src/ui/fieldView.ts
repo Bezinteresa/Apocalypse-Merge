@@ -111,7 +111,8 @@ export class FieldView {
       // под паутиной предмет нельзя сдать — не подсвечиваем его как нужный
       el.classList.toggle('wanted', !fog && content?.kind === 'item' && this.wanted.has(content.itemId));
       const contentId = content ? (content.kind === 'item' ? content.itemId : content.generatorId) : null;
-      el.classList.toggle('tut', contentId !== null && this.tutorialIds.has(contentId));
+      // предметы под паутиной двигать нельзя — их не подсвечиваем как цель обучения
+      el.classList.toggle('tut', !fog && contentId !== null && this.tutorialIds.has(contentId));
       el.classList.toggle('hint', loc.area === 'board' && this.hintCells.has(loc.index));
       el.replaceChildren();
       if (content) el.appendChild(renderContent(content));

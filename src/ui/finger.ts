@@ -17,6 +17,7 @@ export class Finger {
   private hand: HTMLElement;
   private text: HTMLElement;
   private hint: Hint | null = null;
+  private withText = true;
   private key = '';
 
   constructor(private resolve: (hint: Hint) => FingerTargets | null) {
@@ -39,8 +40,11 @@ export class Finger {
     setInterval(() => this.place(), 400);
   }
 
-  show(hint: Hint | null): void {
+  /** withText = false — текст уже показан на экране (полоса обучения), плашку не дублируем. */
+  show(hint: Hint | null, withText = true): void {
     this.hint = hint;
+    this.withText = withText;
+    this.key = '';
     this.place();
   }
 
@@ -48,7 +52,7 @@ export class Finger {
     const targets = this.hint ? this.resolve(this.hint) : null;
     const visible = !!targets && targets.from.offsetParent !== null && (!targets.to || targets.to.offsetParent !== null);
     this.el.hidden = !visible;
-    this.text.hidden = !visible;
+    this.text.hidden = !visible || !this.withText;
     if (!visible || !this.hint) return;
     const a = targets.from.getBoundingClientRect();
     const b = targets.to?.getBoundingClientRect();
