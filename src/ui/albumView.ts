@@ -12,6 +12,7 @@ import {
 } from '../game/collections';
 import type { GameState } from '../game/state';
 import { cardSprite, chestSprite, spriteImg } from './sprites';
+import { showChestOpening } from './chestOpening';
 
 // Экран альбома: сундуки, карты набора, обмен жетонов и награда за набор.
 // Результат открытия принимается и сохраняется до показа окна с выдачами.
@@ -45,9 +46,10 @@ export function createAlbum(root: HTMLElement, ctx: AlbumContext): { render(): v
       return;
     }
     ctx.track('chest_opened', { chest: r.result.chestId, legendary: r.result.draws.some((d) => d.rarity === 'legendary') });
-    // результат сначала принимается и сохраняется, затем показывается
+    // результат сначала принимается и сохраняется, затем показывается сценой открытия
+    const before = { ...(ctx.getState().collections[setDef.id]?.shards ?? {}) };
     ctx.commit(r.state, true);
-    ctx.showModal(tx(CHESTS[r.result.chestId].name), describeChestResult(r.result));
+    showChestOpening(r.result, before, () => render());
   }
 
   function render(): void {

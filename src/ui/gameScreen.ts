@@ -225,7 +225,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         } else {
           tel.spawned(content.generatorId);
           commit(r.state);
-          view.flash({ area: 'board', index: r.cell }, 'pop');
+          view.effect('spawn', { area: 'board', index: r.cell }, loc);
         }
       }
       select(content ? loc : null);
@@ -243,8 +243,11 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       commit(r.state);
       select(r.to);
       if (r.action === 'merge') {
-        view.flash(r.to, 'pop');
-        if (r.freed) deps.toast('cellFreed');
+        view.effect('merge', r.to);
+        if (r.freed) {
+          view.effect('freed', r.to);
+          deps.toast('cellFreed');
+        }
         tel.once('first_merge', 'first_merge', { item: r.itemId ?? '' });
       }
       // одинаковые предметы максимального уровня меняются местами — объясняем, почему без объединения
@@ -749,7 +752,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
 
   /** Где сейчас цель подсказки: зависит от того, открыт ли магазин, альбом или окно. */
   function resolveHint(hint: ReturnType<typeof currentHint> & object) {
-    const overlayOpen = effectPlaying || !modal.hidden || !dialogEl.hidden || !chainModal.hidden || !energyModal.hidden;
+    const overlayOpen = effectPlaying || !!document.querySelector('.chest-open') || !modal.hidden || !dialogEl.hidden || !chainModal.hidden || !energyModal.hidden;
     if (overlayOpen) return null;
     const cell = (i: number) => app.querySelector<HTMLElement>(`#board .cell[data-index="${i}"]`);
     const target = hint.target;

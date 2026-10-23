@@ -108,6 +108,8 @@ const STRINGS = {
   cellFreed: { ru: 'Клетка освобождена!', en: 'Cell freed!' },
   resetProgress: { ru: 'Сбросить прогресс', en: 'Reset progress' },
   resetConfirm: { ru: 'Точно сбросить? Нажмите ещё раз', en: 'Sure? Tap again' },
+  tapToSkip: { ru: 'Нажмите, чтобы показать всё сразу', en: 'Tap to reveal everything' },
+  collect: { ru: 'Забрать', en: 'Collect' },
   tutorial: { ru: 'Обучение', en: 'Tutorial' },
   skip: { ru: 'Пропустить', en: 'Skip' },
   neededFor: { ru: 'Нужно', en: 'Needed for' },

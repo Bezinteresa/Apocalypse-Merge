@@ -128,6 +128,65 @@ export class FieldView {
     el.classList.add(cls);
   }
 
+  /**
+   * Эффекты поля поверх клеток: вылет предмета из генератора, вспышка мерджа, облачко освобождённой паутины.
+   * Состояние уже принято и отрисовано — эффект только сопровождает его.
+   */
+  effect(kind: 'spawn' | 'merge' | 'freed', at: Loc, from?: Loc): void {
+    const cell = this.elOf(at);
+    if (!cell || cell.offsetParent === null) return;
+    const r = cell.getBoundingClientRect();
+    if (kind === 'spawn' && from) {
+      const src = this.elOf(from)?.getBoundingClientRect();
+      const piece = cell.querySelector<HTMLElement>('.piece');
+      if (!src || !piece) return;
+      const fly = piece.cloneNode(true) as HTMLElement;
+      fly.classList.add('fx-fly');
+      fly.style.width = `${r.width}px`;
+      fly.style.height = `${r.height}px`;
+      fly.style.transform = `translate(${src.left}px, ${src.top}px) scale(0.4)`;
+      document.body.appendChild(fly);
+      cell.classList.add('arriving');
+      requestAnimationFrame(() => requestAnimationFrame(() => (fly.style.transform = `translate(${r.left}px, ${r.top}px) scale(1)`)));
+      setTimeout(() => {
+        fly.remove();
+        cell.classList.remove('arriving');
+        this.flash(at, 'pop');
+      }, 260);
+      return;
+    }
+    const fx = document.createElement('div');
+    fx.className = `fx fx-${kind}`;
+    fx.style.left = `${r.left}px`;
+    fx.style.top = `${r.top}px`;
+    fx.style.width = `${r.width}px`;
+    fx.style.height = `${r.height}px`;
+    if (kind === 'merge') {
+      fx.innerHTML = '<span class="fx-ring"></span>';
+      for (let i = 0; i < 8; i++) {
+        const s = document.createElement('span');
+        s.className = 'fx-spark';
+        const a = (i / 8) * Math.PI * 2;
+        s.style.setProperty('--sx', `${Math.cos(a) * 70}%`);
+        s.style.setProperty('--sy', `${Math.sin(a) * 70}%`);
+        fx.appendChild(s);
+      }
+      this.flash(at, 'pop');
+    } else {
+      for (let i = 0; i < 6; i++) {
+        const p = document.createElement('span');
+        p.className = 'puff';
+        const a = (i / 6) * Math.PI * 2;
+        p.style.setProperty('--px', `${Math.cos(a) * 45}%`);
+        p.style.setProperty('--py', `${Math.sin(a) * 45}%`);
+        p.style.setProperty('--ps', '0.9');
+        fx.appendChild(p);
+      }
+    }
+    document.body.appendChild(fx);
+    setTimeout(() => fx.remove(), 900);
+  }
+
   private elAt(x: number, y: number): HTMLElement | null {
     const el = document.elementFromPoint(x, y)?.closest<HTMLElement>('.cell');
     return el && (this.boardRoot.contains(el) || this.storageRoot.contains(el)) ? el : null;
