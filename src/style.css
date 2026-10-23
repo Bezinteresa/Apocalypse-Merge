@@ -1438,12 +1438,14 @@ body {
 }
 
 .finger-text {
-  position: absolute;
+  position: fixed;
+  z-index: 81;
+  pointer-events: none;
   left: 50%;
-  top: 62px;
+  bottom: calc(14px + env(safe-area-inset-bottom));
   transform: translateX(-50%);
   width: max-content;
-  max-width: min(260px, 80vw);
+  max-width: min(520px, calc(100vw - 32px));
   background: #fffaf0;
   color: #1d1b18;
   border: 2px solid #1d1b18;
@@ -1455,9 +1457,13 @@ body {
   box-shadow: 0 2px 6px #0008;
 }
 
-.finger.text-above .finger-text {
-  top: auto;
-  bottom: 22px;
+.finger-text[hidden] {
+  display: none;
+}
+
+.finger-text.top {
+  bottom: auto;
+  top: calc(12px + env(safe-area-inset-top));
 }
 
 .piece.ghost.returning {

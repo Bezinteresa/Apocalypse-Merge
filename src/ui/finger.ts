@@ -28,10 +28,12 @@ export class Finger {
     const img = spriteImg(uiSprite('finger'), 'finger-img');
     if (img) this.hand.appendChild(img);
     else this.hand.textContent = '👆';
+    // текст — отдельной плашкой внизу экрана, чтобы не закрывать поле и предметы
     this.text = document.createElement('div');
     this.text.className = 'finger-text';
-    this.el.append(this.hand, this.text);
-    document.body.appendChild(this.el);
+    this.text.hidden = true;
+    this.el.append(this.hand);
+    document.body.append(this.el, this.text);
     window.addEventListener('resize', () => this.place());
     // интерфейс перестраивается без событий (открытие окон, прокрутка) — сверяем положение регулярно
     setInterval(() => this.place(), 400);
@@ -46,6 +48,7 @@ export class Finger {
     const targets = this.hint ? this.resolve(this.hint) : null;
     const visible = !!targets && targets.from.offsetParent !== null && (!targets.to || targets.to.offsetParent !== null);
     this.el.hidden = !visible;
+    this.text.hidden = !visible;
     if (!visible || !this.hint) return;
     const a = targets.from.getBoundingClientRect();
     const b = targets.to?.getBoundingClientRect();
@@ -60,7 +63,7 @@ export class Finger {
     this.el.classList.toggle('drag', !!b);
     this.el.style.setProperty('--dx', b ? `${b.left + b.width / 2 - x}px` : '0px');
     this.el.style.setProperty('--dy', b ? `${b.top + b.height / 2 - y}px` : '0px');
-    // облачко с текстом — над пальцем, если цель в нижней половине экрана
-    this.el.classList.toggle('text-above', y > window.innerHeight * 0.55);
+    // если цель сама у нижнего края (склад, панель), плашка уходит наверх
+    this.text.classList.toggle('top', y > window.innerHeight - 140 || (!!b && b.top + b.height / 2 > window.innerHeight - 140));
   }
 }
