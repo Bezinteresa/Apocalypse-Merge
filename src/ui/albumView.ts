@@ -1,5 +1,4 @@
 import { CHESTS, LEGENDARY_PITY, RARITIES, RARITY, SETS, cardsOf, getCard } from '../content/collections';
-import { dragScroll } from './dragScroll';
 import { t, tx, type StringKey } from '../i18n';
 import {
   assembleCard,
@@ -98,8 +97,6 @@ export function createAlbum(root: HTMLElement, ctx: AlbumContext): { render(): v
     // карты набора
     const grid = document.createElement('div');
     grid.className = 'card-grid';
-    // карты набора — лента, которую листают свайпом, как ряд заказов
-    dragScroll(grid);
     for (const card of cards) {
       const rarity = RARITY[card.rarity];
       const shards = cardShards(state, card.id);

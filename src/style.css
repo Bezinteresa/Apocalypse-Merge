@@ -1116,17 +1116,10 @@ body {
   font-size: 12px;
 }
 
-/* карты набора — горизонтальная лента: видно три с небольшим, остальное листается свайпом */
 .card-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 6px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding-bottom: 4px;
-}
-
-.card-grid > .card-tile {
-  flex: 0 0 calc((100% - 3 * 6px) / 3.3);
 }
 
 .card-tile {
@@ -2237,9 +2230,13 @@ body {
   justify-content: center;
   flex: 1;
   align-items: center;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 
 .order .chip {
+  flex: 1 1 0;
+  max-width: 76px;
   flex-direction: column;
   padding: 2px;
   background: #fff8;
@@ -2251,9 +2248,11 @@ body {
   display: none;
 }
 
+/* картинка нужного предмета — во всю ширину своей доли карточки, до 72 px */
 .order .chip-img {
-  width: 36px;
-  height: 36px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
 }
 
 .order .chip b {
