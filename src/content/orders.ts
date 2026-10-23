@@ -51,7 +51,11 @@ export const VISITORS: Record<string, VisitorDef> = {
   RADIO: { id: 'RADIO', name: { ru: 'Радио', en: 'Radio' } },
 };
 
+/** Склад закрыт до ремонта склада R04 (решение пользователя от 23.10.2026, по образцу «Отеля Мечты»). */
+export const STORAGE_START = 0;
+/** Мест после R04. */
 export const STORAGE_CAPACITY = 6;
+/** Мест после R08. */
 export const STORAGE_CAPACITY_EXPANDED = 10;
 
 const r = (itemId: string, count = 1): Requirement => ({ itemId, count });
@@ -96,13 +100,13 @@ export const PROJECTS: ProjectDef[] = [
   { id: 'R02', name: { ru: 'Восстановить прилавок', en: 'Restore the counter' }, result: { ru: 'Появился рабочий прилавок', en: 'A working counter' }, requires: [r('T02'), r('M03')], cost: 25, energyReward: 50, generatorReward: null , generatorUpgrade: 'G_TOOL:4' },
   { id: 'R03', name: { ru: 'Установить полку припасов', en: 'Install the supply shelf' }, result: { ru: 'На полке появились запасы; получен ящик припасов, приходит Ника', en: 'Supplies on the shelf; provision crate received, Nika arrives' }, requires: [r('T03'), r('M03')], cost: 35, energyReward: 0, generatorReward: 'G_PROVISION' },
   { id: 'C02', kind: 'rubble', name: { ru: 'Вынести хлам со склада', en: 'Haul the junk out of the storeroom' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 20, energyReward: 0, generatorReward: null },
-  { id: 'R04', name: { ru: 'Привести в порядок склад', en: 'Tidy up the storeroom' }, result: { ru: 'Ящики и стеллажи; склад 6 → 10', en: 'Crates and racks; storage 6 → 10' }, requires: [r('T03'), r('M04')], cost: 50, energyReward: 50, generatorReward: null, storageCapacity: STORAGE_CAPACITY_EXPANDED, requiresGenerator: 'G_PROVISION' , generatorUpgrade: 'G_MATERIAL:4' },
+  { id: 'R04', name: { ru: 'Привести в порядок склад', en: 'Tidy up the storeroom' }, result: { ru: 'Ящики и стеллажи; открыт склад на 6 мест', en: 'Crates and racks; storage opens with 6 slots' }, requires: [r('T03'), r('M04')], cost: 50, energyReward: 50, generatorReward: null, storageCapacity: STORAGE_CAPACITY, requiresGenerator: 'G_PROVISION' , generatorUpgrade: 'G_MATERIAL:4' },
   { id: 'C03', kind: 'rubble', name: { ru: 'Расчистить угол мастерской', en: 'Clear the workshop corner' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 30, energyReward: 0, generatorReward: null },
   { id: 'R05', name: { ru: 'Оборудовать мастерскую', en: 'Equip the workshop' }, result: { ru: 'Верстак и место ремонта; получен стол радиодеталей, приходит Марта', en: 'Workbench and repair spot; radio parts bench received, Marta arrives' }, requires: [r('T04'), r('M04')], cost: 70, energyReward: 0, generatorReward: 'G_ELECTRIC' },
   { id: 'R06', name: { ru: 'Вернуть электричество', en: 'Bring back the power' }, result: { ru: 'Загорелись лампы', en: 'Lamps are on' }, requires: [r('E04'), r('T03')], cost: 70, energyReward: 50, generatorReward: null, requiresGenerator: 'G_ELECTRIC' , generatorUpgrade: 'G_TOOL:5' },
   { id: 'C04', kind: 'rubble', name: { ru: 'Убрать мусорную кучу во дворе', en: 'Clear the junk heap in the yard' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 30, energyReward: 0, generatorReward: null },
   { id: 'R07', name: { ru: 'Запустить точку чистой воды', en: 'Start the clean water point' }, result: { ru: 'Бак, насос и место выдачи воды', en: 'Tank, pump and water tap' }, requires: [r('P03'), r('E03')], cost: 50, energyReward: 0, generatorReward: null , generatorUpgrade: 'G_PROVISION:4' },
-  { id: 'R08', name: { ru: 'Открыть «Перекрёсток»', en: 'Open the "Crossroads"' }, result: { ru: 'Светится вывеска, во дворе посетители', en: 'The sign is lit and visitors fill the yard' }, requires: [r('P04'), r('M04'), r('E04')], cost: 100, energyReward: 0, generatorReward: null , generatorUpgrade: 'G_MATERIAL:5' },
+  { id: 'R08', name: { ru: 'Открыть «Перекрёсток»', en: 'Open the "Crossroads"' }, result: { ru: 'Светится вывеска, во дворе посетители; склад 6 → 10', en: 'The sign is lit and visitors fill the yard; storage 6 → 10' }, requires: [r('P04'), r('M04'), r('E04')], cost: 100, energyReward: 0, generatorReward: null, storageCapacity: STORAGE_CAPACITY_EXPANDED , generatorUpgrade: 'G_MATERIAL:5' },
   { id: 'C05', kind: 'rubble', name: { ru: 'Разгрести гору хлама у ворот гаража', en: 'Dig through the junk pile at the garage door' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 40, energyReward: 0, generatorReward: null },
   // глава 2: гараж (PROTOTYPE_PLAN, этап 7)
   { id: 'R09', name: { ru: 'Открыть ворота гаража', en: 'Open the garage door' }, result: { ru: 'Ворота подняты; получен гаражный стеллаж', en: 'The door is up; garage parts rack received' }, requires: [r('T05'), r('M04')], cost: 100, energyReward: 70, generatorReward: 'G_AUTO' },

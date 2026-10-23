@@ -1520,9 +1520,10 @@ body {
   pointer-events: none;
   left: 50%;
   bottom: calc(14px + env(safe-area-inset-bottom));
-  transform: translateX(-50%);
+  /* сдвиг влево и ограничение ширины оставляют видимой кнопку склада справа внизу */
+  transform: translateX(calc(-50% - 36px));
   width: max-content;
-  max-width: min(520px, calc(100vw - 32px));
+  max-width: min(520px, calc(100vw - 104px));
   background: #fffaf0;
   color: #1d1b18;
   border: 2px solid #1d1b18;
@@ -2138,4 +2139,84 @@ body {
   .board-wrap {
     padding: 4px 0;
   }
+}
+
+/* ---------- склад: кнопка внизу справа и всплывающая панель мест ---------- */
+.info {
+  position: relative;
+}
+
+.storage-btn {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 2px solid #8fb6d8;
+  background: linear-gradient(#6f9ccc, #3f6a99);
+  box-shadow: 0 3px 0 #2b4a6e, 0 4px 10px #0006;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 0;
+}
+
+.storage-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.storage-count {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.storage-btn.open {
+  background: linear-gradient(#86b4e0, #557fae);
+}
+
+.storage-btn.locked {
+  filter: grayscale(0.9) brightness(0.7);
+}
+
+.storage-btn.hover {
+  outline: 3px solid var(--ok);
+}
+
+.storage-sheet {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 6px);
+  z-index: 20;
+  background: #2f3e52f2;
+  border: 2px solid #8fb6d8;
+  border-radius: 12px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 6px 18px #0008;
+  max-width: 100%;
+}
+
+.storage-sheet[hidden] {
+  display: none;
+}
+
+/* 6 мест — в один ряд, 10 — двумя рядами по 5 */
+.storage-sheet .storage {
+  display: grid;
+  grid-template-columns: repeat(var(--slot-cols, 6), var(--slot-size));
+}
+
+.storage-wrap:has(.incoming-btn[hidden]) {
+  display: none;
+}
+
+:root {
+  --slot-size: min(calc((100vw - 70px) / 6), 52px);
 }

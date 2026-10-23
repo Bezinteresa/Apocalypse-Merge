@@ -80,12 +80,14 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     <section class="orders"></section>
     <button class="project-strip"></button>
     <main class="board-wrap"><div id="board"></div></main>
-    <section class="storage-wrap"><span class="storage-label"></span><div id="storage"></div><button class="btn small incoming-btn" hidden></button></section>
+    <section class="storage-wrap"><button class="btn small incoming-btn" hidden></button></section>
     <footer class="info">
+      <div class="storage-sheet" hidden><span class="storage-label"></span><div id="storage"></div></div>
       <div class="info-icon-slot"></div>
       <button class="info-btn where-btn" hidden>i</button>
       <div class="info-text"><div class="info-title"></div><div class="info-detail"></div></div>
       <div class="info-actions"><button class="btn small undo-btn"></button><button class="btn small sell-btn"></button></div>
+      <button class="storage-btn" type="button"><span class="storage-icon">📦</span><small class="storage-count"></small></button>
     </footer>
     <section class="shop" hidden>
       <header class="shop-head"><h2></h2><button class="btn small back-btn"></button></header>
@@ -237,6 +239,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       }
       select(content ? loc : null);
     },
+    onStorageFull() {
+      deps.toast(state.storage.length ? 'storageFull' : 'storageLocked');
+    },
     onDrop(from, to) {
       const r = moveItem(state, from, to);
       if (!r.ok) {
@@ -262,6 +267,20 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       return true;
     },
   });
+
+  // склад — отдельной кнопкой внизу, как в «Отеле Мечты»: нажатие открывает панель с местами,
+  // на кнопку можно перетащить предмет; до ремонта склада R04 он закрыт
+  const storageBtn = $<HTMLButtonElement>('.storage-btn');
+  const storageSheet = $('.storage-sheet');
+  view.storageButton = storageBtn;
+  storageBtn.onclick = () => {
+    if (!state.storage.length) {
+      deps.toast('storageLocked');
+      return;
+    }
+    storageSheet.hidden = !storageSheet.hidden;
+    storageBtn.classList.toggle('open', !storageSheet.hidden);
+  };
 
   shopBtn.onclick = () => openShop(true);
   $('.project-strip').onclick = () => {
@@ -813,6 +832,11 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     view.render(state);
     renderOrders();
     renderProjectStrip();
+    const filled = state.storage.filter((x) => x !== null).length;
+    storageBtn.classList.toggle('locked', !state.storage.length);
+    $('.storage-count').textContent = state.storage.length ? `${filled}/${state.storage.length}` : '🔒';
+    if (!state.storage.length) storageSheet.hidden = true;
+    $('#storage').style.setProperty('--slot-cols', String(state.storage.length > 6 ? 5 : 6));
     const incomingBtn = $<HTMLButtonElement>('.incoming-btn');
     incomingBtn.hidden = state.incoming.length === 0;
     if (state.incoming.length) {
@@ -842,8 +866,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     if (target.kind === 'drag') {
       if (!onField) return null;
       const from = cell(target.from);
-      const free = state.storage.findIndex((x) => x === null);
-      const to = target.to === 'storage' ? app.querySelector<HTMLElement>(`#storage .cell[data-index="${free}"]`) : cell(target.to);
+      // подсказка про склад ведёт на кнопку склада внизу
+      const to = target.to === 'storage' ? app.querySelector<HTMLElement>('.storage-btn') : cell(target.to);
       return from && to ? { from, to } : null;
     }
     const pick = (sel: string) => {

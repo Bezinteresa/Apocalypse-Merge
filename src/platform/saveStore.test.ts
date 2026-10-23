@@ -79,13 +79,14 @@ describe('SaveStore', () => {
     b.data[SAVE_KEY] = v1;
     const r = await new SaveStore(b).load();
     expect(r.source).toBe('main');
-    expect(r.state.schemaVersion).toBe(11);
+    expect(r.state.schemaVersion).toBe(12);
     expect(r.state.incoming).toEqual([]);
     expect(r.state.energy).toBe(100);
     expect(r.state.chests).toEqual([]);
     expect(r.state.seenDialogs).toEqual(['D_INTRO']);
     expect(r.state.cells).toEqual(v2.cells);
-    expect(r.state.storage).toHaveLength(6);
+    // пустой склад без ремонта R04 закрыт (v12)
+    expect(r.state.storage).toEqual([]);
     expect(r.state.completedOrders).toEqual([]);
   });
 
@@ -94,7 +95,7 @@ describe('SaveStore', () => {
     const { incoming: _i, energy: _e, energyUpdatedAt: _eu, energyUnlimited: _el, collections: _c, tokens: _t, chests: _ch, rng: _r, lastChest: _lc, adRewards: _ad, ...v3 } = { ...openBoard(), schemaVersion: 3, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'] };
     b.data[SAVE_KEY] = v3;
     const r = await new SaveStore(b).load();
-    expect(r.state.schemaVersion).toBe(11);
+    expect(r.state.schemaVersion).toBe(12);
     expect(r.state.incoming).toEqual(['G_PROVISION']);
     // сундуки задним числом: R01, R02, R03
     expect(r.state.chests).toEqual(['CH_WORN', 'CH_WORN', 'CH_WORN']);
@@ -106,9 +107,19 @@ describe('SaveStore', () => {
     const b = new MemoryBackend();
     b.data[SAVE_KEY] = { ...openBoard(), schemaVersion: 10, completedOrders: ['O01'], completedProjects: ['R01', 'R02', 'R03'] };
     const r = await new SaveStore(b).load();
-    expect(r.state.schemaVersion).toBe(11);
+    expect(r.state.schemaVersion).toBe(12);
     // C01 стоит перед R02 — уже пройден; C02 идёт после R03 — теперь текущая задача
     expect(r.state.completedProjects).toEqual(['R01', 'R02', 'R03', 'C01']);
+  });
+
+  it('v11 → v12 closes an empty storage before R04 and keeps one with items', async () => {
+    const empty = new MemoryBackend();
+    empty.data[SAVE_KEY] = { ...openBoard(), schemaVersion: 11, completedProjects: ['R01', 'C01'] };
+    expect((await new SaveStore(empty).load()).state.storage).toEqual([]);
+    const withItem = new MemoryBackend();
+    const storage = [{ uid: 99, itemId: 'T01' }, null, null, null, null, null];
+    withItem.data[SAVE_KEY] = { ...openBoard(), nextUid: 100, schemaVersion: 11, completedProjects: ['R01', 'C01'], storage };
+    expect((await new SaveStore(withItem).load()).state.storage).toEqual(storage);
   });
 
   it('refuses saves from a newer schema', async () => {

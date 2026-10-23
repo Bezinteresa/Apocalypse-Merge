@@ -110,6 +110,8 @@ const STRINGS = {
   resetConfirm: { ru: 'Точно сбросить? Нажмите ещё раз', en: 'Sure? Tap again' },
   tapToSkip: { ru: 'Нажмите, чтобы показать всё сразу', en: 'Tap to reveal everything' },
   collect: { ru: 'Забрать', en: 'Collect' },
+  storageLocked: { ru: 'Склад откроется после ремонта склада в магазине', en: 'Storage opens once the storeroom is repaired' },
+  storageFull: { ru: 'На складе нет места', en: 'Storage is full' },
   rubble: { ru: 'Расчистка', en: 'Clearing' },
   clearRubble: { ru: 'Расчистить', en: 'Clear' },
   rubbleReady: { ru: 'Можно расчистить!', en: 'Ready to clear!' },

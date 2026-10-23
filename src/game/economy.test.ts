@@ -23,7 +23,7 @@ import {
   ingredientCells,
   moveContent,
 } from './rules';
-import type { GameState } from './state';
+import { createInitialState, type GameState } from './state';
 
 const GEN_CELL = { T: START_GENERATORS[0].cell, M: START_GENERATORS[1].cell } as const;
 
@@ -349,7 +349,20 @@ describe('projects', () => {
     const placed = placeIncoming(s);
     if (!placed.ok) throw new Error();
     const r = completeProject(placed.state, 'R04');
-    expect(r.ok && r.state.storage).toHaveLength(10);
+    expect(r.ok && r.state.storage).toHaveLength(6);
+  });
+
+  it('storage is closed at the start, R04 opens 6 slots and R08 grows it to 10', () => {
+    expect(createInitialState(1).storage).toEqual([]);
+    // на закрытый склад ничего не положить
+    const closed = { ...put(openBoard(), 30, 'T01'), storage: [] };
+    expect(moveItem(closed, board(30), slot(0))).toEqual({ ok: false, reason: 'out_of_bounds' });
+    const base = { ...put(put(closed, 0, 'T03'), 1, 'M04'), money: 50, completedOrders: ['O01'], completedProjects: ['R01', 'C01', 'R02', 'R03', 'C02'], incoming: ['G_PROVISION'] };
+    const placed = placeIncoming(base);
+    if (!placed.ok) throw new Error();
+    const r = completeProject(placed.state, 'R04');
+    expect(r.ok && r.state.storage).toEqual(new Array(6).fill(null));
+    expect(PROJECTS.find((p) => p.id === 'R08')!.storageCapacity).toBe(10);
   });
 });
 

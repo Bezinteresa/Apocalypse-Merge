@@ -1,10 +1,10 @@
 import { parseLayout, type Fog } from '../content/board';
-import { STORAGE_CAPACITY } from '../content/orders';
+import { STORAGE_START } from '../content/orders';
 import { ENERGY_START } from './energy';
 import { initialCollections, type ChestResult, type SetProgress } from './collections';
 import { emptyAdRewards, type AdRewardState } from './ads';
 
-export const SCHEMA_VERSION = 11;
+export const SCHEMA_VERSION = 12;
 
 export interface ItemInstance {
   uid: number;
@@ -80,7 +80,7 @@ export function createInitialState(seed: number = (Math.random() * 2 ** 32) >>> 
     cells,
     fog: layout.map((c) => c.fog),
     discovered,
-    storage: new Array(STORAGE_CAPACITY).fill(null),
+    storage: new Array(STORAGE_START).fill(null),
     money: 0,
     nextUid,
     completedOrders: [],

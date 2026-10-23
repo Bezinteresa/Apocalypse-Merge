@@ -126,6 +126,14 @@ export function migrate(raw: unknown): GameState | null {
     const cleared = PROJECTS.filter((p, i) => p.kind === 'rubble' && !done.includes(p.id) && PROJECTS.slice(i + 1).some((q) => done.includes(q.id))).map((p) => p.id);
     data = { ...data, schemaVersion: 11, completedProjects: [...done, ...cleared] };
   }
+  if (data.schemaVersion === 11) {
+    // v12: склад закрыт до R04. Пустой склад игрока, который ещё не сделал R04, закрывается;
+    // склад с предметами остаётся как есть, чтобы ничего не пропало.
+    const storage = (data.storage as unknown[]) ?? [];
+    const done = (data.completedProjects as string[]) ?? [];
+    const close = !done.includes('R04') && storage.every((x) => x === null);
+    data = { ...data, schemaVersion: 12, storage: close ? [] : storage };
+  }
   return data.schemaVersion === SCHEMA_VERSION && validateState(data) ? data : null;
 }
 

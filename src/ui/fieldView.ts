@@ -12,6 +12,8 @@ export interface FieldHandlers {
   onTap(loc: Loc): void;
   /** true — ход принят; false — предмет возвращается на своё место. */
   onDrop(from: Loc, to: Loc): boolean;
+  /** Предмет брошен на кнопку полного склада. */
+  onStorageFull?(): void;
 }
 
 const DRAG_THRESHOLD_PX = 8;
@@ -191,8 +193,16 @@ export class FieldView {
     setTimeout(() => fx.remove(), 900);
   }
 
+  /** Кнопка склада внизу: перетащенный на неё предмет ложится в первое свободное место. */
+  storageButton: HTMLElement | null = null;
+
   private elAt(x: number, y: number): HTMLElement | null {
-    const el = document.elementFromPoint(x, y)?.closest<HTMLElement>('.cell');
+    const under = document.elementFromPoint(x, y);
+    if (this.storageButton && under && this.storageButton.contains(under) && this.state) {
+      const free = this.state.storage.findIndex((s) => s === null);
+      return free >= 0 ? this.slotEls[free] : this.storageButton;
+    }
+    const el = under?.closest<HTMLElement>('.cell');
     return el && (this.boardRoot.contains(el) || this.storageRoot.contains(el)) ? el : null;
   }
 
@@ -252,7 +262,9 @@ export class FieldView {
       if (this.enabled) this.handlers.onTap(d.from);
       return;
     }
-    const to = targetEl ? this.locOf(targetEl) : null;
+    // полный склад: кнопка подсвечивается, но предмет возвращается
+    const to = targetEl && targetEl !== this.storageButton ? this.locOf(targetEl) : null;
+    if (targetEl === this.storageButton) this.handlers.onStorageFull?.();
     const accepted = this.enabled && !!to && !sameLoc(to, d.from) && this.handlers.onDrop(d.from, to);
     if (accepted) ghost.remove();
     else this.returnGhost(ghost, d.from);

@@ -477,7 +477,8 @@ export function validateState(raw: unknown): raw is GameState {
   if (!Array.isArray(s.cells) || s.cells.length !== BOARD_SIZE) return false;
   if (!Array.isArray(s.fog) || s.fog.length !== BOARD_SIZE || !s.fog.every((f) => f === null || f === 'web' || f === 'box')) return false;
   if (!Array.isArray(s.discovered) || !s.discovered.every((id) => !!ITEMS[id])) return false;
-  if (!Array.isArray(s.storage) || s.storage.length < 1 || s.storage.length > 50) return false;
+  // пустой склад — ещё закрыт (до R04)
+  if (!Array.isArray(s.storage) || s.storage.length > 50) return false;
   if (typeof s.money !== 'number' || !Number.isFinite(s.money) || s.money < 0) return false;
   if (typeof s.nextUid !== 'number' || !Number.isInteger(s.nextUid) || s.nextUid < 1) return false;
   if (!Array.isArray(s.completedOrders) || !s.completedOrders.every((id) => ORDERS.some((o) => o.id === id))) return false;
