@@ -1459,3 +1459,13 @@ body {
   top: auto;
   bottom: 22px;
 }
+
+.piece.ghost.returning {
+  transition: transform 0.2s ease-out;
+}
+
+.piece.ghost {
+  will-change: transform;
+  box-shadow: 0 8px 18px #000a;
+  scale: 1.08;
+}

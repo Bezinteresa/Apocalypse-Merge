@@ -10,7 +10,8 @@ import { generatorSprite, hasSprite, itemSprite, spriteImg, spriteUrl, uiSprite 
 
 export interface FieldHandlers {
   onTap(loc: Loc): void;
-  onDrop(from: Loc, to: Loc): void;
+  /** true — ход принят; false — предмет возвращается на своё место. */
+  onDrop(from: Loc, to: Loc): boolean;
 }
 
 const DRAG_THRESHOLD_PX = 8;
@@ -178,16 +179,39 @@ export class FieldView {
   private onPointerUp = (e: PointerEvent): void => {
     const d = this.drag;
     if (!d || e.pointerId !== d.pointerId) return;
-    const wasDrag = d.ghost !== null;
+    const ghost = d.ghost;
     const targetEl = this.elAt(e.clientX, e.clientY);
+    // призрак снимаем сами: при неудаче он должен доехать обратно
+    d.ghost = null;
     this.cancelDrag();
-    if (!this.enabled) return;
-    if (!wasDrag) this.handlers.onTap(d.from);
-    else if (targetEl) {
-      const to = this.locOf(targetEl);
-      if (!sameLoc(to, d.from)) this.handlers.onDrop(d.from, to);
+    if (!ghost) {
+      if (this.enabled) this.handlers.onTap(d.from);
+      return;
     }
+    const to = targetEl ? this.locOf(targetEl) : null;
+    const accepted = this.enabled && !!to && !sameLoc(to, d.from) && this.handlers.onDrop(d.from, to);
+    if (accepted) ghost.remove();
+    else this.returnGhost(ghost, d.from);
   };
+
+  /** Неудачный ход: предмет плавно возвращается в исходную клетку, пока на ней виден бледный след. */
+  private returnGhost(ghost: HTMLElement, from: Loc): void {
+    const src = this.elOf(from);
+    if (!src) {
+      ghost.remove();
+      return;
+    }
+    src.classList.add('dragging');
+    const r = src.getBoundingClientRect();
+    ghost.classList.add('returning');
+    ghost.style.transform = `translate(${r.left}px, ${r.top}px)`;
+    const done = () => {
+      ghost.remove();
+      this.elOf(from)?.classList.remove('dragging');
+    };
+    ghost.addEventListener('transitionend', done, { once: true });
+    setTimeout(done, 300);
+  }
 
   private cancelDrag = (): void => {
     const d = this.drag;

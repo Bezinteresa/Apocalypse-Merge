@@ -234,7 +234,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         view.flash(from, 'shake');
         if (r.reason === 'locked') deps.toast(to.area === 'board' && state.fog[to.index] === 'web' ? 'webHint' : 'locked');
         if (r.reason === 'generator_to_storage') deps.toast('generatorToStorage');
-        return;
+        return false;
       }
       const source = getAt(state, from);
       const target = getAt(state, to);
@@ -247,6 +247,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       }
       // одинаковые предметы максимального уровня меняются местами — объясняем, почему без объединения
       if (r.action === 'swap' && source?.kind === 'item' && target?.kind === 'item' && source.itemId === target.itemId) deps.toast('maxLevelNoMerge');
+      return true;
     },
   });
 
