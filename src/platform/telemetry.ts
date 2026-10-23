@@ -73,6 +73,12 @@ export class Telemetry {
     return Math.round(this.activeMs() / 1000);
   }
 
+  /** Начать журнал заново (сброс прогресса в отладке). */
+  reset(): void {
+    this.log = emptyLog();
+    this.activeSince = this.now();
+  }
+
   /** Учитывать только время, когда игра видна и не на паузе. */
   setActive(active: boolean): void {
     if (active && this.activeSince === null) this.activeSince = this.now();

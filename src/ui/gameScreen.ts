@@ -46,6 +46,8 @@ export interface GameScreenDeps {
   debug: boolean;
   telemetry: Telemetry;
   ads: AdService;
+  /** Отладка: начать игру заново (сохранение и журнал теста); лимит наград за рекламу не сбрасывается. */
+  resetProgress(): Promise<void>;
 }
 
 export interface GameScreen {
@@ -111,6 +113,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       <label class="debug-row"><input type="checkbox" class="debug-unlimited"> <span></span></label>
       <button class="btn small debug-refill">+100 ⚡</button>
       <button class="btn small debug-chests">+3 🎁</button>
+      <button class="btn small danger debug-reset"></button>
       <pre class="debug-summary"></pre>
       <button class="btn small debug-export"></button>
       <button class="btn small ghost debug-close">✕</button>
@@ -286,7 +289,11 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     dbgBtn.hidden = false;
     $('.debug-row span').textContent = t('energyUnlimited');
     $('.debug-export').textContent = t('exportLog');
+    const resetBtn = $<HTMLButtonElement>('.debug-reset');
+    let resetArmed = false;
     dbgBtn.onclick = () => {
+      resetArmed = false;
+      resetBtn.textContent = t('resetProgress');
       $<HTMLInputElement>('.debug-unlimited').checked = state.energyUnlimited;
       const d = tel.data;
       $('.debug-summary').textContent = [
@@ -309,6 +316,17 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     $('.debug-close').onclick = () => (dbgModal.hidden = true);
     $<HTMLInputElement>('.debug-unlimited').onchange = (e) => commit(setUnlimited(state, (e.target as HTMLInputElement).checked));
     $('.debug-refill').onclick = () => commit(addEnergy(regenerate(state, Date.now()), 100));
+    resetBtn.textContent = t('resetProgress');
+    // двойное нажатие: первое просит подтверждения
+    resetBtn.onclick = () => {
+      if (!resetArmed) {
+        resetArmed = true;
+        resetBtn.textContent = t('resetConfirm');
+        return;
+      }
+      resetBtn.disabled = true;
+      void deps.resetProgress();
+    };
     $('.debug-chests').onclick = () => commit({ ...state, chests: [...state.chests, 'CH_WORN', 'CH_TRADER', 'CH_ARCHIVE'] });
   }
   $('.dialog-next').onclick = () => advanceDialog();

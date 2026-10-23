@@ -4,6 +4,7 @@ import { bridge, initPlatform, isLocalDev, platformId, platformLanguage, sendGam
 import { isPaused, onLifecycleChange, startLifecycle } from './platform/lifecycle';
 import { SaveStore, type StorageBackend } from './platform/saveStore';
 import { createGameScreen } from './ui/gameScreen';
+import { createInitialState } from './game/state';
 import { Telemetry, parseLog } from './platform/telemetry';
 import { AdService, createFakeAdAdapter, type AdAdapter, type AdState } from './platform/ads';
 import { setPauseReason } from './platform/lifecycle';
@@ -98,6 +99,13 @@ async function boot(): Promise<void> {
     debug: isLocalDev(),
     telemetry,
     ads,
+    async resetProgress() {
+      const fresh = { ...createInitialState(), adRewards: screen.getState().adRewards };
+      telemetry.reset();
+      store.save(fresh);
+      await store.flush();
+      location.reload();
+    },
   });
   screen.setPaused(isPaused());
   onLifecycleChange(({ paused }) => {

@@ -104,6 +104,8 @@ const STRINGS = {
   boxHint: { ru: 'Коробка откроется, когда освободится соседняя клетка', en: 'The box opens when a neighbouring cell is freed' },
   webHint: { ru: 'Под паутиной. Перетащите сюда такой же предмет — объединятся, и клетка освободится', en: 'Under cobwebs. Drop the same item here to merge and free the cell' },
   cellFreed: { ru: 'Клетка освобождена!', en: 'Cell freed!' },
+  resetProgress: { ru: 'Сбросить прогресс', en: 'Reset progress' },
+  resetConfirm: { ru: 'Точно сбросить? Нажмите ещё раз', en: 'Sure? Tap again' },
   tutorial: { ru: 'Обучение', en: 'Tutorial' },
   skip: { ru: 'Пропустить', en: 'Skip' },
   neededFor: { ru: 'Нужно', en: 'Needed for' },
