@@ -51,6 +51,9 @@ export const VISITORS: Record<string, VisitorDef> = {
   RADIO: { id: 'RADIO', name: { ru: 'Радио', en: 'Radio' } },
 };
 
+/** Сколько заказов показывается одновременно (решение пользователя от 23.10.2026: 5 вместо 3, ряд карточек листается). */
+export const MAX_ACTIVE_ORDERS = 5;
+
 /** Склад закрыт до ремонта склада R04 (решение пользователя от 23.10.2026, по образцу «Отеля Мечты»). */
 export const STORAGE_START = 0;
 /** Мест после R04. */

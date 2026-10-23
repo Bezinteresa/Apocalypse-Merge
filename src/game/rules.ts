@@ -1,6 +1,6 @@
 import { BOARD_COLS, BOARD_SIZE, cellIndex, neighbors } from '../content/board';
 import { GENERATORS, GENERATOR_ACTIVE_LEVEL, GENERATOR_MAX_LEVEL, ITEMS, generatorDrops, getItem, parseGeneratorToken, type ChainId } from '../content/items';
-import { ORDERS, PROJECTS, getOrder, getProject, type OrderDef, type ProjectDef, type Requirement } from '../content/orders';
+import { MAX_ACTIVE_ORDERS, ORDERS, PROJECTS, getOrder, getProject, type OrderDef, type ProjectDef, type Requirement } from '../content/orders';
 import type { CellContent, GameState, ItemInstance, Loc } from './state';
 import { addEnergy, hasEnergyForSpawn, regenerate, spendSpawnEnergy } from './energy';
 import { grantChestFor, nextRandom } from './collections';
@@ -288,7 +288,7 @@ export function availableOrders(state: GameState): OrderDef[] {
       !state.completedOrders.includes(o.id) &&
       isProjectDone(state, o.after) &&
       o.requires.every((req) => isChainAvailable(state, getItem(req.itemId).chain)),
-  ).slice(0, 3);
+  ).slice(0, MAX_ACTIVE_ORDERS);
 }
 
 /** Ближайший незавершённый проект; null — доступный срез пройден. */

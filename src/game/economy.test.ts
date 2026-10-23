@@ -2,7 +2,7 @@ import { openBoard } from './testUtils';
 import { describe, expect, it } from 'vitest';
 import { START_GENERATORS } from '../content/board';
 import { GENERATORS, GENERATOR_ACTIVE_LEVEL, GENERATOR_MAX_LEVEL, GENERATOR_ODDS, getItem, parseGeneratorToken } from '../content/items';
-import { ORDERS, PROJECTS } from '../content/orders';
+import { MAX_ACTIVE_ORDERS, ORDERS, PROJECTS } from '../content/orders';
 import { ENERGY_START } from './energy';
 import {
   availableOrders,
@@ -269,11 +269,16 @@ describe('projects', () => {
     let s = openBoard();
     const stats = { spawns: 0 };
     const spawns = [0, 0];
+    let peak = 0;
     const run = (r: { ok: true; state: GameState } | { ok: false; reason: string }) => {
       if (!r.ok) throw new Error(r.reason);
       s = r.state;
     };
     const deliver = (id: string) => {
+      // заказ виден игроку: лимит MAX_ACTIVE_ORDERS не прячет нужный по плану заказ
+      const visible = availableOrders(s).map((o) => o.id);
+      peak = Math.max(peak, visible.length);
+      expect(visible, id).toContain(id);
       for (const req of ORDERS.find((o) => o.id === id)!.requires) s = craft(s, req.itemId, stats);
       run(deliverOrder(s, id));
     };
@@ -299,6 +304,7 @@ describe('projects', () => {
         expect(currentProject(s)?.id).toBe('C05');
       }
     }
+    expect(peak).toBeLessThanOrEqual(MAX_ACTIVE_ORDERS);
     // выдачи этого прохождения (сид 1) близки к модели ожидаемых значений
     const curve = expectedCurve();
     for (const ch of [0, 1]) {
@@ -326,7 +332,7 @@ describe('projects', () => {
     expect(placed.ok && placed.placedCell).not.toBeNull();
     if (!placed.ok) return;
     expect(placed.state.incoming).toEqual([]);
-    expect(availableOrders(placed.state).map((o) => o.id)).toEqual(['O02', 'O03', 'O04']);
+    expect(availableOrders(placed.state).map((o) => o.id)).toEqual(['O02', 'O03', 'O04', 'O05', 'O06']);
 
     // заполнить все свободные клетки, оставив T03 и M03 для проекта
     let full = base;
