@@ -1362,3 +1362,20 @@ body {
 .chip.unknown b {
   background: #6a6056;
 }
+
+/* фон здания нарисован: закрытые помещения только затемняются, подписи — только у закрытых */
+.scene.has-bg .room.locked {
+  background: #0009;
+  border-color: transparent;
+}
+
+.scene.has-bg .room:not(.locked) .room-name {
+  display: none;
+}
+
+.scene.has-bg .room.locked .room-name {
+  color: #f3e6cf;
+  background: #0008;
+  border-radius: 6px;
+  padding: 2px 6px;
+}
