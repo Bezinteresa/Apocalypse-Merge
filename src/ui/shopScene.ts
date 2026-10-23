@@ -1,8 +1,8 @@
 import { getItem } from '../content/items';
-import { ORDERS, PROJECTS, VISITORS } from '../content/orders';
+import { PROJECTS, VISITORS } from '../content/orders';
 import { ROOMS, SPOTS, VISITOR_ARRIVAL, VISITOR_COLOR, ZONES, type Rect } from '../content/shopLayout';
-import { t, tx } from '../i18n';
-import { availableOrders, canDeliver, currentProject, isChapterComplete } from '../game/rules';
+import { tx } from '../i18n';
+import { availableOrders, canDeliver, currentProject } from '../game/rules';
 import type { GameState } from '../game/state';
 import { BUILDING_SPRITE, characterSprite, hasSprite, spriteImg, spriteUrl, uiSprite, zoneSprite } from './sprites';
 
@@ -28,15 +28,12 @@ export function isVisitorPresent(state: GameState, visitorId: string): boolean {
   return after === null || (after !== undefined && state.completedProjects.includes(after));
 }
 
-/** Короткая реплика посетителя: его ближайший заказ или благодарность. */
-export function visitorLine(state: GameState, visitorId: string): { text: string; ready: boolean; hasOrder: boolean } {
+/** Реплика посетителя с открытым заказом: что нужно и награда; без заказа реплики нет (решение пользователя от 23.10.2026). */
+export function visitorLine(state: GameState, visitorId: string): { text: string; ready: boolean } | null {
   const order = availableOrders(state).find((o) => o.visitor === visitorId);
-  if (order) {
-    const items = order.requires.map((r) => tx(getItem(r.itemId).name)).join(', ');
-    return { text: `${tx(order.text)}: ${items}`, ready: canDeliver(state, order), hasOrder: true };
-  }
-  const anyLeft = ORDERS.some((o) => o.visitor === visitorId && !state.completedOrders.includes(o.id));
-  return { text: anyLeft ? t('visitorWaiting') : t('visitorThanks'), ready: false, hasOrder: false };
+  if (!order) return null;
+  const items = order.requires.map((r) => tx(getItem(r.itemId).name)).join(', ');
+  return { text: `${tx(order.text)}: ${items} · +${order.reward} 💰`, ready: canDeliver(state, order) };
 }
 
 export function renderShopScene(root: HTMLElement, state: GameState, handlers: SceneHandlers): void {
@@ -127,8 +124,9 @@ export function renderShopScene(root: HTMLElement, state: GameState, handlers: S
     name.textContent = tx(VISITORS[spot.visitor].name);
     el.appendChild(name);
 
+    // остальные просто стоят в магазине без облачка; нажатие на реплику с заказом ведёт на поле
     const line = visitorLine(state, spot.visitor);
-    if (!isChapterComplete(state) || line.hasOrder) {
+    if (line) {
       const bubble = document.createElement('button');
       bubble.className = 'bubble';
       bubble.classList.toggle('ready', line.ready);
