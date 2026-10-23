@@ -472,6 +472,554 @@
         "art/reference/style.png",
         "public/sprites/zones/R08_broken.png"
       ]
+    },
+    {
+      "file": "items/A01.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A small rusty tin with car fasteners: bolts, nuts, washers and a spark plug, dark red paint chips on the tin.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nUse the attached image strictly as the painting style reference, not as the subject. Target game sprite 256x256, readable at 48px.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-7d4ff36a-1355-4b41-bebd-4d9534f3a2b1.png"
+    },
+    {
+      "file": "portraits/SAVVA.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Savva, a weathered caravan driver in his 50s, short grey beard, flat cap, leather jacket with patches, driving goggles around his neck, a road map in his hand, calm friendly smile.\nComposition: Waist-up, single character, facing slightly left, centered, head and hands fully inside the frame, transparent background, no text.\nAttached image: style reference only. Square waist-up game portrait, clear friendly original character.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-6373ebab-2988-4316-b3ef-75fdca2da38d.png"
+    },
+    {
+      "file": "items/A02.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A repair assembly: a cleaned car part bundle — a pulley, a short drive belt and a bracket tied together with wire, dark red accents.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is the strict painting style reference. Image 2 is the previous level of this car-parts merge chain; create the new subject with a distinctly different more advanced silhouette. Dark red accent metal. Square game sprite.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-ff04729d-b0d3-449d-bd8a-abc9a166c7a4.png"
+    },
+    {
+      "file": "items/A03.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A transmission unit: a compact metal gearbox with visible gears through an open cover, dark red painted housing, oily but restored.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is the strict painting style reference. Image 2 is the previous level of the car-parts merge chain; make the specified compact gearbox a distinctly bigger, more advanced silhouette. Clearly dark red housing, restored metal surfaces. Square game sprite.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-2d1a29ef-b4e8-4e3d-abce-6ed83a7d55ad.png"
+    },
+    {
+      "file": "items/A04.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An engine block: a small rebuilt car engine with dark red valve cover, hoses and a belt, sitting on a wooden pallet piece.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is strictly the painting style reference. Square game sprite, bold silhouette readable at 48px. Image 2 is the previous level of the car-parts chain; make the specified rebuilt engine visibly more advanced, with a different silhouette and dark red valve cover.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-25de7820-b737-4a51-b04f-5e1674c938cc.png"
+    },
+    {
+      "file": "items/A05.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A vehicle repair kit: a big dark red metal crate with an engine part, wheel, belts and tools neatly packed — the top car parts item.\nComposition: One centered object, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no backdrop, no text.\nImage 1 is the strict painting style reference. Image 2 is previous level: make this final repair kit a distinct dark red crate silhouette containing an engine part, a large wheel, belts and tools. Square canvas.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-f426c9ed-aa94-45bd-a98a-b8525ba3c540.png"
+    },
+    {
+      "file": "generators/G_AUTO.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A tall garage parts rack: a dark red metal shelf unit with car parts, tyres, belts and boxes of bolts, a hanging work lamp. A source of car parts; larger and more furniture-like than regular items.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nImage 1 is the strict painting style reference. Square canvas, entire shelving unit visible, large recognizable car parts, dark red painted shelves.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-acfe28dd-940b-471d-8a8a-55f0a3bb964c.png"
+    },
+    {
+      "file": "characters/SAVVA.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Savva, a weathered caravan driver in his 50s, short grey beard, flat cap, leather jacket with patches, driving goggles around his neck, cargo trousers, heavy boots, a road map in his hand.\nComposition: Single character, full body standing, facing the viewer slightly turned left, centered, feet at the bottom of the frame, whole silhouette visible, transparent background, no ground shadow, no text. Same outfit and face as the portrait.\nImage 1 is the strict painting style reference. Image 2 is the character identity reference: preserve exactly his face, patched brown flat cap, short grey beard, brown patched leather jacket, red neckerchief, driving goggles around the neck, fingerless gloves, green undershirt and road map. Show entire figure including cargo trousers and heavy boots. Tall portrait canvas aspect ratio 1:2. Do not crop boots or cap.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-4dfeffd7-1ae5-4d27-a6b2-395a75025d36.png"
+    },
+    {
+      "file": "chests/CH_WORN.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A small worn wooden chest with rusty iron corners and a simple latch, slightly scuffed, a faint warm glow leaking from the lid gap. Modest reward look.\nComposition: One centered closed chest, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no text.\nImage 1 is strictly the painting style reference. Square game sprite, bold silhouette readable at 48px.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-ecfc6515-f43e-4257-804f-f98560e96bc5.png"
+    },
+    {
+      "file": "chests/CH_TRADER.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A medium trader's chest: sturdy wood with teal painted panels, brass corners, leather straps and a padlock, a warmer glow from the lid gap. Clearly better than a worn chest.\nComposition: One centered closed chest, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no text.\nImage 1 is strictly the painting style reference. Square game sprite, bold silhouette readable at 48px.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-d5e188b1-e5f6-4108-a533-da3781871f8c.png"
+    },
+    {
+      "file": "chests/CH_ARCHIVE.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A large archive chest: dark steel with riveted plates, a round dial lock, abstract old stamp marks, a bright golden glow from the seams. The most valuable chest.\nComposition: One centered closed chest, 3/4 front view, fills about 80% of the frame, transparent background, no ground shadow, no text.\nImage 1 is strictly the painting style reference. Square game sprite, bold silhouette readable at 48px.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-891c01e9-13ad-415f-abe8-9318de513932.png"
+    },
+    {
+      "file": "shop/building.webp",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nEDIT TARGET image 2, existing building: Cross-section front view of a small two-level post-apocalyptic corner shop building at a city crossroads, like a dollhouse with the front wall removed. Top: grey sky and the facade roof line with an empty sign bracket above the entrance. Ground floor, left to right: an open empty garage bay with a concrete floor and bare walls (no shutter, no vehicle — those are separate sprites); a storeroom with bare concrete walls; the main shop floor with patched wallpaper, an entrance doorway on its left side; a workshop corner with pegboard wall; an outdoor yard with cracked asphalt and a fence. Below ground: a dark underground shelter level, barely visible and mysterious; its top-left corner stays empty for the service hatch sprite. Rooms are EMPTY: no furniture, no counter, no shelves, no racks, no workbench, no lamps, no water tank, no sign — those are separate sprites. No people.\nComposition: Wide 16:10 scene, NOT transparent. Follow the attached layout guide exactly: walls, floors and room borders where the guide boxes are; hatched red areas must stay empty background; do not draw the guide lines, labels or colors. Also attach art/reference/shop_mood.webp as the mood reference: same materials, palette and light, but as a cross-section of the whole building.\nReference roles: image 1 painting style; image 2 EDIT TARGET preserve architecture, room borders, roof, sign bracket, shop, storeroom, workshop, yard, sky and underground shelter. Image 3 exact layout guide only, never draw labels or red hatch marks. Image 4 materials and light reference only. Change the leftmost garage from closed roller shutter to a fully OPEN EMPTY garage room with bare concrete rear wall and concrete floor matching the shop perspective, no shutter anywhere, no van, lift, pit or furniture. Keep the top-left shelter area empty, remove any hatch from the background because hatch is a separate sprite. Do not redesign or move the other rooms. Landscape 16:10, full building and yard, opaque background.\nTargeted correction to the attached generated version: remove ONLY the metal service hatch with handle in the CENTER of the underground ceiling. Replace it with uninterrupted concrete ceiling and plain rear wall. Keep all other pixels and geometry as close as possible, including the now open empty garage. NO hatches or trapdoors anywhere, these are separate sprites.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-92ae916c-a80b-4d7d-b2f2-212b19a69656.png"
+    },
+    {
+      "file": "zones/R09_broken.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A rusty garage roller shutter jammed half-open, bent slats hanging down. Worn, dusty, clearly broken or missing, but not scary.\nComposition: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:240.\nAttached image is style reference only. Exact canvas aspect ratio 448:240. Draw this horizontal game scenery prop entirely isolated on real transparency. No surrounding masonry or ground. Fill width, do not crop parts.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-eecf10d3-13d2-4ac1-824c-7c3846865b32.png"
+    },
+    {
+      "file": "zones/R09_fixed.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A repaired garage roller shutter rolled up neatly under the ceiling. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.\nComposition: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 448:240.\nImage 1 is painting style reference only. Canvas target ratio 448:240. Isolated scenery prop with real transparency, all parts visible. Image 2 is the broken version EDIT TARGET. Repair the specified object while keeping exact framing, matching width, position and perspective. Preserve identical canvas dimensions. No wall, ground plane or backdrop. The shutter slats are ALL rolled up into a compact cylinder at the VERY TOP of the image; the two side rails remain at the sides, with a transparent EMPTY open passage below. Do not draw a lowered shutter.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-db55a0ca-4402-4c39-af37-e27bbb90f275.png"
+    },
+    {
+      "file": "zones/R10_broken.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An inspection pit in the floor filled with rubble and broken boards. Worn, dusty, clearly broken or missing, but not scary.\nComposition: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:96.\nAttached image is style reference only. Exact canvas aspect ratio 384:96. Draw this horizontal game scenery prop entirely isolated on real transparency. No surrounding masonry or ground. Fill width, do not crop parts.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-abea66e8-0d36-452a-9883-e26d8016e967.png"
+    },
+    {
+      "file": "zones/R10_fixed.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A clean inspection pit with a steel rim and a small ladder. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.\nComposition: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:96.\nImage 1 is painting style reference only. Canvas target ratio 384:96. Isolated scenery prop with real transparency, all parts visible. Image 2 is the broken version EDIT TARGET. Repair the specified object while keeping exact framing, matching width, position and perspective. Preserve identical canvas dimensions. No wall, ground plane or backdrop.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-8b527193-f7b8-4e8a-b768-745a37353042.png"
+    },
+    {
+      "file": "zones/R11_broken.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A toppled rusty two-post car lift, one post leaning. Worn, dusty, clearly broken or missing, but not scary.\nComposition: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 144:544.\nImage 1 is painting style reference only. Canvas target ratio 144:544. Isolated scenery prop with real transparency, all parts visible. Very tall narrow composition: two slim lift columns close together, one bent and leaning into the other, folded damaged arms at the bottom. No vehicle.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-63f4c6f5-06f2-4b43-9484-ced60426a457.png"
+    },
+    {
+      "file": "zones/R11_fixed.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An upright two-post car lift, freshly painted warm red, arms folded inward. Both slim rectangular posts completely vertical, parallel, same height. Compact two-post garage hydraulic lift restored for use, intact machinery, clean red paint and steel rails.\nComposition: One isolated tall narrow object for building cross-section, slightly elevated FRONT view, fills width, feet at bottom, both posts fully visible. Target 144x544 game sprite, tall narrow canvas. REAL TRANSPARENT BACKGROUND including between the two posts. No walls, floors, scene, glow, halo or gradients behind object. No car, people or text.\nAttached screwdriver image is ONLY a painting style reference; draw the specified upright car lift.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-3a38cbbe-c932-4615-a7e2-d5c2676e0012.png"
+    },
+    {
+      "file": "zones/R12_broken.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A small caravan van with a flat tyre, open hood and missing headlight, side view facing right. Worn, dusty, clearly broken or missing, but not scary.\nComposition: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 320:400.\nImage 1 is painting style reference only. Canvas target ratio 320:400. Isolated scenery prop with real transparency, all parts visible. Portrait composition, short compact van fully visible facing right, no cropped bumper or wheel.\nTargeted framing correction: keep exactly this damaged van, identity, broken headlight, flat front tyre, open hood, roof cargo, angle and rendering. Move the whole van DOWN so the bottoms of its wheels are at the bottom edge with only a 1-2% transparent margin. Keep the entire van visible. Keep canvas portrait 4:5. Do not add anything.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-1e5869cd-4712-4f41-807c-4689725b0248.png"
+    },
+    {
+      "file": "zones/R12_fixed.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: The same small caravan van repaired, headlights on, roof rack with tied cargo, side view facing right. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.\nComposition: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 320:400.\nImage 1 painting style. Image 2 EDIT TARGET broken van: preserve identical orange/cream van model, camera angle, size, silhouette, roof rack cargo and canvas framing. Repair front flat tyre to a round inflated tyre, restore both headlights and turn on a gentle warm beam, close the hood, repair glass and bodywork, clean rust, warm restored colours. Keep wheels at the same near-bottom baseline. Portrait 4:5 transparent canvas, full van visible with no floor and no backdrop.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-e73ab481-8bda-46c6-adfb-18d7c7c5e2af.png"
+    },
+    {
+      "file": "zones/R13_broken.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A heavy floor hatch buried under concrete debris and a fallen beam. Worn, dusty, clearly broken or missing, but not scary.\nComposition: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:200.\nImage 1 is painting style reference only. Canvas target ratio 384:200. Isolated scenery prop with real transparency, all parts visible.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-562b7df6-0005-4ad7-8513-a0763729da58.png"
+    },
+    {
+      "file": "zones/R13_fixed.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An open heavy service hatch with a ladder going down and warm light below. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.\nComposition: One isolated object for a building cross-section scene, seen from the same slightly elevated front view as the building, fills the frame edge to edge horizontally, base at the bottom of the frame, transparent background, no wall, no floor, no backdrop, no people, no text. Aspect ratio 384:200.\nImage 1 painting style reference. Image 2 EDIT TARGET: the broken version. Keep the same camera, object scale and framing, exact canvas aspect ratio 384:200. Repair only the described object, transparent surroundings, no walls, ground plane or backdrop. Remove ALL concrete debris and fallen beam. Open the heavy hatch lid with intact hinges, show ladder descending into a warm lit opening. Standalone hatch assembly, no surrounding floor slab.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-5aba3e08-2db0-4705-ba24-ce9e206c95ec.png"
+    },
+    {
+      "file": "cards/C_POSTCARD.webp",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A faded pre-war holiday postcard showing a cheerful intact city skyline, slightly bent corner, lying on an old wooden table.\nComposition: Collection card illustration, portrait 2:3, NOT transparent, no text, no frame, no border; a nostalgic still life of a pre-apocalypse object, softly lit, on a muted textured background.\nAttached image is painting style reference only. Portrait canvas exactly 2:3. Opaque full-bleed illustration, softly lit nostalgic still life. No readable writing or numbers anywhere, no card border, no collage or UI. Muted background, distinct main object.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-64816fec-e2d1-47d0-8903-f699e3deb7b1.png"
+    },
+    {
+      "file": "cards/C_TRAM_TICKET.webp",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An old paper tram ticket with a punched hole, next to a small tram rail fragment and dust, warm nostalgic light.\nComposition: Collection card illustration, portrait 2:3, NOT transparent, no text, no frame, no border; a nostalgic still life of a pre-apocalypse object, softly lit, on a muted textured background.\nAttached image is painting style reference only. Portrait canvas exactly 2:3. Opaque full-bleed illustration, softly lit nostalgic still life. No readable writing or numbers anywhere, no card border, no collage or UI. Muted background, distinct main object.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-2061a9ec-4aee-49ef-9cd7-0210def71daa.png"
+    },
+    {
+      "file": "cards/C_TIN_TOY.webp",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A colorful wind-up tin toy robot with a small key in its back, a bit scratched, standing on a windowsill.\nComposition: Collection card illustration, portrait 2:3, NOT transparent, no text, no frame, no border; a nostalgic still life of a pre-apocalypse object, softly lit, on a muted textured background.\nAttached image is painting style reference only. Portrait canvas exactly 2:3. Opaque full-bleed illustration, softly lit nostalgic still life. No readable writing or numbers anywhere, no card border, no collage or UI. Muted background, distinct main object.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-def593e4-63c9-4163-9b44-8cf9da2ae502.png"
+    },
+    {
+      "file": "cards/C_SEEDS.webp",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A small paper seed packet with a drawing of red tomatoes (no letters), a few seeds spilled next to a tiny sprout in a cup.\nComposition: Collection card illustration, portrait 2:3, NOT transparent, no text, no frame, no border; a nostalgic still life of a pre-apocalypse object, softly lit, on a muted textured background.\nAttached image is painting style reference only. Portrait canvas exactly 2:3. Opaque full-bleed illustration, softly lit nostalgic still life. No readable writing or numbers anywhere, no card border, no collage or UI. Muted background, distinct main object.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-56217453-23ea-4782-8690-ba19d9bcf4a0.png"
+    },
+    {
+      "file": "cards/C_METRO_MAP.webp",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A folded old metro map with colored lines and circles (abstract, no letters), one station under a crossroads circled by hand in red pencil.\nComposition: Collection card illustration, portrait 2:3, NOT transparent, no text, no frame, no border; a nostalgic still life of a pre-apocalypse object, softly lit, on a muted textured background.\nAttached image is painting style reference only. Portrait canvas exactly 2:3. Opaque full-bleed illustration, softly lit nostalgic still life. No readable writing or numbers anywhere, no card border, no collage or UI. Muted background, distinct main object.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-f6dab505-b2fa-4f2f-88c4-81a53205067c.png"
+    },
+    {
+      "file": "cards/C_RADIO.webp",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A vintage tube radio receiver with a glowing dial, the needle pointing to an unmarked spot, faint radio waves as soft light rings.\nComposition: Collection card illustration, portrait 2:3, NOT transparent, no text, no frame, no border; a nostalgic still life of a pre-apocalypse object, softly lit, on a muted textured background.\nImage 1 is painting style reference only. Portrait 2:3 opaque full-bleed nostalgic game illustration. No readable writing or numbers, no typography, no decorative outer frame or card border.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-b619c388-3487-43e1-be7f-6964029385a1.png"
+    },
+    {
+      "file": "cards/C_PHOTO_ALBUM.webp",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An open family photo album with blurred vintage photos; the visible one shows a small corner shop with people at the counter, faces indistinct.\nComposition: Collection card illustration, portrait 2:3, NOT transparent, no text, no frame, no border; a nostalgic still life of a pre-apocalypse object, softly lit, on a muted textured background.\nImage 1 is painting style reference only. Portrait 2:3 opaque full-bleed nostalgic game illustration. No readable writing or numbers, no typography, no decorative outer frame or card border.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-3128a803-da2a-4961-93e4-e58dc4e651eb.png"
+    },
+    {
+      "file": "cards/C_ARCHIVE_KEY.webp",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A heavy old brass service key on a ring with a blank cardboard tag, lying on a dusty blueprint, mysterious cool light.\nComposition: Collection card illustration, portrait 2:3, NOT transparent, no text, no frame, no border; a nostalgic still life of a pre-apocalypse object, softly lit, on a muted textured background.\nImage 1 is painting style reference only. Portrait 2:3 opaque full-bleed nostalgic game illustration. No readable writing or numbers, no typography, no decorative outer frame or card border.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-ede798ae-23b8-4697-94a9-942baa44fe5b.png"
+    },
+    {
+      "file": "cards/C_POWER_SCHEME.webp",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An old technical schematic of an electric power line on aged blue paper, the line going down underground into a hidden structure, glowing faintly golden as if alive. Epic, mysterious, hopeful.\nComposition: Collection card illustration, portrait 2:3, NOT transparent, no text, no frame, no border; a nostalgic still life of a pre-apocalypse object, softly lit, on a muted textured background.\nImage 1 is painting style reference only. Portrait 2:3 opaque full-bleed nostalgic game illustration. No readable writing or numbers, no typography, no decorative outer frame or card border.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-01330db9-e9dd-4336-b258-a7d425411715.png"
+    },
+    {
+      "file": "ui/coin.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A currency coin: a chunky brass bottle-cap-style coin with a simple star stamped on it, shiny.\nComposition: Simple bold game icon, one centered object, fills about 85% of the frame, transparent background, no text.\nAttached image is style reference only. Square mobile game asset. Keep very simple chunky shapes and broad shading readable at 32px. One isolated bold icon, real transparent background, entire object visible.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-959c7cc4-55b8-4b5b-92a1-923b2c9515ca.png"
+    },
+    {
+      "file": "ui/energy.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An energy icon: a small round battery with a glowing yellow lightning bolt on it.\nComposition: Simple bold game icon, one centered object, fills about 85% of the frame, transparent background, no text.\nAttached image is style reference only. Square mobile game asset. Keep very simple chunky shapes and broad shading readable at 32px. One isolated bold icon, real transparent background, entire object visible.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-14de295a-ab1c-4d19-97dc-1ce3559fa435.png"
+    },
+    {
+      "file": "ui/token.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: An archive token: a round bronze disc with a punched keyhole shape in the middle.\nComposition: Simple bold game icon, one centered object, fills about 85% of the frame, transparent background, no text.\nAttached image is style reference only. Square mobile game asset. Keep very simple chunky shapes and broad shading readable at 32px. One isolated bold icon, real transparent background, entire object visible.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-eab6c628-63e1-451d-9255-851df233b30d.png"
+    },
+    {
+      "file": "ui/cell.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A clean light wooden floor plank tile with subtle texture and soft rounded corners, plain, low contrast.\nComposition: Square game board tile seen straight from above, fills the whole frame edge to edge, NOT transparent, no text, no border shadow.\nAttached image is style reference only. Square mobile game asset. Keep very simple chunky shapes and broad shading readable at 32px. Opaque low-contrast light wooden tile, top-down, completely fill canvas, no object sitting on it.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-744a398b-ce61-4d3e-aaa3-44f4225ec650.png"
+    },
+    {
+      "file": "ui/cell_locked.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A closed cardboard box taped shut, slightly dusty with a few cobweb strands, seen from above, filling the whole tile. Covers hidden board cells.\nComposition: Square game board tile seen straight from above, fills the whole frame edge to edge, NOT transparent, no text, no border shadow.\nImage 1 is painting style reference only. Square canvas, crisp mobile game readability. Completely opaque top-down box tile filling square canvas edge to edge, top of box only, no perspective side faces.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-60b4aada-13e0-4e9e-9d10-d871d98c0857.png"
+    },
+    {
+      "file": "ui/web.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Dusty white cobweb overlay for a square game board tile: thin strands anchored in the corners and along the edges, the center mostly clear so an item underneath stays visible.\nComposition: Overlay only: transparent background, semi-transparent white strands, no object, no frame, no text, fills the whole square.\nImage 1 is painting style reference only. Square canvas, crisp mobile game readability. Only delicate translucent white cobweb strands near corners and edges, center nearly empty and transparent. No black outline or backing panel.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-24e41f04-2027-4217-aaf4-1c6d2df37df5.png"
+    },
+    {
+      "file": "ui/finger.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A cartoon hand with the index finger pointing straight UP, sleeve cuff at the bottom, friendly tutorial pointer for a mobile game, slightly worn work-glove look matching the post-apocalyptic style.\nComposition: Single hand, fingertip at the top center of the frame, fills about 85% of the frame, transparent background, no text, no shadow on the ground.\nImage 1 is painting style reference only. Square canvas, crisp mobile game readability.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-8d0af2be-662a-421f-a704-e75ff0a7023d.png"
+    },
+    {
+      "file": "ui/poof.png",
+      "prompt": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: A single soft cartoon dust cloud puff, round and fluffy, cream-white with light grey shading, for a repair \"poof\" effect.\nComposition: Single cloud puff centered, fills about 90% of the frame, transparent background, no text, no outline frame.\nImage 1 is painting style reference only. Square canvas, crisp mobile game readability. Real transparency surrounding the cloud, broad soft cream-white shapes. No other objects.",
+      "reference": "art/reference/style.png",
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-804dd4b8-bd4e-4284-910a-e5cbc84d4be2.png"
+    },
+    {
+      "file": "generators/G_TOOL_1.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 1 of 6: not working yet, looks incomplete. A broken orange toolbox handle and a few loose screws.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: Image 1 is the painting style reference; image 2 is the level-4 orange toolbox FAMILY reference. Generate ONLY the described level 1 asset, a single standalone game sprite. It must visibly be an incomplete precursor, with only the parts explicitly described; no completed toolbox or extra tools.\nSquare canvas, genuine transparent alpha background. Entire object visible, no ground shadow, no text.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_TOOL.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-7dfb7a02-f81a-4d40-ac90-73f59b88a9ea.png"
+    },
+    {
+      "file": "generators/G_TOOL_2.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 2 of 6: not working yet, looks incomplete. A dented orange toolbox lid with a broken latch.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: Image 1 is the painting style reference; image 2 is the level-4 orange toolbox FAMILY reference. Generate ONLY the described level 2 asset, a single standalone game sprite. It must visibly be an incomplete precursor, with only the parts explicitly described; no completed toolbox or extra tools.\nSquare canvas, genuine transparent alpha background. Entire object visible, no ground shadow, no text.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_TOOL.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-65cb32ba-5e5d-461a-bb01-5f5f76790c87.png"
+    },
+    {
+      "file": "generators/G_TOOL_3.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 3 of 6: not working yet, looks incomplete. An empty battered orange toolbox, lid half open.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: Image 1 is the painting style reference; image 2 is the level-4 orange toolbox FAMILY reference. Generate ONLY the described level 3 asset, a single standalone game sprite. It must visibly be an incomplete precursor, with only the parts explicitly described; no completed toolbox or extra tools.\nSquare canvas, genuine transparent alpha background. Entire object visible, no ground shadow, no text.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_TOOL.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-3511a575-88ba-4898-8fd9-33be46e9a407.png"
+    },
+    {
+      "file": "generators/G_TOOL_5.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Upgraded generator, level 5 of 6: clearly bigger and richer than level 4, same family and colors. A sturdier orange toolbox with a tray full of tools and a padlock.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: Image 1 is the painting style reference; image 2 is the level-4 orange toolbox FAMILY reference. Generate ONLY the described level 5 asset, a single standalone game sprite. It must visibly exceed the level-4 toolbox in capacity and silhouette, keep orange painted metal and worn original style.\nSquare canvas, genuine transparent alpha background. Entire object visible, no ground shadow, no text.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_TOOL.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-f1822378-c3f2-4672-bafc-6b13a9e21a3d.png"
+    },
+    {
+      "file": "generators/G_TOOL_6.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Upgraded generator, level 6 of 6: clearly bigger and richer than level 4, same family and colors. A big two-tier orange workshop tool cabinet on wheels, drawers bursting with tools, warm glint.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: Image 1 is the painting style reference; image 2 is the level-4 orange toolbox FAMILY reference. Generate ONLY the described level 6 asset, a single standalone game sprite. It must visibly exceed the level-4 toolbox in capacity and silhouette, keep orange painted metal and worn original style.\nSquare canvas, genuine transparent alpha background. Entire object visible, no ground shadow, no text.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_TOOL.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-f027205e-98cd-43ce-81c3-b509ff3b388d.png"
+    },
+    {
+      "file": "generators/G_MATERIAL_1.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 1 of 6: not working yet, looks incomplete. A rusty container door hinge and a bent bolt.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style only; image 2 level-4 steel-blue shipping-container family reference. Generate ONLY the level 1 object described above. Incomplete component, with only the specified parts; clearly not a working generator.\nOne square game sprite, entire silhouette visible, real transparent alpha background, no scene, no ground shadow, no text.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_MATERIAL.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-e62e4bfe-2565-48e1-a184-17b4c693eb14.png"
+    },
+    {
+      "file": "generators/G_MATERIAL_2.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 2 of 6: not working yet, looks incomplete. A single rusty steel-blue container wall panel.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style only; image 2 level-4 steel-blue shipping-container family reference. Generate ONLY the level 2 object described above. Incomplete component, with only the specified parts; clearly not a working generator.\nOne square game sprite, entire silhouette visible, real transparent alpha background, no scene, no ground shadow, no text.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_MATERIAL.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-3f904df3-699a-4d3c-bd23-9ff64a22f399.png"
+    },
+    {
+      "file": "generators/G_MATERIAL_3.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 3 of 6: not working yet, looks incomplete. An empty rusty steel-blue cargo crate with an open side.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style only; image 2 level-4 steel-blue shipping-container family reference. Generate ONLY the level 3 object described above. Incomplete component, with only the specified parts; clearly not a working generator.\nOne square game sprite, entire silhouette visible, real transparent alpha background, no scene, no ground shadow, no text.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_MATERIAL.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-5f0d40da-828f-4417-abaa-4fe7da4be9d3.png"
+    },
+    {
+      "file": "generators/G_MATERIAL_5.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Upgraded generator, level 5 of 6: clearly bigger and richer than level 4, same family and colors. A steel-blue cargo container with neatly stacked pipes and sheets, chained doors.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style only; image 2 level-4 steel-blue shipping-container family reference. Generate ONLY the level 5 object described above. Clearly more capacious and upgraded than the reference level 4. Keep blue painted steel with rusty orange structural corners and readable building-material shapes.\nOne square game sprite, entire silhouette visible, real transparent alpha background, no scene, no ground shadow, no text.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_MATERIAL.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-ea0e2c73-912a-4c43-a4e1-87b0a23f6423.png"
+    },
+    {
+      "file": "generators/G_MATERIAL_6.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Upgraded generator, level 6 of 6: clearly bigger and richer than level 4, same family and colors. A large reinforced steel-blue cargo container with a small crane hook and stacked building materials.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style only; image 2 level-4 steel-blue shipping-container family reference. Generate ONLY the level 6 object described above. Clearly more capacious and upgraded than the reference level 4. Keep blue painted steel with rusty orange structural corners and readable building-material shapes.\nOne square game sprite, entire silhouette visible, real transparent alpha background, no scene, no ground shadow, no text.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_MATERIAL.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-e1786c76-fea9-46db-a53a-d746d1e7ed3d.png"
+    },
+    {
+      "file": "generators/G_PROVISION_1.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 1 of 6: not working yet, looks incomplete. A torn olive-green tarp scrap and a loose crate board.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style; image 2 level-4 wooden provisions-crate family, olive-green tarp and warm wood. Generate ONLY the specified level 1 subject. An incomplete precursor: show only the described scraps, boards or empty crate; do not add supplies except the one tin can explicitly requested for level 2.\nSingle square sprite. Everything fully visible on genuine transparent alpha background. No ground shadow, no backdrop, no letters, logos or labels.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_PROVISION.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-566faa8f-5435-4bc9-8334-d139b001e3fe.png"
+    },
+    {
+      "file": "generators/G_PROVISION_2.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 2 of 6: not working yet, looks incomplete. Two crate boards tied with twine and a tin can.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style; image 2 level-4 wooden provisions-crate family, olive-green tarp and warm wood. Generate ONLY the specified level 2 subject. An incomplete precursor: show only the described scraps, boards or empty crate; do not add supplies except the one tin can explicitly requested for level 2.\nSingle square sprite. Everything fully visible on genuine transparent alpha background. No ground shadow, no backdrop, no letters, logos or labels.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_PROVISION.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-541026b4-5d70-4bb0-af2c-a4f5faf1bcd7.png"
+    },
+    {
+      "file": "generators/G_PROVISION_3.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 3 of 6: not working yet, looks incomplete. An empty wooden supply crate with an olive-green tarp.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style; image 2 level-4 wooden provisions-crate family, olive-green tarp and warm wood. Generate ONLY the specified level 3 subject. An incomplete precursor: show only the described scraps, boards or empty crate; do not add supplies except the one tin can explicitly requested for level 2.\nSingle square sprite. Everything fully visible on genuine transparent alpha background. No ground shadow, no backdrop, no letters, logos or labels.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_PROVISION.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-0e761fa1-9678-418b-8e60-fe5c19d59c4c.png"
+    },
+    {
+      "file": "generators/G_PROVISION_5.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Upgraded generator, level 5 of 6: clearly bigger and richer than level 4, same family and colors. A full wooden supply crate with cans, bread and jars under an olive tarp, a hand-painted leaf mark.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style; image 2 level-4 wooden provisions-crate family, olive-green tarp and warm wood. Generate ONLY the specified level 5 subject. Clearly upgraded and richer than level 4; keep recognizable warm wooden crates, olive tarp and food supplies, distinct robust silhouette.\nSingle square sprite. Everything fully visible on genuine transparent alpha background. No ground shadow, no backdrop, no letters, logos or labels.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_PROVISION.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-d4aaf591-e295-42f7-bec6-30c48595ba13.png"
+    },
+    {
+      "file": "generators/G_PROVISION_6.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Upgraded generator, level 6 of 6: clearly bigger and richer than level 4, same family and colors. A big wooden pantry crate stack with shelves of cans, sacks and jars, olive tarp roof.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style; image 2 level-4 wooden provisions-crate family, olive-green tarp and warm wood. Generate ONLY the specified level 6 subject. Clearly upgraded and richer than level 4; keep recognizable warm wooden crates, olive tarp and food supplies, distinct robust silhouette.\nSingle square sprite. Everything fully visible on genuine transparent alpha background. No ground shadow, no backdrop, no letters, logos or labels.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_PROVISION.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-16458c83-0c45-40af-a1f5-4e2d5804ce2b.png"
+    },
+    {
+      "file": "generators/G_ELECTRIC_1.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 1 of 6: not working yet, looks incomplete. A cracked yellow desk lamp shade and a wire.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style; image 2 level-4 electronics workbench family reference, warm wood, yellow lamp and brass radio. Generate ONLY the described level 1 sprite. Clearly incomplete and not working, only the specified parts. Lamps off, no extra completed workstation or devices.\nSquare mobile game sprite on genuine transparent alpha background, full object visible, no floor, scene or ground shadow. No readable markings anywhere.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_ELECTRIC.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-b47cdb7b-1dc5-4f4c-bd0a-ded33fc4a736.png"
+    },
+    {
+      "file": "generators/G_ELECTRIC_2.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 2 of 6: not working yet, looks incomplete. A broken radio casing with loose knobs.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style; image 2 level-4 electronics workbench family reference, warm wood, yellow lamp and brass radio. Generate ONLY the described level 2 sprite. Clearly incomplete and not working, only the specified parts. Lamps off, no extra completed workstation or devices.\nSquare mobile game sprite on genuine transparent alpha background, full object visible, no floor, scene or ground shadow. No readable markings anywhere.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_ELECTRIC.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-d0ca551c-5219-4380-ba92-06a0ba0abdb1.png"
+    },
+    {
+      "file": "generators/G_ELECTRIC_3.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Generator PART, level 3 of 6: not working yet, looks incomplete. An empty small workbench frame with a dead yellow lamp.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style; image 2 level-4 electronics workbench family reference, warm wood, yellow lamp and brass radio. Generate ONLY the described level 3 sprite. Clearly incomplete and not working, only the specified parts. Lamps off, no extra completed workstation or devices.\nSquare mobile game sprite on genuine transparent alpha background, full object visible, no floor, scene or ground shadow. No readable markings anywhere.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_ELECTRIC.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-28199035-e22b-4bb1-9d15-6387bbd39bbd.png"
+    },
+    {
+      "file": "generators/G_ELECTRIC_5.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Upgraded generator, level 5 of 6: clearly bigger and richer than level 4, same family and colors. A workbench with a glowing yellow lamp, radio, soldering iron and parts drawers.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style; image 2 level-4 electronics workbench family reference, warm wood, yellow lamp and brass radio. Generate ONLY the described level 5 sprite. A visibly more capable electronics workstation than level 4. Keep yellow lamps, warm wooden workbench, teal circuit parts and brass radio. Screens use abstract luminous traces without letters, digits or symbols that read as text.\nSquare mobile game sprite on genuine transparent alpha background, full object visible, no floor, scene or ground shadow. No readable markings anywhere.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_ELECTRIC.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-1482334f-ba57-4a55-af02-3a32f0917bec.png"
+    },
+    {
+      "file": "generators/G_ELECTRIC_6.png",
+      "prompt": "Use case: stylized-concept\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls\nOne asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.\nSubject: Upgraded generator, level 6 of 6: clearly bigger and richer than level 4, same family and colors. A large electronics workstation with two lamps, oscilloscope screen, radio and parts cabinets.\nComposition: One centered object, 3/4 front view, fills about 85% of the frame, transparent background, no ground shadow, no floor or backdrop, no text.\nReference roles: image 1 painting style; image 2 level-4 electronics workbench family reference, warm wood, yellow lamp and brass radio. Generate ONLY the described level 6 sprite. A visibly more capable electronics workstation than level 4. Keep yellow lamps, warm wooden workbench, teal circuit parts and brass radio. Screens use abstract luminous traces without letters, digits or symbols that read as text.\nSquare mobile game sprite on genuine transparent alpha background, full object visible, no floor, scene or ground shadow. No readable markings anywhere.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_ELECTRIC.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a167d3-4934-7832-8a92-b4966c2af110\\exec-da0df3b9-4b09-4c1b-9124-f1c8c736b6fc.png"
+    },
+    {
+      "file": "generators/G_AUTO_1.png",
+      "prompt": "Use case: stylized-concept\nAsset type: merge game sprite G_AUTO_1, square.\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nInput images: image 1 style reference; image 2 level 4 family reference. Create ONLY level 1: Generator PART, level 1 of 6, not working yet, looks incomplete. A single rusty car bolt and a broken dark red rack bracket, grouped as one asset. Do not include the full rack or any other car parts.\nComposition: One centered asset, 3/4 front view, fills about 85% of frame, full object visible, genuinely transparent background, no ground shadow, floor or backdrop. One asset per image. No text, letters, logos, watermark, signature, frame or collage. Strong readable silhouette at 256x256.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_AUTO.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a168fd-7d17-73a0-a59e-84a82d2bb6a2\\exec-11053ec5-5fc8-4e0b-a0d1-2b92ed2503c4.png"
+    },
+    {
+      "file": "generators/G_AUTO_2.png",
+      "prompt": "Use case: stylized-concept\nAsset type: square merge game sprite G_AUTO_2.\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nInput images: image 1 painting style; image 2 dark red metal level 4 rack family reference.\nSubject: Generator PART, level 2 of 6: not working yet, looks incomplete. A rack shelf board with a worn tyre. One single battered dark red metal shelf board, one worn black rubber car tyre resting on it. No rack frame, no extra shelves, no other supplies. Clearly a small incomplete component, not a working generator.\nComposition: One centered grouped asset, 3/4 front view, fills about 85% of frame, full object visible, genuinely transparent alpha background, no ground shadow, floor or backdrop. No text, letters, logos, watermark, signature, frame or collage. Chunky readable silhouette at 256x256.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_AUTO.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a168fd-7d17-73a0-a59e-84a82d2bb6a2\\exec-162e24ee-abc6-4ffc-b3eb-f1e18fc930b7.png"
+    },
+    {
+      "file": "generators/G_AUTO_3.png",
+      "prompt": "Use case: stylized-concept\nAsset type: square merge game sprite G_AUTO_3.\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nInput images: image 1 painting style; image 2 level 4 rack, match its dark red steel framework and perspective.\nSubject: Generator PART, level 3 of 6: not working yet, looks incomplete. An empty tall dark red metal parts rack. A bare battered freestanding garage rack with four corner posts and empty shelves, mild rust and chipped red paint. Absolutely no tyres, car parts, tools, storage bins or lamp. This is the empty incomplete precursor to the reference rack.\nComposition: One centered object, 3/4 front view, fills about 85% of square frame, full rack visible including feet, transparent background with transparent spaces between shelves, no ground shadow, floor or backdrop. One asset per image. No text, letters, logos, watermark, signature, frame or collage. Chunky readable shapes at 256x256.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_AUTO.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a168fd-7d17-73a0-a59e-84a82d2bb6a2\\exec-6557f4d9-83c0-4f97-9bce-33fdc30538d7.png"
+    },
+    {
+      "file": "generators/G_AUTO_5.png",
+      "prompt": "Use case: stylized-concept\nAsset type: square merge game sprite G_AUTO_5.\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nInput images: image 1 painting style; image 2 level 4 dark red garage rack family and design reference.\nSubject: Upgraded generator, level 5 of 6: clearly bigger and richer than level 4, same family and colors. A dark red parts rack full of car parts, tyres, belts and boxes of bolts. A sturdier noticeably wider five-shelf rack, several chunky tyres, engine parts, coiled belts hanging on side, neatly grouped open bins of bolts, warm small side lamp. Preserve rusty dark red perforated metal posts and warm olive boxes from family reference. Single freestanding storage rack only, no garage scenery.\nComposition: One centered object, 3/4 front view, fills about 85% of frame, full object visible, genuinely transparent background and open gaps, no ground shadow, no floor or backdrop. No text, letters, digits, labels, logos, watermark, signature, frame or collage. Readable bold silhouette at 256x256.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_AUTO.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a168fd-7d17-73a0-a59e-84a82d2bb6a2\\exec-9187b3d0-7875-49e1-be86-816dbfd39b11.png"
+    },
+    {
+      "file": "generators/G_AUTO_6.png",
+      "prompt": "Use case: stylized-concept\nAsset type: square merge game sprite G_AUTO_6, highest tier.\nHand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nInput images: image 1 painting style; image 2 level 4 garage rack family reference, preserve its dark red perforated steel, olive bins, warm metallic highlights.\nSubject: Upgraded generator, level 6 of 6: clearly bigger and richer than level 4, same family and colors. A large dark red garage parts wall with tyres, an engine hoist and organized bins. A broad reinforced rack wall of two joined bays, garage parts and chunky tyre stacks, olive sorting bins, and a prominent integrated dark red engine hoist projecting upward on the right with short chain and empty hook. Hoist is attached to the rack assembly, all one coherent isolated asset. Strong stepped silhouette and visible hoist distinguish this maximum upgrade from a simple shelf. Bin fronts blank or small simple color swatches ONLY, no written labels.\nComposition: One centered unified object, 3/4 front view, fills about 85% of square frame, entire hoist and feet within frame with clear margins, genuine transparent alpha background including gaps, no ground shadow, floor, wall or backdrop. No text, letters, digits, logos, watermark, signature, frame or collage. Chunky bold readable shapes at 256x256. No vehicle, people or extra scene.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/generators/G_AUTO.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a168fd-7d17-73a0-a59e-84a82d2bb6a2\\exec-ce875eae-7776-42e7-8da6-943dd9a555f7.png"
     }
   ]
 }

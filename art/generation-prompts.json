@@ -2,7 +2,7 @@
   "mode": "ChatGPT built-in image generation",
   "reference": "art/reference/style.png",
   "style": "Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls",
-  "constraints": "One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background, collection cards and board tiles. Smooth (Lanczos) downscale to the final size.",
+  "constraints": "One asset per image. No text, letters, logos, watermark, signature, frame or collage. Transparent background except the building background and collection cards. Smooth (Lanczos) downscale to the final size.",
   "assets": [
     {
       "file": "items/T01.png",
@@ -797,18 +797,12 @@
       "extra": "Simple bold game icon, one centered object, fills about 85% of the frame, transparent background, no text."
     },
     {
-      "file": "ui/cell.png",
-      "w": 128,
-      "h": 128,
-      "subject": "A clean light wooden floor plank tile with subtle texture and soft rounded corners, plain, low contrast.",
-      "extra": "Square game board tile seen straight from above, fills the whole frame edge to edge, NOT transparent, no text, no border shadow."
-    },
-    {
       "file": "ui/cell_locked.png",
-      "w": 128,
-      "h": 128,
-      "subject": "A closed cardboard box taped shut, slightly dusty with a few cobweb strands, seen from above, filling the whole tile. Covers hidden board cells.",
-      "extra": "Square game board tile seen straight from above, fills the whole frame edge to edge, NOT transparent, no text, no border shadow."
+      "w": 256,
+      "h": 256,
+      "subject": "A closed cardboard box taped shut, drawn as a chunky VOLUMETRIC object in three-quarter view from slightly above: top face, front face and one side face visible, rounded soft edges, light beige cardboard, brown packing tape cross on the top, a couple of dusty cobweb strands at the bottom corners. Covers hidden board cells, sits on the board like an item.",
+      "extra": "One centered object, fills about 90% of the frame, transparent background, no ground shadow, no backdrop, no text.",
+      "redo": "нужна объёмная коробка в 3/4 на прозрачном фоне, а не плоская плитка вид сверху (решение пользователя 23.10.2026)"
     },
     {
       "file": "ui/web.png",

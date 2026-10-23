@@ -46,10 +46,13 @@ export class FieldView {
   ) {
     boardRoot.classList.add('board');
     boardRoot.style.setProperty('--cols', String(BOARD_COLS));
-    // плитки поля из графики, если они уже есть
-    for (const [name, prop] of [['cell', '--cell-img'], ['cell_locked', '--cell-locked-img'], ['web', '--web-img']] as const) {
-      if (hasSprite(uiSprite(name))) document.documentElement.style.setProperty(prop, `url("${spriteUrl(uiSprite(name))}")`);
+    // коробка и паутина из графики, если они уже есть; адрес абсолютный —
+    // иначе в сборке url() из переменной считается от папки assets/ со стилями
+    for (const [name, prop] of [['cell_locked', '--cell-locked-img'], ['web', '--web-img']] as const) {
+      if (hasSprite(uiSprite(name))) document.documentElement.style.setProperty(prop, `url("${new URL(spriteUrl(uiSprite(name)), location.href).href}")`);
     }
+    // у нарисованной коробки своя лента — полоску-заглушку не рисуем
+    if (hasSprite(uiSprite('cell_locked'))) document.documentElement.style.setProperty('--box-tape-art', '0');
     for (let i = 0; i < BOARD_SIZE; i++) this.cellEls.push(this.createCell(boardRoot, 'board', i));
     storageRoot.classList.add('storage');
     for (const root of [boardRoot, storageRoot]) {
