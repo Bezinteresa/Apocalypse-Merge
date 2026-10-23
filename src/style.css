@@ -1116,10 +1116,17 @@ body {
   font-size: 12px;
 }
 
+/* карты набора — горизонтальная лента: видно три с небольшим, остальное листается свайпом */
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
   gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.card-grid > .card-tile {
+  flex: 0 0 calc((100% - 3 * 6px) / 3.3);
 }
 
 .card-tile {
@@ -2578,4 +2585,32 @@ body {
   margin: 0;
   font-size: 13px;
   color: var(--muted);
+}
+
+/* сцена сундука на телефоне: карты помельче, сундук ниже — второй ряд карт не уходит под сундук */
+@media (max-width: 600px), (max-height: 760px) {
+  .chest-open {
+    overflow-y: auto;
+    padding: 16px 12px;
+    gap: 8px;
+  }
+
+  .co-card {
+    width: min(110px, calc((100vw - 48px) / 3));
+  }
+
+  .co-card-img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .chest-open-stage {
+    width: min(200px, 24dvh);
+    height: min(200px, 24dvh);
+    flex: 0 0 auto;
+  }
+
+  .chest-open-chest {
+    width: min(180px, 22dvh);
+    height: min(180px, 22dvh);
+  }
 }

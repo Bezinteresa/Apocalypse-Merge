@@ -30,6 +30,7 @@ import type { Telemetry } from '../platform/telemetry';
 import type { AdService } from '../platform/ads';
 import { AD_REWARD_ENERGY, AD_REWARD_LIMIT, adCooldownLeft, adRewardsAt, canShowInterstitial, canWatchRewardAd, grantAdReward } from '../game/ads';
 import { createAlbum } from './albumView';
+import { dragScroll } from './dragScroll';
 import { Finger } from './finger';
 import { currentHint, markFlag } from '../game/hints';
 import { BUILDING_SPRITE, generatorSprite, hasSprite, itemSprite, portraitSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
@@ -59,42 +60,6 @@ export interface GameScreen {
   getState(): GameState;
   tap(loc: Loc): void;
   drop(from: Loc, to: Loc): void;
-}
-
-/**
- * Горизонтальная прокрутка перетаскиванием пальцем или мышью. Короткое касание остаётся нажатием
- * (кнопка заказа, место ремонта), после перетаскивания нажатие не срабатывает.
- */
-function dragScroll(el: HTMLElement): void {
-  el.classList.add('drag-scroll');
-  let pan: { id: number; x: number; left: number; moved: boolean } | null = null;
-  el.addEventListener('pointerdown', (e) => {
-    if (e.button > 0) return;
-    pan = { id: e.pointerId, x: e.clientX, left: el.scrollLeft, moved: false };
-  });
-  el.addEventListener('pointermove', (e) => {
-    if (!pan || e.pointerId !== pan.id) return;
-    const dx = e.clientX - pan.x;
-    // порог: короткое касание остаётся нажатием
-    if (!pan.moved && Math.abs(dx) < 8) return;
-    if (!pan.moved) {
-      if (el.scrollWidth <= el.clientWidth) return;
-      pan.moved = true;
-      el.setPointerCapture(e.pointerId);
-      el.classList.add('panning');
-    }
-    el.scrollLeft = pan.left - dx;
-  });
-  const end = (e: PointerEvent) => {
-    if (!pan || e.pointerId !== pan.id) return;
-    if (pan.moved) {
-      el.addEventListener('click', (c) => c.stopPropagation(), { capture: true, once: true });
-      setTimeout(() => el.classList.remove('panning'), 0);
-    }
-    pan = null;
-  };
-  el.addEventListener('pointerup', end);
-  el.addEventListener('pointercancel', end);
 }
 
 export function createGameScreen(app: HTMLElement, initial: GameState, deps: GameScreenDeps): GameScreen {

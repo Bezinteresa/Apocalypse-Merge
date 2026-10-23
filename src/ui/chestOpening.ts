@@ -8,7 +8,7 @@ import { cardSprite, chestSprite, spriteImg } from './sprites';
 // Результат к этому моменту уже принят и сохранён — сцена только показывает его.
 
 const SHAKE_MS = 700;
-const STEP_MS = 520;
+const STEP_MS = 650;
 
 export function showChestOpening(result: ChestResult, shardsBefore: Record<string, number>, onClose: () => void): void {
   const chest = CHESTS[result.chestId];
@@ -67,18 +67,30 @@ export function showChestOpening(result: ChestResult, shardsBefore: Record<strin
     const draw = result.draws[index];
     const card = getCard(draw.cardId);
     const rarity = RARITY[card.rarity];
+    const fresh = !tiles.has(draw.cardId);
     const tile = tileFor(draw.cardId);
-    tile.classList.add('shown');
     if (draw.guaranteed) tile.classList.add('guaranteed');
-    // осколок вылетает из сундука к карточке
     const from = chestEl.getBoundingClientRect();
     const to = tile.getBoundingClientRect();
+    if (fresh) {
+      // новая карта сама вылетает из сундука и встаёт на своё место
+      tile.style.transition = 'none';
+      tile.style.opacity = '1';
+      tile.style.transform = `translate(${from.left + from.width / 2 - (to.left + to.width / 2)}px, ${from.top + from.height / 3 - (to.top + to.height / 2)}px) scale(0.2) rotate(-14deg)`;
+      void tile.offsetWidth;
+      tile.style.transition = 'transform 0.55s cubic-bezier(0.2, 0.8, 0.3, 1.15)';
+      tile.style.transform = '';
+      tile.classList.add('shown');
+    } else {
+      tile.classList.add('shown');
+    }
+    // повтор карты: к ней летит осколок
     const shard = document.createElement('div');
     shard.className = 'co-shard';
     shard.style.setProperty('--rarity', rarity.color);
     shard.style.left = `${from.left + from.width / 2}px`;
     shard.style.top = `${from.top + from.height / 3}px`;
-    document.body.appendChild(shard);
+    if (!fresh) document.body.appendChild(shard);
     requestAnimationFrame(() => {
       shard.style.transform = `translate(${to.left + to.width / 2 - (from.left + from.width / 2)}px, ${to.top + to.height / 2 - (from.top + from.height / 3)}px) rotate(540deg) scale(0.6)`;
       shard.style.opacity = '0.2';
