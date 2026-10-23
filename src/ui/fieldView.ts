@@ -226,7 +226,8 @@ export class FieldView {
       this.selected = d.from;
       this.render(this.state);
     }
-    d.ghost.style.transform = `translate(${e.clientX - d.ghost.offsetWidth / 2}px, ${e.clientY - d.ghost.offsetHeight / 2}px)`;
+    // увеличение — в той же строке преобразования: отдельное свойство scale растянуло бы и сдвиг
+    d.ghost.style.transform = `translate(${e.clientX - d.ghost.offsetWidth / 2}px, ${e.clientY - d.ghost.offsetHeight / 2}px) scale(1.08)`;
     const hover = this.elAt(e.clientX, e.clientY);
     if (hover !== d.hover) {
       d.hover?.classList.remove('hover');

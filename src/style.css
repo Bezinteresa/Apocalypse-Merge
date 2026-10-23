@@ -1467,7 +1467,6 @@ body {
 .piece.ghost {
   will-change: transform;
   box-shadow: 0 8px 18px #000a;
-  scale: 1.08;
 }
 
 /* ---------- облачко «пуф» после восстановления ---------- */
@@ -1811,4 +1810,15 @@ body {
 .chest-open-close[hidden],
 .chest-open-hint[hidden] {
   display: none;
+}
+
+/* копия под курсором и летящий из генератора предмет всегда поверх экрана, даже если у предмета есть картинка */
+.piece.ghost,
+.piece.has-art.ghost,
+.piece.fx-fly,
+.piece.has-art.fx-fly {
+  position: fixed;
+  left: 0;
+  top: 0;
+  margin: 0;
 }
