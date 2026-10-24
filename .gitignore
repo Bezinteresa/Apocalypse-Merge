@@ -5,3 +5,5 @@ release/
 .DS_Store
 art/generated-previews/
 art/generated-assets-report.json
+# старая плитка доски, в игре не используется (поле однородное с 23.10.2026)
+public/sprites/ui/cell.png
