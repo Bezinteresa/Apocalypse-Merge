@@ -134,6 +134,10 @@ export function migrate(raw: unknown): GameState | null {
     const close = !done.includes('R04') && storage.every((x) => x === null);
     data = { ...data, schemaVersion: 12, storage: close ? [] : storage };
   }
+  if (data.schemaVersion === 12) {
+    // v13: настройка звука; звуков раньше не было — включаем
+    data = { ...data, schemaVersion: 13, soundOn: true };
+  }
   return data.schemaVersion === SCHEMA_VERSION && validateState(data) ? data : null;
 }
 

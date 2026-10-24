@@ -31,6 +31,7 @@ import type { AdService } from '../platform/ads';
 import { AD_REWARD_ENERGY, AD_REWARD_LIMIT, adCooldownLeft, adRewardsAt, canShowInterstitial, canWatchRewardAd, grantAdReward } from '../game/ads';
 import { createAlbum } from './albumView';
 import { dragScroll } from './dragScroll';
+import { playSound, setSoundEnabled } from '../platform/sound';
 import { Finger } from './finger';
 import { currentHint, markFlag } from '../game/hints';
 import { BUILDING_SPRITE, generatorSprite, hasSprite, itemSprite, portraitSprite, spriteImg, spriteUrl, uiSprite } from './sprites';
@@ -130,6 +131,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     </div></div>
     <div class="modal settings-modal" hidden><div class="modal-box settings-box">
       <h3 class="settings-title"></h3>
+      <label class="settings-row"><input type="checkbox" class="settings-sound"> <span class="settings-sound-label"></span></label>
       <button class="btn danger settings-reset"></button>
       <p class="settings-note"></p>
       <button class="btn small ghost settings-close"></button>
@@ -233,11 +235,13 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       const content = getAt(state, loc);
       if (loc.area === 'board' && state.fog[loc.index] === 'box') {
         view.flash(loc, 'shake');
+        playSound('error');
         deps.toast('boxHint');
         return;
       }
       // как в «Отеле Мечты»: первое нажатие выбирает ящик (рамка-уголки), повторное по выбранному — выдаёт предмет
       if (content?.kind === 'generator' && loc.area === 'board' && !(selected?.area === 'board' && selected.index === loc.index)) {
+        playSound('tap');
         select(loc);
         return;
       }
@@ -245,6 +249,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         const r = spawnFromGenerator(state, loc.index);
         if (!r.ok) {
           view.flash(loc, 'shake');
+          playSound('error');
           tel.refused(r.reason);
           if (r.reason === 'inactive') {
             deps.toast('generatorInactive');
@@ -258,18 +263,22 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         } else {
           tel.spawned(content.generatorId);
           commit(r.state);
+          playSound('spawn');
           view.effect('spawn', { area: 'board', index: r.cell }, loc);
         }
       }
+      if (content?.kind === 'item') playSound('tap');
       select(content ? loc : null);
     },
     onStorageFull() {
+      playSound('error');
       deps.toast(state.storage.length ? 'storageFull' : 'storageLocked');
     },
     onDrop(from, to) {
       const r = moveItem(state, from, to);
       if (!r.ok) {
         view.flash(from, 'shake');
+        playSound('error');
         if (r.reason === 'locked') deps.toast(to.area === 'board' && state.fog[to.index] === 'web' ? 'webHint' : 'locked');
         if (r.reason === 'generator_to_storage') deps.toast('generatorToStorage');
         return false;
@@ -280,6 +289,9 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       select(r.to);
       if (r.action === 'merge') {
         view.effect('merge', r.to);
+        // выше уровень получившейся вещи — выше звук
+        const merged = getAt(r.state, r.to);
+        playSound('merge', merged?.kind === 'item' ? getItem(merged.itemId).level : merged?.kind === 'generator' ? merged.level : 1);
         if (r.freed) {
           view.effect('freed', r.to);
           deps.toast('cellFreed');
@@ -330,7 +342,13 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   $('.settings-title').textContent = t('settings');
   $('.settings-note').textContent = t('resetNote');
   $('.settings-close').textContent = t('close');
+  $('.settings-sound-label').textContent = t('sound');
+  $<HTMLInputElement>('.settings-sound').onchange = (e) => {
+    commit({ ...state, soundOn: (e.target as HTMLInputElement).checked }, true);
+    playSound('tap');
+  };
   $('.settings-btn').onclick = () => {
+    $<HTMLInputElement>('.settings-sound').checked = state.soundOn;
     settingsArmed = false;
     settingsReset.disabled = false;
     settingsReset.textContent = t('resetProgress');
@@ -755,6 +773,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
         tel.goal('order_delivered', order.id);
         const gotChest = r.state.chests.length > state.chests.length;
         commit(r.state, true);
+        playSound('coins');
         deps.toast('delivered', gotChest ? `+${r.reward} · ${t('chestReceived')}` : `+${r.reward}`);
         select(null);
       };
@@ -906,6 +925,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       commit(r.state, true);
       select(null);
       playPoof($('.scene'), project.id);
+      playSound('poof');
       deps.toast('rubbleCleared', `— ${tx(project.name)}`);
       finger.show(currentHint(state), !currentTutorialStep(state));
       return;
@@ -930,6 +950,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     commit(r.state, true);
     select(null);
     const shown = !shopEl.hidden && playPoof($('.scene'), project.id);
+    playSound('poof');
+    setTimeout(() => playSound('repair'), shown ? POOF_MS - 300 : 0);
     setTimeout(() => {
       effectPlaying = false;
       modal.hidden = false;
@@ -945,6 +967,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
   }
 
   function render(): void {
+    setSoundEnabled(state.soundOn);
     $('.money-value').textContent = String(state.money);
     renderEnergy();
     const wanted = new Set<string>();

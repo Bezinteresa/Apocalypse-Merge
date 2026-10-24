@@ -490,6 +490,7 @@ export function validateState(raw: unknown): raw is GameState {
   if (typeof s.energyUnlimited !== 'boolean') return false;
   if (!validCollections(s)) return false;
   if (!Array.isArray(s.flags) || !s.flags.every((f) => typeof f === 'string')) return false;
+  if (typeof s.soundOn !== 'boolean') return false;
   const ad = s.adRewards;
   if (!ad || typeof ad.used !== 'number' || ad.used < 0 || typeof ad.cooldownUntil !== 'number' || !Number.isFinite(ad.cooldownUntil)) return false;
   const uids = new Set<number>();

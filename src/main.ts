@@ -1,7 +1,8 @@
 import './style.css';
 import { normalizeLanguage, setLanguage, t, type StringKey } from './i18n';
 import { bridge, initPlatform, isLocalDev, platformId, platformLanguage, sendGameReady, setGameplayActive } from './platform/platform';
-import { isPaused, onLifecycleChange, startLifecycle } from './platform/lifecycle';
+import { isAudioAllowed, isPaused, onLifecycleChange, startLifecycle } from './platform/lifecycle';
+import { setSoundAllowed, startSound } from './platform/sound';
 import { SaveStore, type StorageBackend } from './platform/saveStore';
 import { createGameScreen } from './ui/gameScreen';
 import { createInitialState } from './game/state';
@@ -100,7 +101,8 @@ async function boot(): Promise<void> {
     telemetry,
     ads,
     async resetProgress() {
-      const fresh = { ...createInitialState(), adRewards: screen.getState().adRewards };
+      // сброс не обнуляет лимит наград за рекламу и настройку звука
+      const fresh = { ...createInitialState(), adRewards: screen.getState().adRewards, soundOn: screen.getState().soundOn };
       telemetry.reset();
       store.save(fresh);
       await store.flush();
@@ -108,7 +110,11 @@ async function boot(): Promise<void> {
     },
   });
   screen.setPaused(isPaused());
-  onLifecycleChange(({ paused }) => {
+  startSound();
+  setSoundAllowed(isAudioAllowed());
+  onLifecycleChange(({ paused, audioAllowed }) => {
+    // звук молчит при рекламе, в фоне, на паузе и при запрете площадки
+    setSoundAllowed(audioAllowed);
     telemetry.setActive(!paused);
     screen.setPaused(paused);
     setGameplayActive(!paused);

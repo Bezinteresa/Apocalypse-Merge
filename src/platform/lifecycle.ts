@@ -29,6 +29,11 @@ export function isPaused(): boolean {
   return reasons.size > 0;
 }
 
+/** Можно ли сейчас звучать: площадка разрешает звук и нет ни одной причины паузы. */
+export function isAudioAllowed(): boolean {
+  return platformAudioEnabled && reasons.size === 0;
+}
+
 export function onLifecycleChange(listener: Listener): () => void {
   listeners.add(listener);
   return () => listeners.delete(listener);

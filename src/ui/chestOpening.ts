@@ -2,6 +2,7 @@ import { CHESTS, RARITY, getCard } from '../content/collections';
 import { t, tx } from '../i18n';
 import type { ChestResult } from '../game/collections';
 import { cardSprite, chestSprite, spriteImg } from './sprites';
+import { playSound } from '../platform/sound';
 
 // Сцена открытия сундука: сундук трясётся и раскрывается, осколки по одному вылетают к своим картам,
 // у каждой карты видно прибавку к прогрессу или превращение лишнего осколка в жетоны.
@@ -72,6 +73,7 @@ export function showChestOpening(result: ChestResult, shardsBefore: Record<strin
     if (draw.guaranteed) tile.classList.add('guaranteed');
     const from = chestEl.getBoundingClientRect();
     const to = tile.getBoundingClientRect();
+    playSound('card');
     if (fresh) {
       // новая карта сама вылетает из сундука и встаёт на своё место
       tile.style.transition = 'none';
@@ -122,6 +124,7 @@ export function showChestOpening(result: ChestResult, shardsBefore: Record<strin
     setTimeout(() => {
       chestEl.classList.remove('shaking');
       root.classList.add('opened');
+      playSound('chest');
     }, SHAKE_MS),
   );
   result.draws.forEach((_, i) =>
