@@ -10,9 +10,9 @@ export const AD_REWARD_ENERGY = 20;
 export const AD_REWARD_LIMIT = 3;
 export const AD_REWARD_COOLDOWN_MS = 3 * 60 * 60 * 1000;
 
-/** Межстраничная: первая не раньше чем через 180 с после запуска, затем не чаще раза в 120 с. */
+/** Межстраничная: первая не раньше чем через 180 с после запуска, затем не чаще раза в 7 минут (решение пользователя от 24.10.2026). */
 export const INTERSTITIAL_FIRST_DELAY_MS = 180_000;
-export const INTERSTITIAL_INTERVAL_MS = 120_000;
+export const INTERSTITIAL_INTERVAL_MS = 420_000;
 /** Не в обучении и не на первом ремонте: только после R02. */
 export const INTERSTITIAL_MIN_PROJECTS = 2;
 
