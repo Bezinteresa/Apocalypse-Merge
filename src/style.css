@@ -2625,3 +2625,14 @@ body {
 .drag-scroll-y.panning > * {
   pointer-events: none;
 }
+
+/* ПК (широкий экран): заказы столбиком слева, карточки широкие — значки нужных предметов крупнее */
+@media (min-aspect-ratio: 5/4) {
+  .order .chip {
+    max-width: 110px;
+  }
+
+  .order {
+    padding-top: 18px;
+  }
+}
