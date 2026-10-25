@@ -2,7 +2,7 @@ import { openBoard } from './testUtils';
 import { describe, expect, it } from 'vitest';
 import { START_GENERATORS } from '../content/board';
 import { GENERATORS, GENERATOR_ACTIVE_LEVEL, GENERATOR_MAX_LEVEL, GENERATOR_ODDS, getItem, parseGeneratorToken } from '../content/items';
-import { CHAPTERS, MAX_ACTIVE_ORDERS, ORDERS, PROJECTS } from '../content/orders';
+import { CHAPTERS, MAX_ACTIVE_ORDERS, ORDERS, PROJECTS, partsOrderId } from '../content/orders';
 import { ENERGY_START } from './energy';
 import {
   availableOrders,
@@ -227,12 +227,12 @@ describe('selling', () => {
 });
 
 describe('orders', () => {
-  it('shows only O01 before the first delivery, then O02 and R01', () => {
+  it('shows only O01 before the first delivery, then the R01 parts order, O02 and R01', () => {
     const s = openBoard();
     expect(availableOrders(s).map((o) => o.id)).toEqual(['O01']);
     expect(currentProject(s)).toBeNull();
     const after = { ...s, completedOrders: ['O01'] };
-    expect(availableOrders(after).map((o) => o.id)).toEqual(['O02']);
+    expect(availableOrders(after).map((o) => o.id)).toEqual(['Q01', 'O02']);
     expect(currentProject(after)?.id).toBe('R01');
   });
 
@@ -264,17 +264,30 @@ describe('orders', () => {
   });
 });
 
+/** Детали ремонта уже сданы заказом, монет ровно на ремонт — для проверок самого ремонта. */
+function partsReady(state: GameState, projectId: string): GameState {
+  return { ...state, completedOrders: [...state.completedOrders, partsOrderId(projectId)], money: project(projectId).cost };
+}
+
 describe('projects', () => {
-  it('requires the current project, money and items', () => {
+  it('a repair needs its parts order delivered on the field, then only coins', () => {
     let s = { ...put(openBoard(), 0, 'M02'), completedOrders: ['O01'] };
     expect(completeProject(s, 'R02')).toEqual({ ok: false, reason: 'not_current' });
+    // детали R01 — заказ Q01 на поле; без него ремонт не начать
+    expect(availableOrders(s)[0]).toMatchObject({ id: 'Q01', forProject: 'R01', requires: [{ itemId: 'M02' }] });
+    expect(completeProject(s, 'R01')).toEqual({ ok: false, reason: 'parts_missing' });
+    const delivered = deliverOrder(s, 'Q01');
+    if (!delivered.ok) throw new Error(delivered.reason);
+    s = delivered.state;
+    expect(s.cells[0]).toBeNull();
+    expect(s.money).toBe(10);
+    // цена ремонта поднята на награду за детали: 10 + 10
     expect(completeProject(s, 'R01')).toEqual({ ok: false, reason: 'no_money' });
-    s = { ...s, money: 10 };
+    s = { ...s, money: 20 };
     const r = completeProject(s, 'R01');
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(r.state.money).toBe(0);
-    expect(r.state.cells[0]).toBeNull();
     // после R01 — первая гора мусора, затем R02
     expect(currentProject(r.state)?.id).toBe('C01');
     expect(completeProject(r.state, 'R01')).toEqual({ ok: false, reason: 'not_current' });
@@ -299,7 +312,9 @@ describe('projects', () => {
       run(deliverOrder(s, id));
     };
     const repair = (id: string) => {
-      for (const req of project(id).requires) s = craft(s, req.itemId, stats);
+      // детали ремонта — заказ на поле; сам ремонт только за монеты
+      const parts = ORDERS.find((o) => o.forProject === id);
+      if (parts) deliver(parts.id);
       run(completeProject(s, id));
       s = mergeCrates(s);
     };
@@ -344,30 +359,27 @@ describe('projects', () => {
   });
 
   it('R03 places the provision crate; without space it waits in incoming', () => {
-    const base = { ...put(put(openBoard(), 0, 'T03'), 1, 'M03'), money: 35, completedOrders: ['O01'], completedProjects: ['R01', 'C01', 'R02'] };
+    const base = partsReady({ ...openBoard(), completedOrders: ['O01'], completedProjects: ['R01', 'C01', 'R02'] }, 'R03');
     const placed = completeProject(base, 'R03');
     expect(placed.ok && placed.placedCell).not.toBeNull();
     if (!placed.ok) return;
     expect(placed.state.incoming).toEqual([]);
     expect(availableOrders(placed.state).map((o) => o.id)).toEqual(['O02', 'O03', 'O04', 'O05', 'O06']);
 
-    // заполнить все свободные клетки, оставив T03 и M03 для проекта
+    // поле заполнено целиком: ящик ждёт во входящих
     let full = base;
-    for (let i = 2; i < full.cells.length; i++) if (full.cells[i] === null && !full.fog[i]) full = put(full, i, 'T06');
+    for (let i = 0; i < full.cells.length; i++) if (full.cells[i] === null && !full.fog[i]) full = put(full, i, 'T06');
     const waiting = completeProject(full, 'R03');
     expect(waiting.ok).toBe(true);
     if (!waiting.ok) return;
-    // T03 и M03 списаны — их клетки освободились, генератор занял одну из них
-    expect(waiting.state.incoming).toEqual([]);
+    expect(waiting.state.incoming).toEqual(['G_PROVISION']);
 
-    let reallyFull = { ...full, cells: full.cells.slice() };
-    reallyFull = put(put(reallyFull, 0, 'T06'), 1, 'T06');
-    const stuck = placeIncoming({ ...reallyFull, incoming: ['G_PROVISION'] });
+    const stuck = placeIncoming({ ...full, incoming: ['G_PROVISION'] });
     expect(stuck).toEqual({ ok: false, reason: 'board_full' });
   });
 
   it('R04 requires the provision crate on the board', () => {
-    const s = { ...put(put(openBoard(), 0, 'T03'), 1, 'M04'), money: 50, completedOrders: ['O01'], completedProjects: ['R01', 'C01', 'R02', 'R03', 'C02'], incoming: ['G_PROVISION'] };
+    const s = partsReady({ ...openBoard(), completedOrders: ['O01'], completedProjects: ['R01', 'C01', 'R02', 'R03', 'C02'], incoming: ['G_PROVISION'] }, 'R04');
     expect(completeProject(s, 'R04')).toEqual({ ok: false, reason: 'generator_missing' });
     const placed = placeIncoming(s);
     if (!placed.ok) throw new Error();
@@ -380,7 +392,7 @@ describe('projects', () => {
     // на закрытый склад ничего не положить
     const closed = { ...put(openBoard(), 30, 'T01'), storage: [] };
     expect(moveItem(closed, board(30), slot(0))).toEqual({ ok: false, reason: 'out_of_bounds' });
-    const base = { ...put(put(closed, 0, 'T03'), 1, 'M04'), money: 50, completedOrders: ['O01'], completedProjects: ['R01', 'C01', 'R02', 'R03', 'C02'], incoming: ['G_PROVISION'] };
+    const base = partsReady({ ...closed, completedOrders: ['O01'], completedProjects: ['R01', 'C01', 'R02', 'R03', 'C02'], incoming: ['G_PROVISION'] }, 'R04');
     const placed = placeIncoming(base);
     if (!placed.ok) throw new Error();
     const r = completeProject(placed.state, 'R04');

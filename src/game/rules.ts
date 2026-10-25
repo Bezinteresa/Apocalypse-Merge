@@ -1,6 +1,6 @@
 import { BOARD_COLS, BOARD_SIZE, cellIndex, neighbors } from '../content/board';
 import { GENERATORS, GENERATOR_ACTIVE_LEVEL, GENERATOR_MAX_LEVEL, ITEMS, generatorDrops, getItem, parseGeneratorToken, type ChainId } from '../content/items';
-import { MAX_ACTIVE_ORDERS, ORDERS, PROJECTS, getOrder, getProject, type OrderDef, type ProjectDef, type Requirement } from '../content/orders';
+import { MAX_ACTIVE_ORDERS, ORDERS, PROJECTS, partsOrderId, getOrder, getProject, type OrderDef, type ProjectDef, type Requirement } from '../content/orders';
 import type { CellContent, GameState, ItemInstance, Loc } from './state';
 import { addEnergy, hasEnergyForSpawn, regenerate, spendSpawnEnergy } from './energy';
 import { grantChestFor, nextRandom } from './collections';
@@ -30,7 +30,7 @@ export type DeliverResult =
 
 export type ProjectResult =
   | { ok: true; state: GameState; project: ProjectDef; placedCell: number | null }
-  | { ok: false; reason: 'unknown' | 'not_current' | 'no_money' | 'missing_items' | 'generator_missing' };
+  | { ok: false; reason: 'unknown' | 'not_current' | 'no_money' | 'parts_missing' | 'generator_missing' };
 
 export type PlaceResult = { ok: true; state: GameState; cell: number; generatorId: string; level: number } | { ok: false; reason: 'empty' | 'board_full' };
 
@@ -287,8 +287,13 @@ export function availableOrders(state: GameState): OrderDef[] {
     (o) =>
       !state.completedOrders.includes(o.id) &&
       isProjectDone(state, o.after) &&
+      // детали уже отремонтированного места больше не нужны
+      !(o.forProject && state.completedProjects.includes(o.forProject)) &&
       o.requires.every((req) => isChainAvailable(state, getItem(req.itemId).chain)),
-  ).slice(0, MAX_ACTIVE_ORDERS);
+  )
+    // детали текущего ремонта — первыми, чтобы лимит их не прятал
+    .sort((a, b) => Number(!!b.forProject) - Number(!!a.forProject))
+    .slice(0, MAX_ACTIVE_ORDERS);
 }
 
 /** Ближайший незавершённый проект; null — доступный срез пройден. */
@@ -373,23 +378,26 @@ export function deliverOrder(state: GameState, orderId: string): DeliverResult {
   return { ok: true, state: grantChestFor(next, order.id), reward: order.reward };
 }
 
-export function canCompleteProject(state: GameState, project: ProjectDef): boolean {
-  if (project.requiresGenerator && !hasGeneratorOnBoard(state, project.requiresGenerator)) return false;
-  return state.money >= project.cost && findSources(state, project.requires) !== null;
+/** Детали ремонта сданы заказом на поле (у расчистки мусора деталей нет). */
+export function partsDelivered(state: GameState, project: ProjectDef): boolean {
+  return !project.requires.length || state.completedOrders.includes(partsOrderId(project.id));
 }
 
-/** Завершение проекта: списание предметов и денег, открытия и награды — одна операция. */
+export function canCompleteProject(state: GameState, project: ProjectDef): boolean {
+  if (project.requiresGenerator && !hasGeneratorOnBoard(state, project.requiresGenerator)) return false;
+  return state.money >= project.cost && partsDelivered(state, project);
+}
+
+/** Завершение проекта: детали сданы заказом заранее, здесь списываются только монеты; открытия и награды — одна операция. */
 export function completeProject(state: GameState, projectId: string): ProjectResult {
   if (!PROJECTS.some((p) => p.id === projectId)) return { ok: false, reason: 'unknown' };
   const project = getProject(projectId);
   if (currentProject(state)?.id !== projectId) return { ok: false, reason: 'not_current' };
   if (project.requiresGenerator && !hasGeneratorOnBoard(state, project.requiresGenerator)) return { ok: false, reason: 'generator_missing' };
+  if (!partsDelivered(state, project)) return { ok: false, reason: 'parts_missing' };
   if (state.money < project.cost) return { ok: false, reason: 'no_money' };
-  const sources = findSources(state, project.requires);
-  if (!sources) return { ok: false, reason: 'missing_items' };
 
   const next = clone(state);
-  for (const loc of sources) setAt(next, loc, null);
   next.money -= project.cost;
   next.completedProjects.push(project.id);
   if (project.storageCapacity && project.storageCapacity > next.storage.length) {

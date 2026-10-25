@@ -1,3 +1,4 @@
+import { getProject } from '../content/orders';
 import { describe, expect, it } from 'vitest';
 import { START_GENERATORS } from '../content/board';
 import { GENERATOR_ODDS, generatorDrops } from '../content/items';
@@ -73,8 +74,9 @@ describe('generator levels', () => {
       ...openBoard(),
       cells: openBoard().cells.map((c, i) => (i === 0 ? { kind: 'item', uid: 1, itemId: 'T02' } : i === 1 ? { kind: 'item', uid: 2, itemId: 'M03' } : c)),
       nextUid: 3,
-      money: 25,
-      completedOrders: ['O01'],
+      // детали R02 сданы заказом Q02, монет ровно на ремонт
+      money: getProject('R02').cost,
+      completedOrders: ['O01', 'Q02'],
       completedProjects: ['R01', 'C01'],
     };
     const r = completeProject(s, 'R02');

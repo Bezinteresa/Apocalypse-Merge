@@ -2649,3 +2649,8 @@ body {
   width: 20px;
   height: 20px;
 }
+
+/* заказ деталей для ремонта — с молотком и тёплой полоской сверху */
+.order.parts {
+  border-top: 4px solid #e0a040;
+}

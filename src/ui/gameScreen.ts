@@ -20,6 +20,7 @@ import {
   spawnFromGenerator,
   undoSale,
   whereToGet,
+  partsDelivered,
 } from '../game/rules';
 import { ENERGY_CAP, addEnergy, msToNextEnergy, regenerate, setUnlimited } from '../game/energy';
 import type { GameState, Loc } from '../game/state';
@@ -687,8 +688,6 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     let detail = info?.detail ?? t('hintIdle');
     if (content?.kind === 'item') {
       const users = [...availableOrders(state).filter((o) => o.requires.some((r) => r.itemId === content.itemId)).map((o) => o.id)];
-      const project = currentProject(state);
-      if (project?.requires.some((r) => r.itemId === content.itemId)) users.push(project.id);
       if (users.length) detail += ` · ${t('neededFor')}: ${users.join(', ')}`;
     }
     $('.info-detail').textContent = detail;
@@ -752,7 +751,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
       else avatar.textContent = tx(VISITORS[order.visitor].name).slice(0, 1);
       const name = document.createElement('span');
       name.className = 'order-name';
-      name.textContent = tx(VISITORS[order.visitor].name);
+      name.textContent = order.forProject ? `🔨 ${tx(VISITORS[order.visitor].name)}` : tx(VISITORS[order.visitor].name);
+      card.classList.toggle('parts', !!order.forProject);
       head.append(avatar, name);
       const text = document.createElement('div');
       text.className = 'order-text';
@@ -888,7 +888,14 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     btn.classList.toggle('tut', currentTutorialStep(state)?.targets.some((x) => x.kind === 'project') ?? false);
     btn.onclick = () => finishProject(current);
     card.append(title);
-    if (current.requires.length) card.append(requirementChips(current.requires));
+    // детали ремонта собираются заказом на поле; здесь — только отметка, сданы ли они
+    if (current.requires.length) {
+      const parts = document.createElement('p');
+      const delivered = partsDelivered(state, current);
+      parts.className = delivered ? 'cost ok' : 'cost';
+      parts.textContent = delivered ? `✓ ${t('partsDelivered')}` : t('partsInOrder');
+      card.append(parts);
+    }
     if (current.requiresGenerator && !state.cells.some((c) => c?.kind === 'generator' && c.generatorId === current.requiresGenerator)) {
       const need = document.createElement('p');
       need.className = 'cost';
@@ -916,7 +923,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     if (!r.ok) {
       if (r.reason === 'no_money') deps.toast('noMoney', `${state.money}/${project.cost}`);
       else if (r.reason === 'generator_missing') deps.toast('placeFirst', project.requiresGenerator ? tx(GENERATORS[project.requiresGenerator].name) : '');
-      else deps.toast('missingItems', missingList(project.requires));
+      else deps.toast('partsInOrder');
       return;
     }
     if (project.kind === 'rubble') {
@@ -972,7 +979,6 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     renderEnergy();
     const wanted = new Set<string>();
     for (const o of availableOrders(state)) for (const r of o.requires) wanted.add(r.itemId);
-    for (const r of currentProject(state)?.requires ?? []) wanted.add(r.itemId);
     view.setWanted(wanted);
     const tutIds = new Set<string>();
     for (const target of currentTutorialStep(state)?.targets ?? []) {

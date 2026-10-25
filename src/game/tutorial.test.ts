@@ -38,6 +38,8 @@ describe('tutorial', () => {
     s = ok(deliverOrder(s, 'O01')).state;
     expect(step(s)).toBe('make_m02');
     s = mergeFirstPair(spawn(spawn(s, MAT), MAT), 'M01');
+    expect(step(s)).toBe('deliver_q01');
+    s = ok(deliverOrder(s, 'Q01')).state;
     expect(step(s)).toBe('restore_r01');
     s = ok(completeProject(s, 'R01')).state;
     expect(step(s)).toBeNull();
@@ -47,10 +49,10 @@ describe('tutorial', () => {
     let s = openBoard();
     s = mergeFirstPair(spawn(spawn(s, TOOL), TOOL), 'T01');
     s = mergeFirstPair(spawn(spawn(s, MAT), MAT), 'M01');
-    // T02 и M02 уже есть: обучение сразу просит сдать заказ
+    // T02 и M02 уже есть: обучение сразу просит сдать заказ, затем детали для R01
     expect(step(s)).toBe('deliver_o01');
     s = ok(deliverOrder(s, 'O01')).state;
-    expect(step(s)).toBe('restore_r01');
+    expect(step(s)).toBe('deliver_q01');
   });
 
   it('resumes from the same step after a save round-trip', () => {

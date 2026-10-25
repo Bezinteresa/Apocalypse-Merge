@@ -114,6 +114,8 @@ const STRINGS = {
   collect: { ru: 'Забрать', en: 'Collect' },
   storageLocked: { ru: 'Склад откроется после ремонта склада в магазине', en: 'Storage opens once the storeroom is repaired' },
   storageFull: { ru: 'На складе нет места', en: 'Storage is full' },
+  partsInOrder: { ru: 'Детали для ремонта — в заказе 🔨 на поле. Сдайте его, затем возвращайтесь сюда', en: 'Parts for this repair are a 🔨 order on the board. Deliver it, then come back here' },
+  partsDelivered: { ru: 'Детали собраны', en: 'Parts delivered' },
   rubble: { ru: 'Расчистка', en: 'Clearing' },
   clearRubble: { ru: 'Расчистить', en: 'Clear' },
   rubbleReady: { ru: 'Можно расчистить!', en: 'Ready to clear!' },

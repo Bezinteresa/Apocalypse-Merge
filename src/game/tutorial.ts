@@ -55,7 +55,13 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     id: 'make_m02',
     hint: { ru: 'Достаньте два металлолома и соедините их', en: 'Get two scrap metals and merge them' },
     targets: [{ kind: 'generator', generatorId: 'G_MATERIAL' }, { kind: 'item', itemId: 'M01' }],
-    done: (s) => has(s, 'M02') || projectDone(s, 'R01'),
+    done: (s) => has(s, 'M02') || orderDone(s, 'Q01') || projectDone(s, 'R01'),
+  },
+  {
+    id: 'deliver_q01',
+    hint: { ru: 'Отдайте детали Льву: нажмите на заказ 🔨', en: 'Give the parts to Lev: tap the 🔨 order' },
+    targets: [{ kind: 'order', orderId: 'Q01' }],
+    done: (s) => orderDone(s, 'Q01') || projectDone(s, 'R01'),
   },
   {
     id: 'restore_r01',
