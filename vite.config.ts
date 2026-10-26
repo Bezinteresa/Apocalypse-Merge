@@ -36,8 +36,12 @@ function spriteListPlugin(): Plugin {
 
 // base './' — архив открывается из подкаталога площадки.
 // mode 'local' — Bridge кладётся в сборку как playgama-bridge.js, без загрузки с CDN (CSP Яндекса).
+// версия сборки из package.json — в телеметрию (session_start, performance_sample), чтобы сравнивать выпуски
+const BUILD_VERSION = JSON.parse(fs.readFileSync(new URL('./package.json', import.meta.url), 'utf8')).version as string;
+
 export default defineConfig({
   base: './',
+  define: { __BUILD_VERSION__: JSON.stringify(BUILD_VERSION) },
   plugins: [playgamaBridge({ mode: 'local' }), spriteListPlugin()],
   build: {
     outDir: 'dist',

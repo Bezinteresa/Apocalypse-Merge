@@ -7,6 +7,7 @@ import { SaveStore, type StorageBackend } from './platform/saveStore';
 import { createGameScreen } from './ui/gameScreen';
 import { createInitialState } from './game/state';
 import { Telemetry, parseLog } from './platform/telemetry';
+import { startPerformanceSampling } from './platform/performance';
 import { AdService, createFakeAdAdapter, type AdAdapter, type AdState } from './platform/ads';
 import { setPauseReason } from './platform/lifecycle';
 
@@ -73,7 +74,16 @@ async function boot(): Promise<void> {
   );
   store.attachLog(() => telemetry.data);
   telemetry.setActive(!isPaused());
-  telemetry.track('session_start', { returning: loaded.source !== 'new', platform: platformId() });
+  telemetry.track('session_start', { returning: loaded.source !== 'new', platform: platformId(), build_version: __BUILD_VERSION__ });
+  // плавность — раз в ~30 с активной игры, той же отправкой, что остальные события
+  const perf = startPerformanceSampling((sample) => {
+    try {
+      bridge.analytics.send('performance_sample', { ...sample });
+    } catch {
+      /* аналитика не должна ломать игру */
+    }
+  }, __BUILD_VERSION__);
+  perf.setActive(!isPaused());
 
   const adapter: AdAdapter = {
     get isRewardedSupported() {
@@ -116,6 +126,7 @@ async function boot(): Promise<void> {
     // звук молчит при рекламе, в фоне, на паузе и при запрете площадки
     setSoundAllowed(audioAllowed);
     telemetry.setActive(!paused);
+    perf.setActive(!paused);
     screen.setPaused(paused);
     setGameplayActive(!paused);
     if (paused) void store.flush();
@@ -124,7 +135,7 @@ async function boot(): Promise<void> {
 
   if (isLocalDev()) {
     // Отладочный доступ для автоматической проверки в браузере; на площадке не подключается.
-    (window as unknown as { __am: unknown }).__am = { platform: platformId(), ...screen };
+    (window as unknown as { __am: unknown }).__am = { platform: platformId(), ...screen, lastPerformanceSample: () => perf.last() };
   }
 
   loader.hidden = true;
