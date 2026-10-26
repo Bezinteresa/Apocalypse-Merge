@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw
 root = Path(__file__).resolve().parents[1]
 sprite_root = root / 'public' / 'sprites'
 assets = json.loads((root / 'art' / 'generation-prompts.json').read_text(encoding='utf-8'))['assets']
-OPAQUE = ('shop/', 'cards/', 'ui/cell')
+OPAQUE = ('shop/', 'cards/')
 
 errors = []
 found = []

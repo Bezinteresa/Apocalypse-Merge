@@ -1336,6 +1336,82 @@
       ],
       "generator": "ChatGPT built-in imagegen",
       "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a168fd-7d17-73a0-a59e-84a82d2bb6a2\\exec-bfc49591-9b82-4682-b556-d2ce5f5e4a05.png"
+    },
+    {
+      "file": "zones/R14_broken.png",
+      "prompt": "Use case: stylized-concept\nAsset type: 2D game sprite: ONE extremely long thin ceiling string of dead industrial bulbs, transparent background, final format 2560x96 pixels, aspect 80:3.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nImage 1 is a painting STYLE reference only, not the subject.\nSubject: A row of dead caged bulbs on a sagging cable along the ceiling. Worn, dusty, clearly broken or missing, but not scary.\nComposition and SCALE are crucial: draw THIRTY-TWO very small lantern-like protective cages hanging from ONE nearly straight thin cable across the entire width. Because there are 32 lamps spread evenly, each lamp is tiny compared with the whole cable. On a 1984px wide canvas, the cages are each only about 24px wide, 32px high, spaced about 62px from center to center; cable about 3px thick with maximum 6px gentle sag. Entire visible strip including cable, short hangers and cages only about 60px tall at 1984px total width. The nontransparent object is an extremely narrow horizontal line. Individual lamps maintain natural tall proportions. All 32 lamps and the cable are fully inside this single narrow band. If the output canvas is taller than 60px, everything above and below this band must be fully TRANSPARENT.\nA continuous rusty dark cable with sparse worn tape patches, small rusty wire protective cages, dull grey cracked dead bulbs, several empty cages and bent bars; no glow. Slightly elevated front view for a building cross-section. All lamps aligned at a similar height; shallow gentle sag only. Cable tips touch the two image side edges. No extra loose props.\nOne asset per image. No text, letters, numbers, logos, watermark, signature, frame or collage. Genuine transparent alpha background. No wall, ceiling, floor, backdrop, people, shadow or scenery.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a16cf7-c090-7733-a1d7-5257ae596417\\exec-8362a3e5-6303-413a-8c74-81d2aed5f724.png",
+      "processing": {
+        "transparent_canvas_crop": [
+          0,
+          346,
+          1983,
+          456
+        ],
+        "resize": "Lanczos",
+        "same_frame_for_both_states": true,
+        "compression": "PNG, 256 RGB colours, original alpha channel preserved exactly"
+      },
+      "date": "2026-10-24"
+    },
+    {
+      "file": "zones/R14_fixed.png",
+      "prompt": "Use case: precise-object-edit\nAsset type: transparent ceiling-light strip for a 2D game, final slot zones/R14_fixed.png 2560x96, extreme 80:3 strip.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nInput Image 1 is STYLE REFERENCE. Image 2 is the exact EDIT TARGET: the broken ceiling-light string.\nPrimary request: Repair this SAME lighting string and switch on its bulbs. A row of caged bulbs glowing warm yellow on a tidy cable. Clearly repaired and useful, slightly warmer colors than the broken version, SAME SIZE AND POSITION.\nINVARIANTS: Keep the exact same canvas dimensions, transparent margins, horizontal composition and EXTREMELY THIN occupied band. Preserve the exact number of lamp cages, the position and size of EACH cage, cable height, ends and shallow sag, camera angle and overall silhouette from Image 2. Do not enlarge the lamps, do not bring them closer together, do not zoom in, do not crop. The repaired version must overlay the original correctly.\nChange only damage and operating state: repair empty or broken bulbs so every cage contains a softly glowing warm yellow bulb, straighten dented cage bars in place, tidy and restore cable insulation and small clips. Make wire cages clean weathered teal/grey metal with warm brass fasteners, retain a little age and friendly painted texture. Warm amber bulb interiors with restrained light confined tightly around each little lamp, NO giant halos or background illumination, NO opaque glow panel.\nOne continuous lighting fixture, edge to edge across the full width, in the same narrow horizontal band as the reference. Genuine transparent alpha background, including all space above and below the string and between lamps. No ceiling, walls, room, floor, people, shadows, text, letters, numbers, labels, logos, watermark, signature, frame or collage.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "C:\\Users\\Ivan\\.codex\\generated_images\\01a16cf7-c090-7733-a1d7-5257ae596417\\exec-8362a3e5-6303-413a-8c74-81d2aed5f724.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a16cf7-c090-7733-a1d7-5257ae596417\\exec-881aa7e6-6a41-4de8-b11c-2692b2c37c6e.png",
+      "processing": {
+        "transparent_canvas_crop": [
+          0,
+          346,
+          1983,
+          456
+        ],
+        "resize": "Lanczos",
+        "same_frame_for_both_states": true,
+        "compression": "PNG, 256 RGB colours, original alpha channel preserved exactly"
+      },
+      "date": "2026-10-24"
+    },
+    {
+      "file": "zones/R18_fixed.png",
+      "prompt": "Use case: precise-object-edit\nAsset type: transparent 2D game sprite for Apocalypse Merge, final slot zones/R18_fixed.png, 704x576 px, aspect 11:9.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nInput Image 1: style reference only. Image 2: EDIT TARGET, the exact ventilation unit before repair.\nPrimary request: Show this SAME ventilation unit working after repair, fan spinning, ducts reattached, light breeze ribbons. Clearly repaired and useful, slightly warmer colors than the broken version, same size and position.\nInvariants: preserve Image 2's exact slightly elevated front viewpoint, front square fan housing with round grille, large six-blade fan, duct assembly on the RIGHT and low rectangular bolted foot/base. Preserve footprint, object positions and relative proportions and fill nearly the entire image as in Image 2.\nChanges only: straighten and restore dented blue-grey housing; replace torn broken fan blades with intact blades; mend protective grille into a complete neat circle with intact evenly spaced bars. Restore faded teal/blue-grey painted metal with a few believable small wear marks and warm clean brass/rust-orange fasteners. Repair BOTH right-side torn duct mouths with smooth intact metal rims and reconnect their joints securely. Fan is operating: light stylized circular motion accents confined inside the fan opening, blades still legible. Two subtle short translucent pale teal breeze curls at the open duct outlet. Friendly repaired industrial equipment.\nOne isolated object for a building cross-section, fills frame edge to edge horizontally, base at the bottom, no missing parts or clipping. Genuine transparent alpha background, transparent around object and through genuine holes. No wall, floor, backdrop, room, people, no cast ground shadow. One asset per image. No text, letters, numbers, logos, watermark, signature, frame or collage.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png",
+        "public/sprites/zones/R18_broken.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a16cf7-c090-7733-a1d7-5257ae596417\\exec-7b27eb3a-cc0b-43dc-9b32-1a6ea2a0d637.png",
+      "processing": {
+        "resize": "Lanczos",
+        "compression": "PNG, 256 RGB colours, original alpha channel preserved exactly"
+      },
+      "date": "2026-10-24"
+    },
+    {
+      "file": "ui/cell_locked.png",
+      "prompt": "Use case: stylized-concept\nAsset type: one transparent 2D mobile merge-game sprite for Apocalypse Merge, final slot ui/cell_locked.png 256x256.\nStyle: Hand-painted 2D cartoon game art, clean bold outlines, soft cel shading, slightly chunky readable shapes; cozy post-apocalyptic mood of hope and everyday humor; base palette rust orange, concrete grey, faded olive and teal, warm accents (lamp yellow, fabric red, plant green) for restored and valuable things; soft warm light from the upper left; original designs, no gore, no weapons, no skulls.\nInput Image 1: STYLE REFERENCE ONLY; match the painted dark outlines and material shading, do not draw the screwdriver.\nSubject: A closed cardboard box taped shut, drawn as a chunky VOLUMETRIC object in three-quarter view from slightly above: top face, front face and one side face visible, rounded soft edges, light beige cardboard, brown packing tape cross on the top, a couple of dusty cobweb strands at the bottom corners. Covers hidden board cells, sits on the board like an item.\nComposition: one centered approximately cubic closed carton, unmistakably three-dimensional, slightly elevated three-quarter front view with THREE large visible faces: top, front, right side. Top plane occupies the upper third and two vertical faces have substantial height. Front lighter, right side gently darker, soft highlights from upper left, bold readable silhouette. Brown packing tape crosses on lid and continues a short way down sides. A few creases and tiny scuffs, sparse fine cobweb threads attached to the two bottom box corners. Entire box including all corners visible, fills about 90% of square frame with transparent margin.\nGenuine transparent alpha background. No ground shadow, no floor, no backdrop. One asset per image. No text, letters, numbers, labels, logos, watermark, signature, frame or collage.",
+      "reference": "art/reference/style.png",
+      "references": [
+        "art/reference/style.png"
+      ],
+      "generator": "ChatGPT built-in imagegen",
+      "source": "C:\\Users\\Ivan\\.codex\\generated_images\\01a16cf7-c090-7733-a1d7-5257ae596417\\exec-481f2027-e4cb-4820-bc63-59c774ea87b1.png",
+      "processing": {
+        "resize": "Lanczos",
+        "compression": "PNG, 256 RGB colours, original alpha channel preserved exactly"
+      },
+      "date": "2026-10-24"
     }
   ]
 }
