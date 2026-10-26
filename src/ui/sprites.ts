@@ -33,6 +33,8 @@ export const chestSprite = (chestId: string) => `chests/${chestId}.png`;
 export const cardSprite = (cardId: string) => `cards/${cardId}.webp`;
 /** Фон здания в разрезе (пустые комнаты без предметов ремонта). */
 export const BUILDING_SPRITE = 'shop/building.webp';
+/** Полоса этажа −2 под зданием. */
+export const LEVEL2_SPRITE = 'shop/level2.webp';
 /** Место ремонта в сцене магазина: сломанное или починенное состояние. */
 export const zoneSprite = (projectId: string, fixed: boolean) => `zones/${projectId}_${fixed ? 'fixed' : 'broken'}.png`;
 /** Посетитель в полный рост для сцены магазина; портрет по пояс — для окна диалога. */

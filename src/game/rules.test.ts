@@ -16,8 +16,8 @@ function withItem(state: GameState, cell: number, itemId: string): GameState {
 }
 
 describe('content', () => {
-  it('has 32 items with valid, acyclic chains', () => {
-    expect(Object.keys(ITEMS)).toHaveLength(32);
+  it('has 37 items with valid, acyclic chains', () => {
+    expect(Object.keys(ITEMS)).toHaveLength(37);
     for (const def of Object.values(ITEMS)) {
       if (def.nextId) {
         const next = ITEMS[def.nextId];
@@ -43,8 +43,9 @@ describe('content reachability', () => {
       for (const r of o.requires) {
         expect(ITEMS[r.itemId], o.id).toBeDefined();
         expect(chainsAfter(idx).has(getItem(r.itemId).chain), `${o.id} ${r.itemId}`).toBe(true);
-        // первая глава — до 4-го уровня, вторая (после R08) — до 5-го
-        expect(getItem(r.itemId).level, o.id).toBeLessThanOrEqual(idx > PROJECTS.findIndex((p) => p.id === 'R08') ? 5 : 4);
+        // первая глава — до 4-го уровня, со второй — до 5-го, с четвёртой (после R18) — до 6-го
+        const cap = idx > PROJECTS.findIndex((p) => p.id === 'R18') ? 6 : idx > PROJECTS.findIndex((p) => p.id === 'R08') ? 5 : 4;
+        expect(getItem(r.itemId).level, o.id).toBeLessThanOrEqual(cap);
       }
     }
     PROJECTS.forEach((p, i) => {

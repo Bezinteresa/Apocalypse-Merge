@@ -866,7 +866,8 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     card.replaceChildren();
     if (!current) {
       const p = document.createElement('p');
-      p.textContent = areAllOrdersDone(state) ? t('chapterAllDone') : t('chapterDone');
+      // до первого заказа ремонтов ещё нет — не «главы пройдены», а подсказка вернуться на поле
+      p.textContent = !isChapterComplete(state) ? t('shopNotYet') : areAllOrdersDone(state) ? t('chapterAllDone') : t('chapterDone');
       card.appendChild(p);
       return;
     }
@@ -947,6 +948,7 @@ export function createGameScreen(app: HTMLElement, initial: GameState, deps: Gam
     if (chapter === 1) parts.push(t('chapterEnd1'));
     if (chapter === 2) parts.push(t('chapterEnd2'));
     if (chapter === 3) parts.push(t('chapterEnd3'));
+    if (chapter === 4) parts.push(t('chapterEnd4'));
     $('.modal p').textContent = parts.join('. ');
     interstitialAfterModal = true;
     tel.goal('project_completed', project.id);

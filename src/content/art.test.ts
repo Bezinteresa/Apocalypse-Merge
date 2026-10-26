@@ -3,7 +3,7 @@ import spec from '../../art/generation-prompts.json';
 import { CARDS, CHESTS } from './collections';
 import { GENERATORS, ITEMS } from './items';
 import { PROJECTS, VISITORS } from './orders';
-import { BUILDING_SPRITE, cardSprite, characterSprite, chestSprite, generatorSprite, itemSprite, portraitSprite, zoneSprite } from '../ui/sprites';
+import { BUILDING_SPRITE, LEVEL2_SPRITE, cardSprite, characterSprite, chestSprite, generatorSprite, itemSprite, portraitSprite, zoneSprite } from '../ui/sprites';
 import { SPOTS, ZONES } from './shopLayout';
 
 // Спецификация графики — единственный источник правды: у каждой сущности игры есть слот.
@@ -18,6 +18,7 @@ describe('art specification', () => {
       ...Object.keys(GENERATORS).flatMap((g) => [1, 2, 3, 4, 5, 6].map((l) => generatorSprite(g, l))),
       ...Object.keys(VISITORS).filter((v) => v !== 'RADIO').map(portraitSprite),
       BUILDING_SPRITE,
+      LEVEL2_SPRITE,
       // гора мусора исчезает после расчистки — у неё только картинка «до»
       ...ZONES.flatMap((z) => (z.rubble ? [zoneSprite(z.project, false)] : [zoneSprite(z.project, false), zoneSprite(z.project, true)])),
       ...SPOTS.map((s) => characterSprite(s.visitor)),

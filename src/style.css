@@ -2654,3 +2654,19 @@ body {
 .order.parts {
   border-top: 4px solid #e0a040;
 }
+
+/* сцена выше здания: картинка здания сверху во всю ширину, под ней этаж −2 */
+.scene.has-bg {
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-color: #2b211a;
+}
+
+.scene-level2 {
+  position: absolute;
+  background: linear-gradient(#3a2c22, #241a14) center / cover;
+  background-size: 100% 100%;
+  border-top: 3px solid #5a4636;
+  pointer-events: none;
+}

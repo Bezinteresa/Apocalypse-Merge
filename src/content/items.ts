@@ -1,6 +1,6 @@
 // Определения контента по docs/CONTENT_CATALOG.md. ID постоянные: на них ссылаются сохранения, заказы и проекты.
 
-export type ChainId = 'T' | 'M' | 'P' | 'E' | 'A' | 'F';
+export type ChainId = 'T' | 'M' | 'P' | 'E' | 'A' | 'F' | 'K';
 export type LangText = { ru: string; en: string };
 
 export interface ItemDef {
@@ -31,6 +31,7 @@ export const CHAINS: Record<ChainId, ChainDef> = {
   E: { id: 'E', name: { ru: 'Электрика', en: 'Electrics' }, color: '#d1b832' },
   A: { id: 'A', name: { ru: 'Автодетали', en: 'Car parts' }, color: '#b5533c' },
   F: { id: 'F', name: { ru: 'Трубы и фильтры', en: 'Pipes and filters' }, color: '#3f9fc4' },
+  K: { id: 'K', name: { ru: 'Медицина', en: 'Medicine' }, color: '#d9565b' },
 };
 
 const CHAIN_NAMES: Record<ChainId, LangText[]> = {
@@ -80,6 +81,14 @@ const CHAIN_NAMES: Record<ChainId, LangText[]> = {
     { ru: 'Фильтр', en: 'Filter' },
     { ru: 'Блок очистки', en: 'Purifier unit' },
   ],
+  // глава 4 (жилой этаж убежища): CONTENT_CATALOG, раздел 10б — «бинт → йод → аптечка → медицинская сумка → набор врача»
+  K: [
+    { ru: 'Бинт', en: 'Bandage' },
+    { ru: 'Пузырёк йода', en: 'Iodine bottle' },
+    { ru: 'Аптечка', en: 'First-aid kit' },
+    { ru: 'Медицинская сумка', en: 'Medical bag' },
+    { ru: 'Набор врача', en: "Doctor's kit" },
+  ],
 };
 
 /** Цена продажи по уровню, раздел 7 каталога. */
@@ -117,6 +126,7 @@ export const GENERATORS: Record<string, GeneratorDef> = {
   G_ELECTRIC: { id: 'G_ELECTRIC', name: { ru: 'Стол радиодеталей', en: 'Radio parts bench' }, output: 'E01' },
   G_AUTO: { id: 'G_AUTO', name: { ru: 'Гаражный стеллаж', en: 'Garage parts rack' }, output: 'A01' },
   G_PIPE: { id: 'G_PIPE', name: { ru: 'Трубный стеллаж', en: 'Pipe rack' }, output: 'F01' },
+  G_MED: { id: 'G_MED', name: { ru: 'Медицинский шкаф', en: 'Medicine cabinet' }, output: 'K01' },
 };
 
 /**

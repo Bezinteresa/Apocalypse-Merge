@@ -50,6 +50,7 @@ export const VISITORS: Record<string, VisitorDef> = {
   MARTA: { id: 'MARTA', name: { ru: 'Марта', en: 'Marta' } },
   SAVVA: { id: 'SAVVA', name: { ru: 'Савва', en: 'Savva' } },
   TIKHON: { id: 'TIKHON', name: { ru: 'Тихон', en: 'Tikhon' } },
+  VERA: { id: 'VERA', name: { ru: 'Вера', en: 'Vera' } },
   /** Не посетитель: голос в радиоэфире финальной сцены. */
   RADIO: { id: 'RADIO', name: { ru: 'Радио', en: 'Radio' } },
 };
@@ -114,6 +115,22 @@ const BASE_ORDERS: OrderDef[] = [
   { id: 'O43', visitor: 'TIKHON', text: { ru: 'Заслонки для вентшахты', en: 'Dampers for the air shaft' }, requires: [r('F05'), r('A05')], reward: 130, after: 'R17' },
   { id: 'O44', visitor: 'MARTA', text: { ru: 'Мотор для вентилятора', en: 'A motor for the fan' }, requires: [r('E05'), r('F05'), r('T05')], reward: 180, after: 'R17' },
   { id: 'O45', visitor: 'SAVVA', text: { ru: 'Припасы для дальнего рейса', en: 'Supplies for a long run' }, requires: [r('A05'), r('P05'), r('M05')], reward: 180, after: 'R17' },
+  // глава 4: жилой этаж убежища (PROTOTYPE_PLAN, этап 8)
+  { id: 'O46', visitor: 'TIKHON', text: { ru: 'Запасные фильтры для жилого этажа', en: 'Spare filters for the living level' }, requires: [r('E05'), r('F05')], reward: 135, after: 'R18' },
+  { id: 'O47', visitor: 'NIKA', text: { ru: 'Еда и доски для первых жильцов', en: 'Food and boards for the first residents' }, requires: [r('P05'), r('M05')], reward: 120, after: 'R18' },
+  { id: 'O48', visitor: 'LEV', text: { ru: 'Снаряжение для разборки завалов', en: 'Gear to clear the blocked rooms' }, requires: [r('T05'), r('M05'), r('A05')], reward: 170, after: 'R18' },
+  { id: 'O49', visitor: 'VERA', text: { ru: 'Перевязочный пункт у лестницы', en: 'A dressing station by the stairs' }, requires: [r('K04'), r('F05')], reward: 105, after: 'R19' },
+  { id: 'O50', visitor: 'VERA', text: { ru: 'Аптечка для пункта помощи', en: 'A first-aid kit for the aid post' }, requires: [r('K05'), r('P05')], reward: 145, after: 'R19' },
+  { id: 'O51', visitor: 'MARTA', text: { ru: 'Свет и проводка в комнатах', en: 'Lights and wiring for the rooms' }, requires: [r('E05'), r('A05'), r('T05')], reward: 185, after: 'R19' },
+  { id: 'O52', visitor: 'SAVVA', text: { ru: 'Провиант для кухни из рейса', en: 'Kitchen supplies from the run' }, requires: [r('A05'), r('P05')], reward: 135, after: 'R20' },
+  { id: 'O53', visitor: 'NIKA', text: { ru: 'Обед и лекарства для детей', en: 'Lunch and medicine for the kids' }, requires: [r('P05'), r('K05')], reward: 145, after: 'R20' },
+  { id: 'O54', visitor: 'TIKHON', text: { ru: 'Вытяжка над плитой', en: 'An extractor hood over the stove' }, requires: [r('F05'), r('E05'), r('M05')], reward: 185, after: 'R20' },
+  { id: 'O55', visitor: 'VERA', text: { ru: 'Набор для осмотра', en: 'An examination kit' }, requires: [r('K05'), r('E05')], reward: 145, after: 'R21' },
+  { id: 'O56', visitor: 'VERA', text: { ru: 'Шкаф для лекарств', en: 'A cabinet for medicines' }, requires: [r('K05'), r('T05'), r('M05')], reward: 185, after: 'R21' },
+  { id: 'O57', visitor: 'LEV', text: { ru: 'Груз для соседнего квартала', en: 'Cargo for the next district' }, requires: [r('A05'), r('F05'), r('P05')], reward: 200, after: 'R21' },
+  { id: 'O58', visitor: 'VERA', text: { ru: 'Запас для медблока', en: 'Supplies for the medbay' }, requires: [r('K05'), r('P05'), r('E05')], reward: 200, after: 'R22' },
+  { id: 'O59', visitor: 'SAVVA', text: { ru: 'Аптечка и инструмент в дальний рейс', en: 'A kit and tools for the long run' }, requires: [r('A05'), r('T06'), r('K05')], reward: 235, after: 'R22' },
+  { id: 'O60', visitor: 'MARTA', text: { ru: 'Общий генератор для жилого этажа', en: 'A shared generator for the living level' }, requires: [r('E05'), r('F05'), r('M05'), r('T05')], reward: 235, after: 'R22' },
 ];
 
 export const PROJECTS: ProjectDef[] = [
@@ -146,7 +163,16 @@ export const PROJECTS: ProjectDef[] = [
   { id: 'C09', kind: 'rubble', name: { ru: 'Вычерпать ил из отстойника', en: 'Scoop the silt out of the settling tank' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 70, energyReward: 0, generatorReward: null },
   { id: 'R17', name: { ru: 'Запустить фильтры воды', en: 'Start the water filters' }, result: { ru: 'Из крана течёт чистая вода', en: 'Clean water runs from the tap' }, requires: [r('F05'), r('E05'), r('A05'), r('M05')], cost: 640, energyReward: 150, generatorReward: null },
   { id: 'C10', kind: 'rubble', name: { ru: 'Расчистить вентиляционную шахту', en: 'Clear the air shaft' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 80, energyReward: 0, generatorReward: null },
-  { id: 'R18', name: { ru: 'Включить вентиляцию', en: 'Turn on the ventilation' }, result: { ru: 'Свежий воздух — технический этаж ожил', en: 'Fresh air — the technical level is alive' }, requires: [r('F05'), r('E05'), r('T05'), r('M05'), r('A05')], cost: 800, energyReward: 0, generatorReward: null },
+  { id: 'R18', name: { ru: 'Включить вентиляцию', en: 'Turn on the ventilation' }, result: { ru: 'Свежий воздух — технический этаж ожил', en: 'Fresh air — the technical level is alive' }, requires: [r('F05'), r('E05'), r('T05'), r('M05'), r('A05')], cost: 800, energyReward: 150, generatorReward: null },
+  // глава 4: жилой этаж убежища (PROTOTYPE_PLAN, этап 8)
+  { id: 'R19', name: { ru: 'Расчистить лестницу на жилой этаж', en: 'Clear the stairs to the living level' }, result: { ru: 'Лестница свободна; найден медицинский шкаф, приходит врач Вера', en: 'The stairs are clear; a medicine cabinet found, doctor Vera arrives' }, requires: [r('F05'), r('M05'), r('T05')], cost: 640, energyReward: 160, generatorReward: 'G_MED' },
+  { id: 'C11', kind: 'rubble', name: { ru: 'Вынести сломанные койки', en: 'Carry out the broken bunks' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 90, energyReward: 0, generatorReward: null },
+  { id: 'R20', name: { ru: 'Обустроить жилые комнаты', en: 'Furnish the living rooms' }, result: { ru: 'Койки, тумбы и лампы — комнаты готовы для жильцов', en: 'Bunks, lockers and lamps — the rooms are ready for residents' }, requires: [r('M05'), r('T05'), r('P05'), r('K05')], cost: 770, energyReward: 160, generatorReward: null, requiresGenerator: 'G_MED' },
+  { id: 'R21', name: { ru: 'Запустить кухню', en: 'Start the kitchen' }, result: { ru: 'Плита греет, над ней работает вытяжка', en: 'The stove is hot and the hood works above it' }, requires: [r('P05'), r('E05'), r('F05'), r('T06')], cost: 820, energyReward: 160, generatorReward: null },
+  { id: 'C12', kind: 'rubble', name: { ru: 'Разобрать завал посуды на кухне', en: 'Clear the pile of dishes in the kitchen' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 100, energyReward: 0, generatorReward: null },
+  { id: 'R22', name: { ru: 'Оборудовать медблок', en: 'Equip the medbay' }, result: { ru: 'Кушетка, шкаф и лампа — медблок принимает больных', en: 'A couch, a cabinet and a lamp — the medbay takes patients' }, requires: [r('K05'), r('E05'), r('F05'), r('M05'), r('T06')], cost: 900, energyReward: 160, generatorReward: null, generatorUpgrade: 'G_MED:4' },
+  { id: 'C13', kind: 'rubble', name: { ru: 'Вынести старые ящики из медблока', en: 'Carry out the old crates from the medbay' }, result: { ru: 'Мусор вывезен', en: 'The junk is gone' }, requires: [], cost: 110, energyReward: 0, generatorReward: null },
+  { id: 'R23', name: { ru: 'Принять первых жильцов', en: 'Welcome the first residents' }, result: { ru: 'Общий стол накрыт — в убежище живут люди', en: 'The common table is set — people live in the shelter' }, requires: [r('K05'), r('P05'), r('A05'), r('T06'), r('M05')], cost: 1080, energyReward: 0, generatorReward: null },
 ];
 
 // PARTS_REWARD_APPLIED
@@ -156,7 +182,7 @@ export const PROJECTS: ProjectDef[] = [
 // и ровно на столько же поднята цена ремонта: деньги к моменту каждого ремонта те же, что раньше.
 
 /** Кто просит детали для ремонта. */
-const PART_VISITOR: Record<string, string> = { R01: 'LEV', R02: 'LEV', R03: 'LEV', R04: 'NIKA', R05: 'LEV', R06: 'MARTA', R07: 'NIKA', R08: 'LEV', R09: 'MARTA', R10: 'MARTA', R11: 'SAVVA', R12: 'SAVVA', R13: 'MARTA', R14: 'MARTA', R15: 'TIKHON', R16: 'TIKHON', R17: 'TIKHON', R18: 'TIKHON' };
+const PART_VISITOR: Record<string, string> = { R01: 'LEV', R02: 'LEV', R03: 'LEV', R04: 'NIKA', R05: 'LEV', R06: 'MARTA', R07: 'NIKA', R08: 'LEV', R09: 'MARTA', R10: 'MARTA', R11: 'SAVVA', R12: 'SAVVA', R13: 'MARTA', R14: 'MARTA', R15: 'TIKHON', R16: 'TIKHON', R17: 'TIKHON', R18: 'TIKHON', R19: 'TIKHON', R20: 'VERA', R21: 'NIKA', R22: 'VERA', R23: 'LEV' };
 
 export const partsOrderId = (projectId: string) => `Q${projectId.slice(1)}`;
 
@@ -189,6 +215,7 @@ export const CHAPTERS: { id: number; lastProject: string }[] = [
   { id: 1, lastProject: 'R08' },
   { id: 2, lastProject: 'R13' },
   { id: 3, lastProject: 'R18' },
+  { id: 4, lastProject: 'R23' },
 ];
 
 export function chapterEndedBy(projectId: string): number | null {

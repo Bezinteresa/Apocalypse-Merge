@@ -46,6 +46,6 @@ export const ZONES: ZoneDef[] = layout.zones;
 export const SPOTS: SpotDef[] = layout.spots;
 
 /** Когда посетитель появляется в магазине: Лев с начала, Ника после R03, Марта после R05 (GAME_DESIGN, раздел 10). */
-export const VISITOR_ARRIVAL: Record<string, string | null> = { LEV: null, NIKA: 'R03', MARTA: 'R05', SAVVA: 'R10', TIKHON: 'R14' };
+export const VISITOR_ARRIVAL: Record<string, string | null> = { LEV: null, NIKA: 'R03', MARTA: 'R05', SAVVA: 'R10', TIKHON: 'R14', VERA: 'R19' };
 
-export const VISITOR_COLOR: Record<string, string> = { LEV: '#c98a3a', NIKA: '#6f9a4a', MARTA: '#d1b832', SAVVA: '#b5533c', TIKHON: '#3f9fc4', RADIO: '#5aa0e0' };
+export const VISITOR_COLOR: Record<string, string> = { LEV: '#c98a3a', NIKA: '#6f9a4a', MARTA: '#d1b832', SAVVA: '#b5533c', TIKHON: '#3f9fc4', VERA: '#d9565b', RADIO: '#5aa0e0' };

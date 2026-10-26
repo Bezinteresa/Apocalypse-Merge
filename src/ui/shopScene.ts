@@ -1,10 +1,10 @@
 import { getItem } from '../content/items';
 import { PROJECTS, VISITORS } from '../content/orders';
-import { ROOMS, SPOTS, VISITOR_ARRIVAL, VISITOR_COLOR, ZONES, type Rect } from '../content/shopLayout';
+import { ROOMS, SCENE_SIZE, SPOTS, VISITOR_ARRIVAL, VISITOR_COLOR, ZONES, type Rect } from '../content/shopLayout';
 import { tx } from '../i18n';
 import { availableOrders, canDeliver, currentProject } from '../game/rules';
 import type { GameState } from '../game/state';
-import { BUILDING_SPRITE, characterSprite, hasSprite, spriteImg, spriteUrl, uiSprite, zoneSprite } from './sprites';
+import { BUILDING_SPRITE, LEVEL2_SPRITE, characterSprite, hasSprite, spriteImg, spriteUrl, uiSprite, zoneSprite } from './sprites';
 
 // Здание в разрезе: комнаты, места ремонта (сломано / починено / текущий ремонт) и посетители с репликами.
 // Без картинок всё рисуется условными плашками; файлы из public/sprites подменяют их по имени.
@@ -16,11 +16,15 @@ export interface SceneHandlers {
   onVisitor(visitorId: string): void;
 }
 
+// Координаты плана — в процентах ширины и исходной высоты здания (1000); сцена с этажом −2 выше (SCENE_SIZE.h),
+// поэтому вертикаль пересчитывается в проценты её полной высоты.
+const vy = (v: number) => (v * 1000) / SCENE_SIZE.h;
+
 function place(el: HTMLElement, r: Rect): void {
   el.style.left = `${r.x}%`;
-  el.style.top = `${r.y}%`;
+  el.style.top = `${vy(r.y)}%`;
   el.style.width = `${r.w}%`;
-  el.style.height = `${r.h}%`;
+  el.style.height = `${vy(r.h)}%`;
 }
 
 export function isVisitorPresent(state: GameState, visitorId: string): boolean {
@@ -41,10 +45,17 @@ export function renderShopScene(root: HTMLElement, state: GameState, handlers: S
   root.className = 'scene';
   const powered = state.completedProjects.includes('R06');
   root.classList.toggle('powered', powered);
+  root.style.aspectRatio = `${SCENE_SIZE.w} / ${SCENE_SIZE.h}`;
   if (hasSprite(BUILDING_SPRITE)) {
     root.classList.add('has-bg');
     root.style.backgroundImage = `url("${spriteUrl(BUILDING_SPRITE)}")`;
   }
+  // этаж −2 под зданием: своя полоса фона (пока её нет — тёмная земля из стилей)
+  const level2 = document.createElement('div');
+  level2.className = 'scene-level2';
+  place(level2, { x: 0, y: 100, w: 100, h: (SCENE_SIZE.h - 1000) / 10 });
+  if (hasSprite(LEVEL2_SPRITE)) level2.style.backgroundImage = `url("${spriteUrl(LEVEL2_SPRITE)}")`;
+  root.appendChild(level2);
 
   for (const room of ROOMS) {
     const el = document.createElement('div');
@@ -109,8 +120,8 @@ export function renderShopScene(root: HTMLElement, state: GameState, handlers: S
     el.style.setProperty('--visitor', VISITOR_COLOR[spot.visitor] ?? '#999');
     el.style.left = `${spot.x - spot.h / 4}%`;
     el.style.width = `${spot.h / 2}%`;
-    el.style.top = `${spot.bottom - spot.h}%`;
-    el.style.height = `${spot.h}%`;
+    el.style.top = `${vy(spot.bottom - spot.h)}%`;
+    el.style.height = `${vy(spot.h)}%`;
     const body = spriteImg(characterSprite(spot.visitor), 'visitor-img');
     if (body) el.appendChild(body);
     else {

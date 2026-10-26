@@ -164,4 +164,26 @@ export const DIALOGS: DialogDef[] = [
       { speaker: 'LEV', text: { ru: 'Значит, скоро у «Перекрёстка» будут жильцы. Продолжим?', en: 'So soon the "Crossroads" will have residents. Shall we go on?' } },
     ],
   },
+  // глава 4: жилой этаж убежища
+  {
+    id: 'D_VERA',
+    after: { project: 'R19' },
+    lines: [
+      { speaker: 'VERA', text: { ru: 'Я Вера, врач. Услышала, что внизу снова есть воздух и вода, — и пришла.', en: "I'm Vera, a doctor. I heard there's air and water down here again, so I came." } },
+      { speaker: 'VERA', text: { ru: 'В шкафу ещё остались бинты и йод. Соберём аптечки — люди потянутся.', en: "There are bandages and iodine left in the cabinet. Let's make first-aid kits — people will come." } },
+    ],
+  },
+  {
+    id: 'D_AFTER_R21',
+    after: { project: 'R21' },
+    lines: [{ speaker: 'NIKA', text: { ru: 'Кухня работает! Теперь можно кормить всех, кто спустится.', en: 'The kitchen works! Now we can feed everyone who comes down.' } }],
+  },
+  {
+    id: 'D_FINALE4',
+    after: { project: 'R23' },
+    lines: [
+      { speaker: 'VERA', text: { ru: 'Первые жильцы устроились. Дети спят в тёплых комнатах.', en: 'The first residents have settled in. The kids are sleeping in warm rooms.' } },
+      { speaker: 'TIKHON', text: { ru: 'Ниже есть ещё этаж — радиоузел и архив. Но это уже другая история.', en: "There's one more level below — the radio room and the archive. But that's another story." } },
+    ],
+  },
 ];

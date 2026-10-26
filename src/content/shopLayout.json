@@ -1,7 +1,7 @@
 {
-  "comment": "План здания первой главы (GAME_DESIGN, раздел 19). Координаты — проценты сцены 16:10. Из этого файла art/make_layout_guide.py рисует картинку-разметку для генерации фона и размеры спрайтов мест ремонта.",
+  "comment": "План здания первой главы (GAME_DESIGN, раздел 19). Координаты — проценты сцены 16:10. Из этого файла art/make_layout_guide.py рисует картинку-разметку для генерации фона и размеры спрайтов мест ремонта. Высота 1340: под зданием высотой 1000 — этаж −2 (y 100–134), координаты остаются в долях исходной высоты 1000 (shopScene пересчитывает).",
   "width": 1600,
-  "height": 1000,
+  "height": 1340,
   "rooms": [
     {
       "id": "GARAGE",
@@ -117,6 +117,54 @@
         "en": "Opens after the garage"
       },
       "unlockAfter": "R13"
+    },
+    {
+      "id": "SH2_LIVING",
+      "x": 1,
+      "y": 101,
+      "w": 39,
+      "h": 32,
+      "name": {
+        "ru": "Жилые комнаты, этаж −2",
+        "en": "Living rooms, level −2"
+      },
+      "locked": {
+        "ru": "Откроется после вентиляции",
+        "en": "Opens after the ventilation"
+      },
+      "unlockAfter": "R18"
+    },
+    {
+      "id": "SH2_KITCHEN",
+      "x": 40,
+      "y": 101,
+      "w": 30,
+      "h": 32,
+      "name": {
+        "ru": "Кухня",
+        "en": "Kitchen"
+      },
+      "locked": {
+        "ru": "Откроется после вентиляции",
+        "en": "Opens after the ventilation"
+      },
+      "unlockAfter": "R18"
+    },
+    {
+      "id": "SH2_MED",
+      "x": 70,
+      "y": 101,
+      "w": 29,
+      "h": 32,
+      "name": {
+        "ru": "Медблок",
+        "en": "Medbay"
+      },
+      "locked": {
+        "ru": "Откроется после вентиляции",
+        "en": "Opens after the ventilation"
+      },
+      "unlockAfter": "R18"
     }
   ],
   "zones": [
@@ -409,6 +457,89 @@
       "h": 28,
       "broken": "a huge rusty ventilation fan unit, blades jammed, ducts torn off",
       "fixed": "the same ventilation unit working, fan spinning, ducts reattached, light breeze ribbons"
+    },
+    {
+      "project": "R19",
+      "room": "SH2_LIVING",
+      "x": 2,
+      "y": 104,
+      "w": 9,
+      "h": 28,
+      "broken": "a staircase going down blocked by fallen boards and a toppled cabinet",
+      "fixed": "a cleared staircase with a fresh handrail and a hanging lantern"
+    },
+    {
+      "project": "C11",
+      "room": "SH2_LIVING",
+      "x": 13,
+      "y": 120,
+      "w": 13,
+      "h": 12,
+      "rubble": true,
+      "broken": "a heap of broken bunk bed frames, torn mattresses and springs",
+      "fixed": ""
+    },
+    {
+      "project": "R20",
+      "room": "SH2_LIVING",
+      "x": 12,
+      "y": 110,
+      "w": 26,
+      "h": 22,
+      "broken": "two broken bunk beds with torn mattresses and an empty locker",
+      "fixed": "two made bunk beds with blankets, a locker and a small warm lamp"
+    },
+    {
+      "project": "R21",
+      "room": "SH2_KITCHEN",
+      "x": 42,
+      "y": 109,
+      "w": 20,
+      "h": 23,
+      "broken": "a cold dirty stove with a broken hood and empty shelves",
+      "fixed": "a working stove with a pot steaming, a clean hood and shelves with jars"
+    },
+    {
+      "project": "C12",
+      "room": "SH2_KITCHEN",
+      "x": 56,
+      "y": 120,
+      "w": 12,
+      "h": 12,
+      "rubble": true,
+      "broken": "a heap of broken plates, dented pots and kitchen junk",
+      "fixed": ""
+    },
+    {
+      "project": "R22",
+      "room": "SH2_MED",
+      "x": 72,
+      "y": 110,
+      "w": 18,
+      "h": 22,
+      "broken": "an empty medbay corner: a torn couch, a broken cabinet and a dead lamp",
+      "fixed": "a tidy medbay corner: a clean couch, a cabinet with medicines and a bright lamp"
+    },
+    {
+      "project": "C13",
+      "room": "SH2_MED",
+      "x": 86,
+      "y": 120,
+      "w": 12,
+      "h": 12,
+      "rubble": true,
+      "broken": "a heap of old wooden crates, empty boxes and broken bottles",
+      "fixed": ""
+    },
+    {
+      "project": "R23",
+      "room": "SH2_LIVING",
+      "x": 26,
+      "y": 117,
+      "w": 13,
+      "h": 15,
+      "broken": "a long table with broken chairs and dust",
+      "fixed": "a long table set with bowls, bread and a teapot, chairs around it"
     }
   ],
   "spots": [
@@ -440,6 +571,12 @@
       "visitor": "TIKHON",
       "x": 94,
       "bottom": 97,
+      "h": 22
+    },
+    {
+      "visitor": "VERA",
+      "x": 95,
+      "bottom": 132,
       "h": 22
     }
   ]
