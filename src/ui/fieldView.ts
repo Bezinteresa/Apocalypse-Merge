@@ -119,8 +119,14 @@ export class FieldView {
       // предметы под паутиной двигать нельзя — их не подсвечиваем как цель обучения
       el.classList.toggle('tut', !fog && contentId !== null && this.tutorialIds.has(contentId));
       el.classList.toggle('hint', loc.area === 'board' && this.hintCells.has(loc.index));
-      el.replaceChildren();
-      if (content) el.appendChild(renderContent(content));
+      // клетка перерисовывается, только если сменилось содержимое: иначе каждое действие пересоздавало
+      // все 63 клетки с картинками, и браузер перекрашивал поле целиком (рывки кадров в телеметрии 0.4.2)
+      const key = content ? (content.kind === 'item' ? `i:${content.itemId}` : `g:${content.generatorId}:${content.level}`) : '';
+      if (el.dataset.key !== key) {
+        el.replaceChildren();
+        if (content) el.appendChild(renderContent(content));
+        el.dataset.key = key;
+      }
     };
     this.cellEls.forEach((el, i) => paint(el, { area: 'board', index: i }, state.fog[i] ?? null));
     this.slotEls.forEach((el, i) => paint(el, { area: 'storage', index: i }, null));

@@ -2477,9 +2477,9 @@ body {
   object-fit: contain;
 }
 
+/* пульсация без анимации filter: меняется только масштаб, его считает видеокарта без перерисовки */
 @keyframes gen-glow {
   50% {
-    filter: drop-shadow(0 0 6px #fff3a0) drop-shadow(0 0 10px #ffb800);
     transform: scale(1.12);
   }
 }
@@ -2492,6 +2492,7 @@ body {
 }
 
 .gen-sparks i {
+  will-change: transform, opacity;
   position: absolute;
   left: var(--x);
   bottom: 35%;
